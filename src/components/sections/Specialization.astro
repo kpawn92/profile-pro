@@ -1,0 +1,54 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+const pillars = [
+  {
+    title: 'Domain modelling',
+    body:
+      'I translate complex accounting, inventory and operational rules into expressive domain models — invariants enforced at compile and runtime, ubiquitous language shared with the business.',
+  },
+  {
+    title: 'Architectural rigor',
+    body:
+      'Hexagonal and clean boundaries that keep the domain pure, integrations swappable, and the test pyramid healthy. Decisions documented; trade-offs explicit.',
+  },
+  {
+    title: 'Operational reality',
+    body:
+      'Systems that survive month-end close, quarterly audits and tax deadlines: idempotent processes, traceable events, predictable performance under real load.',
+  },
+];
+---
+
+<section class="container-x py-section">
+  <SectionHeading
+    eyebrow="What I do"
+    title="Backend foundations for systems where correctness is non-negotiable."
+  />
+
+  <ul
+    class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border"
+    data-pillars
+  >
+    {
+      pillars.map((p, i) => (
+        <li class="bg-bg flex flex-col p-7 md:p-9 reveal-init">
+          <div class="font-mono text-eyebrow uppercase text-text-dim">
+            0{i + 1}
+          </div>
+          <h3 class="mt-6 font-display text-2xl leading-tight text-balance">
+            {p.title}
+          </h3>
+          <p class="mt-4 text-text-muted leading-relaxed text-pretty">
+            {p.body}
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('[data-pillars] li', { stagger: 100 });
+</script>

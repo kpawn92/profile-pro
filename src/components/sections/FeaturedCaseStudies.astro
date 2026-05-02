@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import CaseStudyCard from '@components/ui/CaseStudyCard.astro';
+
+const all = await getCollection('case-studies', ({ data }) => !data.draft);
+const featured = all
+  .filter((e) => e.data.featured)
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 3);
+---
+
+<section class="container-x py-section">
+  <div class="flex items-end justify-between gap-8 flex-wrap">
+    <SectionHeading eyebrow="Selected work" title="Case studies" />
+    <a
+      href="/case-studies/"
+      class="text-sm font-mono text-text-muted hover:text-accent transition-colors"
+    >
+      All work →
+    </a>
+  </div>
+
+  <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border" data-cs-grid>
+    {featured.map((entry, i) => (
+      <div class="bg-bg">
+        <CaseStudyCard entry={entry} index={i} />
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('[data-cs-grid] .surface-card', {
+    stagger: 110,
+    duration: 700,
+  });
+</script>

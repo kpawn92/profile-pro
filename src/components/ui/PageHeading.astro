@@ -1,0 +1,35 @@
+---
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lede?: string;
+}
+
+const { title, eyebrow, lede } = Astro.props;
+---
+
+<header class="max-w-3xl reveal-init">
+  {
+    eyebrow && (
+      <p class="eyebrow mb-6 flex items-center gap-3">
+        <span class="accent-rule" aria-hidden="true" /> {eyebrow}
+      </p>
+    )
+  }
+  <h1 class="font-display text-display-l text-balance">{title}</h1>
+  {
+    lede && (
+      <p class="mt-6 text-lg md:text-xl text-text-muted leading-relaxed text-pretty max-w-2xl">
+        {lede}
+      </p>
+    )
+  }
+</header>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  // Slight delay to let header settle
+  requestAnimationFrame(() => {
+    revealOnScroll('.reveal-init', { duration: 700, translateY: 12 });
+  });
+</script>

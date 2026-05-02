@@ -1,0 +1,94 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '@components/ui/Tag.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'case-studies'>;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <article class="container-x pt-28 md:pt-36 pb-24">
+    <header class="max-w-3xl">
+      <a
+        href="/case-studies/"
+        class="eyebrow inline-flex items-center gap-2 hover:text-text transition-colors"
+      >
+        <span aria-hidden="true">←</span> All case studies
+      </a>
+
+      <div class="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text-muted font-mono">
+        <span>{data.industry}</span>
+        <span class="text-text-dim">/</span>
+        <span>{data.role}</span>
+        <span class="text-text-dim">/</span>
+        <span>{data.year}</span>
+        {data.duration && (
+          <>
+            <span class="text-text-dim">/</span>
+            <span>{data.duration}</span>
+          </>
+        )}
+      </div>
+
+      <h1 class="font-display text-display-l mt-6 text-balance">
+        {data.title}
+      </h1>
+
+      <p class="mt-6 text-lg text-text-muted leading-relaxed text-pretty">
+        {data.summary}
+      </p>
+
+      {data.tags && data.tags.length > 0 && (
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {data.tags.map((tag: string) => <Tag>{tag}</Tag>)}
+        </ul>
+      )}
+    </header>
+
+    {data.metrics && data.metrics.length > 0 && (
+      <section
+        class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-px bg-border border border-border"
+      >
+        {data.metrics.map((m: any) => (
+          <div class="bg-bg p-6 md:p-8">
+            <div class="font-display text-3xl md:text-4xl text-accent">
+              {m.value}
+            </div>
+            <div class="mt-2 text-sm text-text-muted">{m.label}</div>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <div class="mt-20 grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-12">
+      <div class="prose prose-invert max-w-prose">
+        <slot />
+      </div>
+
+      <aside class="lg:sticky lg:top-32 self-start space-y-8">
+        {data.stack && data.stack.length > 0 && (
+          <div>
+            <h3 class="eyebrow mb-3">Stack</h3>
+            <ul class="space-y-1.5 text-sm text-text-muted font-mono">
+              {data.stack.map((s: string) => <li>{s}</li>)}
+            </ul>
+          </div>
+        )}
+
+        {data.boundedContexts && data.boundedContexts.length > 0 && (
+          <div>
+            <h3 class="eyebrow mb-3">Bounded contexts</h3>
+            <ul class="space-y-1.5 text-sm text-text-muted">
+              {data.boundedContexts.map((c: string) => <li>· {c}</li>)}
+            </ul>
+          </div>
+        )}
+      </aside>
+    </div>
+  </article>
+</BaseLayout>

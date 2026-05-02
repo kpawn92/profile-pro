@@ -1,0 +1,55 @@
+---
+// A faint architectural grid — vertical rules + scattered nodes that pulse
+// occasionally to suggest data flow without distracting from content.
+const nodeCount = 14;
+const nodes = Array.from({ length: nodeCount }, (_, i) => {
+  // pseudo-stable distribution
+  const x = ((i * 137) % 100);
+  const y = ((i * 73 + 23) % 100);
+  return { x, y };
+});
+---
+
+<div
+  class="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+  data-architecture-grid
+  aria-hidden="true"
+>
+  <!-- Soft vignette to anchor content -->
+  <div
+    class="absolute inset-0"
+    style="background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,106,0.04), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(255,255,255,0.015), transparent 60%);"
+  >
+  </div>
+
+  <!-- Grid pattern -->
+  <div
+    class="absolute inset-0"
+    style={`background-image:
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 100%);`}
+  >
+  </div>
+
+  <!-- Nodes that pulse -->
+  <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+    {
+      nodes.map((n) => (
+        <circle
+          cx={n.x}
+          cy={n.y}
+          r="0.18"
+          fill="var(--color-accent)"
+          opacity="0.18"
+          data-pulse
+          style="transform-box: fill-box; transform-origin: center;"
+        />
+      ))
+    }
+  </svg>
+</div>

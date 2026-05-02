@@ -1,0 +1,41 @@
+---
+import { site, navigation } from '@/lib/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header
+  class="fixed top-0 inset-x-0 z-40 border-b border-border/60 backdrop-blur-md bg-bg/70"
+>
+  <div class="container-x flex items-center justify-between h-16">
+    <a
+      href="/"
+      class="font-display text-base tracking-tight hover:text-accent transition-colors"
+      aria-label={`${site.name} — home`}
+    >
+      <span class="text-accent">/</span> {site.shortName}
+    </a>
+
+    <nav>
+      <ul class="flex items-center gap-7 md:gap-9 text-sm">
+        {
+          navigation.map(({ label, href }) => (
+            <li>
+              <a
+                href={href}
+                class:list={[
+                  'transition-colors hover:text-text',
+                  isActive(href) ? 'text-text' : 'text-text-muted',
+                ]}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

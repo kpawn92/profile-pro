@@ -1,0 +1,108 @@
+---
+import { site, specialization } from '@/lib/site';
+import Tag from '@components/ui/Tag.astro';
+
+const titleWords = site.role.split(' ');
+---
+
+<section class="relative pt-36 md:pt-44 pb-section-sm">
+  <div class="container-x">
+    <p
+      class="eyebrow flex items-center gap-3"
+      data-hero-reveal="eyebrow"
+      style="opacity:0;"
+    >
+      <span class="accent-rule" aria-hidden="true"></span>
+      Available · {site.availability}
+    </p>
+
+    <h1
+      class="font-display text-display-xl mt-8 max-w-[20ch] text-balance"
+      data-hero-reveal="title"
+    >
+      {
+        titleWords.map((w, i) => (
+          <span class="word inline-block mr-[0.18em]" style="opacity:0;">
+            {i === 1 || i === 2 ? <em class="italic font-light">{w}</em> : w}
+          </span>
+        ))
+      }
+    </h1>
+
+    <p
+      class="mt-8 max-w-2xl text-lg md:text-xl text-text-muted leading-relaxed text-pretty"
+      data-hero-reveal="sub"
+      style="opacity:0;"
+    >
+      {site.description}
+    </p>
+
+    <ul
+      class="mt-10 flex flex-wrap gap-2 max-w-3xl hero-tags"
+      data-hero-reveal="tags"
+    >
+      {specialization.map((s) => <Tag size="sm">{s}</Tag>)}
+    </ul>
+
+    <div
+      class="mt-12 flex flex-wrap items-center gap-6"
+      data-hero-reveal="cta"
+      style="opacity:0;"
+    >
+      <a
+        href="/case-studies/"
+        class="inline-flex items-center gap-3 px-6 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors"
+      >
+        View case studies
+        <span aria-hidden="true">→</span>
+      </a>
+      <a
+        href="/contact/"
+        class="inline-flex items-center gap-3 px-6 py-3 border border-border hover:border-accent hover:text-accent transition-colors"
+      >
+        Start a conversation
+      </a>
+    </div>
+
+    <!-- meta strip -->
+    <div
+      class="mt-20 pt-6 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-6 reveal-init"
+    >
+      <div>
+        <div class="eyebrow">Focus</div>
+        <div class="mt-2 text-sm">ERP · Accounting · Operations</div>
+      </div>
+      <div>
+        <div class="eyebrow">Stack</div>
+        <div class="mt-2 text-sm font-mono text-text-muted">
+          TypeScript · Node · Postgres
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Approach</div>
+        <div class="mt-2 text-sm">DDD · Hex · TDD</div>
+      </div>
+      <div>
+        <div class="eyebrow">Based in</div>
+        <div class="mt-2 text-sm">{site.location}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-tags [data-tag] {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-tags [data-tag] {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { playHeroReveal, revealOnScroll } from '@/lib/motion';
+  playHeroReveal();
+  revealOnScroll('.reveal-init');
+</script>

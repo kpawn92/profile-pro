@@ -1,0 +1,21 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeading from '@components/ui/PageHeading.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  lede?: string;
+}
+
+const { title, description, eyebrow, lede } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="container-x pt-32 md:pt-40 pb-section-sm">
+    <PageHeading title={title} eyebrow={eyebrow} lede={lede} />
+  </section>
+
+  <slot />
+</BaseLayout>

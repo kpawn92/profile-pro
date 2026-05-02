@@ -1,0 +1,123 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+import { site } from '@/lib/site';
+
+const principles = [
+  {
+    title: 'Domain first, frameworks last',
+    body:
+      'I start every engagement by understanding the business — the rules, the language, the failure modes that matter. Frameworks come after, in service of the domain.',
+  },
+  {
+    title: 'Tests as design pressure',
+    body:
+      'A test you can\'t write is a design you should reconsider. TDD is not a verification ritual; it is the most reliable feedback I have on architectural decisions.',
+  },
+  {
+    title: 'Boring tech, deliberate choices',
+    body:
+      'Postgres, Node, well-understood patterns. New technology must justify itself against operational cost — and most of the time it doesn\'t.',
+  },
+  {
+    title: 'Document the why',
+    body:
+      'ADRs, runbooks, ubiquitous language documents. Not because process matters; because the team in two years will thank the team today.',
+  },
+];
+
+const stack = [
+  { group: 'Languages', items: ['TypeScript', 'JavaScript', 'SQL'] },
+  { group: 'Runtime & Frameworks', items: ['Node.js', 'NestJS', 'Astro', 'Fastify'] },
+  { group: 'Persistence', items: ['PostgreSQL', 'Redis', 'Event Stores'] },
+  { group: 'Messaging', items: ['Kafka', 'RabbitMQ', 'Outbox pattern'] },
+  { group: 'Operations', items: ['Docker', 'Kubernetes', 'OpenTelemetry'] },
+  { group: 'Testing', items: ['Vitest', 'Playwright', 'Property-based testing'] },
+];
+---
+
+<PageLayout
+  title="About"
+  eyebrow="Profile"
+  lede={`${site.role}. I have spent the last decade building the parts of business systems that survive growth, audits and turnover. The work below is a summary; the conversations are where the substance lives.`}
+>
+  <section class="container-x pb-24 grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-16 items-start">
+    <article class="prose prose-invert max-w-prose reveal-init">
+      <h2>What I do</h2>
+      <p>
+        I design and build the operational core of business software — the
+        accounting engines, ERP modules, inventory systems and financial
+        workflows that an organisation depends on every day. My focus is the
+        backend: domain modelling, architecture, and the discipline that keeps
+        systems editable years after they ship.
+      </p>
+
+      <h2>How I work</h2>
+      <p>
+        I prefer engagements where I can pair closely with the people who
+        actually run the business. The best architectural decisions I have made
+        came out of conversations with finance teams, warehouse managers and
+        operations leads — not from whiteboards in isolation. Code follows
+        understanding; the reverse is rarely true.
+      </p>
+      <p>
+        On a project I tend to spend the first weeks listening, sketching the
+        ubiquitous language, and identifying the bounded contexts that matter.
+        Implementation starts only once those seams are clear. From there: small,
+        deliberate steps; tests that drive design; ADRs for every non-obvious
+        choice.
+      </p>
+
+      <h2>Background</h2>
+      <p>
+        Ten plus years of full-stack development, the last six focused on
+        complex business systems across manufacturing, retail and SaaS finance.
+        I have led architectural rebuilds, mentored teams new to DDD and
+        hexagonal architecture, and stayed on call for the systems I built —
+        which I consider non-optional. If a 3am page is impossible to debug, the
+        system isn't really finished.
+      </p>
+    </article>
+
+    <aside class="space-y-12">
+      <div class="reveal-init">
+        <h3 class="eyebrow mb-4 flex items-center gap-3">
+          <span class="accent-rule" aria-hidden="true"></span> Principles
+        </h3>
+        <ul class="space-y-6" data-principles>
+          {
+            principles.map((p) => (
+              <li class="border-l border-border pl-5">
+                <h4 class="font-display text-lg leading-tight">{p.title}</h4>
+                <p class="mt-2 text-sm text-text-muted leading-relaxed">{p.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="reveal-init">
+        <h3 class="eyebrow mb-4 flex items-center gap-3">
+          <span class="accent-rule" aria-hidden="true"></span> Stack
+        </h3>
+        <dl class="space-y-4">
+          {
+            stack.map((s) => (
+              <div class="grid grid-cols-[140px_1fr] gap-4 py-2 border-b border-border last:border-b-0">
+                <dt class="font-mono text-xs uppercase text-text-dim tracking-wider pt-0.5">
+                  {s.group}
+                </dt>
+                <dd class="text-sm text-text-muted">{s.items.join(' · ')}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <script>
+    import { revealOnScroll } from '@/lib/motion';
+    revealOnScroll('.reveal-init');
+    revealOnScroll('[data-principles] li', { stagger: 80, translateY: 10 });
+  </script>
+</PageLayout>

@@ -1,0 +1,176 @@
+---
+// Hexagonal/Clean architecture flow:
+// External World → Adapters (Inbound) → Application → Domain ← Application ← Adapters (Outbound) ← External World
+//
+// We render a simplified, editorial diagram: three concentric rings labeled
+// Domain · Application · Infrastructure with directional flow paths.
+---
+
+<div
+  class="relative w-full max-w-[640px] mx-auto aspect-square"
+  data-flow-diagram
+>
+  <svg
+    viewBox="0 0 400 400"
+    class="w-full h-full"
+    role="img"
+    aria-label="Hexagonal architecture: domain at the core, surrounded by application and infrastructure rings"
+  >
+    <defs>
+      <radialGradient id="core-gradient" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.18" />
+        <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <!-- Outer ring: Infrastructure -->
+    <circle
+      cx="200"
+      cy="200"
+      r="180"
+      fill="none"
+      stroke="var(--color-border)"
+      stroke-width="1"
+      data-node
+    />
+
+    <!-- Middle ring: Application -->
+    <circle
+      cx="200"
+      cy="200"
+      r="120"
+      fill="none"
+      stroke="var(--color-border-strong)"
+      stroke-width="1"
+      data-node
+    />
+
+    <!-- Inner core: Domain -->
+    <circle
+      cx="200"
+      cy="200"
+      r="60"
+      fill="url(#core-gradient)"
+      stroke="var(--color-accent)"
+      stroke-width="1"
+      data-node
+    />
+
+    <!-- Flow lines: from outside in (left side), and from inside out (right side) -->
+    <path
+      d="M 20 200 L 80 200"
+      stroke="var(--color-accent-line)"
+      stroke-width="1"
+      fill="none"
+      data-draw
+      style="opacity:0;"
+    />
+    <path
+      d="M 80 200 L 140 200"
+      stroke="var(--color-border-strong)"
+      stroke-width="1"
+      fill="none"
+      data-draw
+      style="opacity:0;"
+    />
+
+    <path
+      d="M 260 200 L 320 200"
+      stroke="var(--color-border-strong)"
+      stroke-width="1"
+      fill="none"
+      data-draw
+      style="opacity:0;"
+    />
+    <path
+      d="M 320 200 L 380 200"
+      stroke="var(--color-accent-line)"
+      stroke-width="1"
+      fill="none"
+      data-draw
+      style="opacity:0;"
+    />
+
+    <!-- Vertical flow accents -->
+    <path
+      d="M 200 30 L 200 80"
+      stroke="var(--color-border)"
+      stroke-width="1"
+      fill="none"
+      data-draw
+      style="opacity:0;"
+    />
+    <path
+      d="M 200 320 L 200 370"
+      stroke="var(--color-border)"
+      stroke-width="1"
+      fill="none"
+      data-draw
+      style="opacity:0;"
+    />
+
+    <!-- Port nodes -->
+    <circle cx="80" cy="200" r="3" fill="var(--color-accent)" data-node />
+    <circle cx="320" cy="200" r="3" fill="var(--color-accent)" data-node />
+    <circle cx="200" cy="80" r="3" fill="var(--color-bg)" stroke="var(--color-border-strong)" stroke-width="1" data-node />
+    <circle cx="200" cy="320" r="3" fill="var(--color-bg)" stroke="var(--color-border-strong)" stroke-width="1" data-node />
+
+    <!-- Labels -->
+    <text
+      x="200"
+      y="205"
+      text-anchor="middle"
+      class="fill-text"
+      style="font-family:'Fraunces',serif;font-size:14px;font-style:italic;"
+      data-node
+    >
+      Domain
+    </text>
+    <text
+      x="200"
+      y="100"
+      text-anchor="middle"
+      class="fill-text-muted font-mono"
+      style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;"
+      data-node
+    >
+      Application
+    </text>
+    <text
+      x="200"
+      y="22"
+      text-anchor="middle"
+      class="fill-text-dim font-mono"
+      style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;"
+      data-node
+    >
+      Infrastructure
+    </text>
+
+    <text
+      x="14"
+      y="195"
+      text-anchor="start"
+      class="fill-text-dim font-mono"
+      style="font-size:8px;letter-spacing:.14em;text-transform:uppercase;"
+      data-node
+    >
+      HTTP · CLI · Jobs
+    </text>
+    <text
+      x="386"
+      y="195"
+      text-anchor="end"
+      class="fill-text-dim font-mono"
+      style="font-size:8px;letter-spacing:.14em;text-transform:uppercase;"
+      data-node
+    >
+      DB · Queue · APIs
+    </text>
+  </svg>
+</div>
+
+<script>
+  import { drawPaths } from '@/lib/motion';
+  drawPaths('[data-flow-diagram]');
+</script>

@@ -1,0 +1,128 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+import { site } from '@/lib/site';
+---
+
+<PageLayout
+  title="Contact"
+  eyebrow="Get in touch"
+  lede="The fastest path is email — I read every message myself, and aim to reply within two business days."
+>
+  <section class="container-x pb-section grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16">
+    <div class="space-y-10 reveal-init">
+      <div>
+        <h3 class="eyebrow mb-3 flex items-center gap-3">
+          <span class="accent-rule" aria-hidden="true"></span> Direct
+        </h3>
+        <a
+          href={`mailto:${site.email}`}
+          class="font-display text-2xl md:text-3xl link-underline text-balance"
+        >
+          {site.email}
+        </a>
+        <p class="mt-4 text-text-muted leading-relaxed">
+          Best for engagement enquiries, advisory work or technical
+          conversations. Include enough context so I can be useful in the first
+          reply.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="eyebrow mb-3 flex items-center gap-3">
+          <span class="accent-rule" aria-hidden="true"></span> Availability
+        </h3>
+        <p class="text-text leading-relaxed">{site.availability}</p>
+      </div>
+
+      <div>
+        <h3 class="eyebrow mb-3 flex items-center gap-3">
+          <span class="accent-rule" aria-hidden="true"></span> Working with me
+        </h3>
+        <ul class="space-y-2 text-text-muted leading-relaxed text-sm">
+          <li>· Most engagements run 3–9 months, full or part-time.</li>
+          <li>· Remote-first; on-site for kick-off when it helps.</li>
+          <li>· I work independently or embed within your existing team.</li>
+          <li>· References available on request.</li>
+        </ul>
+      </div>
+    </div>
+
+    <form
+      method="post"
+      action={`mailto:${site.email}`}
+      enctype="text/plain"
+      class="border border-border p-7 md:p-9 space-y-6 reveal-init bg-surface/30"
+    >
+      <div>
+        <label for="name" class="block eyebrow mb-2">Name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block eyebrow mb-2">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
+        />
+      </div>
+
+      <div>
+        <label for="org" class="block eyebrow mb-2">Organisation</label>
+        <input
+          id="org"
+          name="organisation"
+          type="text"
+          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
+        />
+      </div>
+
+      <div>
+        <label for="topic" class="block eyebrow mb-2">Topic</label>
+        <select
+          id="topic"
+          name="topic"
+          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
+        >
+          <option value="erp">ERP engagement</option>
+          <option value="accounting">Accounting / financial system</option>
+          <option value="architecture">Architecture review</option>
+          <option value="advisory">Advisory / mentoring</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="message" class="block eyebrow mb-2">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="6"
+          required
+          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text resize-none"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="inline-flex items-center gap-3 px-6 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors"
+      >
+        Send via email
+        <span aria-hidden="true">→</span>
+      </button>
+    </form>
+  </section>
+
+  <script>
+    import { revealOnScroll } from '@/lib/motion';
+    revealOnScroll('.reveal-init', { stagger: 120 });
+  </script>
+</PageLayout>

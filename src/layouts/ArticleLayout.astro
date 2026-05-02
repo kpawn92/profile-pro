@@ -1,0 +1,56 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '@components/ui/Tag.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <article class="container-x pt-28 md:pt-36 pb-24">
+    <header class="max-w-prose">
+      <a
+        href="/writing/"
+        class="eyebrow inline-flex items-center gap-2 hover:text-text transition-colors"
+      >
+        <span aria-hidden="true">←</span> All writing
+      </a>
+
+      <div class="mt-10 flex flex-wrap gap-x-4 gap-y-2 text-sm font-mono text-text-muted">
+        <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate)}</time>
+        <span class="text-text-dim">·</span>
+        <span>{data.readingTime} min read</span>
+      </div>
+
+      <h1 class="mt-6 font-display text-display-l text-balance">{data.title}</h1>
+
+      <p class="mt-6 text-lg text-text-muted leading-relaxed text-pretty">
+        {data.description}
+      </p>
+
+      {data.tags && data.tags.length > 0 && (
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {data.tags.map((t: string) => <Tag size="sm">{t}</Tag>)}
+        </ul>
+      )}
+    </header>
+
+    <hr class="my-14 border-border" />
+
+    <div class="prose prose-invert max-w-prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

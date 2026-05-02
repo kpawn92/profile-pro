@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import ArticleCard from '@components/ui/ArticleCard.astro';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const grouped = articles.reduce<Record<string, typeof articles>>((acc, a) => {
+  const year = a.data.pubDate.getFullYear().toString();
+  (acc[year] ??= []).push(a);
+  return acc;
+}, {});
+
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+---
+
+<PageLayout
+  title="Writing"
+  eyebrow="Notes"
+  lede="Long-form notes on architecture, domain modelling and the practice of building software for organisations that depend on it."
+>
+  <section class="container-x pb-section">
+    {
+      years.map((year) => (
+        <div class="mb-16">
+          <h2 class="font-mono text-eyebrow uppercase text-text-dim mb-2">
+            {year}
+          </h2>
+          <div class="border-t border-border">
+            {grouped[year].map((entry) => (
+              <ArticleCard entry={entry} variant="list" />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <script>
+    import { revealOnScroll } from '@/lib/motion';
+    revealOnScroll('.reveal-init');
+  </script>
+</PageLayout>
