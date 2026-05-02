@@ -91,11 +91,11 @@ const titleWords = site.role.split(' ');
 </section>
 
 <style>
-  .hero-tags [data-tag] {
+  .hero-tags :global([data-tag]) {
     opacity: 0;
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-tags [data-tag] {
+    .hero-tags :global([data-tag]) {
       opacity: 1;
     }
   }

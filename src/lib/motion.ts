@@ -40,15 +40,19 @@ export const revealOnScroll = (
     once = true,
   } = opts;
 
-  const targets =
+  const found =
     typeof selector === 'string'
-      ? Array.from(document.querySelectorAll(selector))
-      : selector;
+      ? Array.from(document.querySelectorAll<HTMLElement>(selector))
+      : (selector as HTMLElement[]);
 
+  // Dedupe: skip elements already wired up by a previous call (multiple
+  // sections on the same page may all call revealOnScroll('.reveal-init')).
+  const targets = found.filter((el) => !el.dataset.revealObserved);
   if (!targets.length) return;
 
   if (prefersReducedMotion()) {
     settle(targets);
+    targets.forEach((el) => (el.dataset.revealObserved = 'true'));
     return;
   }
 
@@ -77,7 +81,10 @@ export const revealOnScroll = (
     { threshold, rootMargin },
   );
 
-  targets.forEach((el) => observer.observe(el));
+  targets.forEach((el) => {
+    el.dataset.revealObserved = 'true';
+    observer.observe(el);
+  });
 };
 
 /**
@@ -139,10 +146,13 @@ export const playHeroReveal = (): void => {
  * Stagger reveal on a tag list (when scrolled into view).
  */
 export const revealTags = (selector: string): void => {
-  const els = Array.from(document.querySelectorAll<HTMLElement>(selector));
+  const els = Array.from(document.querySelectorAll<HTMLElement>(selector)).filter(
+    (el) => !el.dataset.tagsObserved,
+  );
   if (!els.length) return;
   if (prefersReducedMotion()) {
     settle(els);
+    els.forEach((el) => (el.dataset.tagsObserved = 'true'));
     return;
   }
   const observer = new IntersectionObserver(
@@ -164,15 +174,21 @@ export const revealTags = (selector: string): void => {
     },
     { threshold: 0.25 },
   );
-  els.forEach((el) => observer.observe(el));
+  els.forEach((el) => {
+    el.dataset.tagsObserved = 'true';
+    observer.observe(el);
+  });
 };
 
 /**
  * Animate SVG paths drawing themselves (architecture flow lines).
  */
 export const drawPaths = (selector: string): void => {
-  const containers = Array.from(document.querySelectorAll(selector));
+  const containers = Array.from(
+    document.querySelectorAll<HTMLElement>(selector),
+  ).filter((el) => !el.dataset.pathsObserved);
   if (!containers.length) return;
+  containers.forEach((c) => (c.dataset.pathsObserved = 'true'));
 
   if (prefersReducedMotion()) {
     containers.forEach((c) => {
