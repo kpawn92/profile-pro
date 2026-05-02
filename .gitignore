@@ -11,8 +11,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# env
+# env (keep .env.example tracked)
 .env
+.env.local
 .env.production
 
 # editor

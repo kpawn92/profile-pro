@@ -1,0 +1,97 @@
+---
+import type { GhLanguage } from '@/lib/github';
+
+interface Props {
+  languages: GhLanguage[];
+}
+
+const { languages } = Astro.props;
+
+// Editorial monochrome: top language uses accent, the rest fade through grays
+const tones = [
+  'var(--color-accent)',
+  'rgba(236, 237, 238, 0.55)',
+  'rgba(236, 237, 238, 0.40)',
+  'rgba(236, 237, 238, 0.28)',
+  'rgba(236, 237, 238, 0.18)',
+  'rgba(236, 237, 238, 0.10)',
+];
+
+const formatPct = (n: number) =>
+  n >= 0.1 ? `${(n * 100).toFixed(0)}%` : `${(n * 100).toFixed(1)}%`;
+---
+
+{
+  languages.length > 0 && (
+    <div class="reveal-init" data-language-bar>
+      <div
+        class="flex w-full h-2 overflow-hidden border border-border bg-surface"
+        role="img"
+        aria-label="Distribution of programming languages"
+      >
+        {languages.map((l, i) => (
+          <span
+            class="block h-full"
+            style={`width:0%; background-color:${tones[i] ?? tones[tones.length - 1]};`}
+            data-lang-segment
+            data-target-width={`${(l.share * 100).toFixed(2)}%`}
+          />
+        ))}
+      </div>
+
+      <ul class="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 font-mono text-xs">
+        {languages.map((l, i) => (
+          <li class="flex items-center gap-3">
+            <span
+              class="inline-block w-2 h-2 shrink-0"
+              style={`background-color:${tones[i] ?? tones[tones.length - 1]};`}
+              aria-hidden="true"
+            />
+            <span class="text-text truncate">{l.name}</span>
+            <span class="ml-auto text-text-dim tabular-nums">
+              {formatPct(l.share)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { prefersReducedMotion } from '@/lib/motion';
+
+  const containers = document.querySelectorAll<HTMLElement>('[data-language-bar]');
+  containers.forEach((root) => {
+    const segments = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-lang-segment]'),
+    );
+    if (!segments.length) return;
+
+    if (prefersReducedMotion()) {
+      segments.forEach((s) => {
+        s.style.width = s.dataset.targetWidth ?? '0%';
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          anime({
+            targets: segments,
+            width: (el: HTMLElement) => el.dataset.targetWidth ?? '0%',
+            easing: 'cubicBezier(.22,1,.36,1)',
+            duration: 900,
+            delay: anime.stagger(80),
+          });
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(root);
+  });
+</script>
