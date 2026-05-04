@@ -26,17 +26,19 @@ const switchHref = localizePath(stripped, otherLang);
 <header
   class="fixed top-0 inset-x-0 z-40 border-b border-border/60 backdrop-blur-md bg-bg/70"
 >
-  <div class="container-x flex items-center justify-between h-16">
+  <div class="container-x flex items-center justify-between h-16 gap-3">
     <a
       href={localizePath('/', lang)}
-      class="font-display text-base tracking-tight hover:text-accent transition-colors"
+      class="font-display text-base tracking-tight hover:text-accent transition-colors shrink-0"
       aria-label={`${site.name} — ${t('nav.home')}`}
     >
       <span class="text-accent">/</span> {site.shortName}
     </a>
 
-    <nav class="flex items-center gap-7 md:gap-9">
-      <ul class="flex items-center gap-7 md:gap-9 text-sm">
+    <nav class="flex items-center gap-3 sm:gap-5 md:gap-9">
+      <ul
+        class="flex items-center gap-3 sm:gap-5 md:gap-9 text-[13px] sm:text-sm"
+      >
         {
           navigation.map(({ key, href }) => (
             <li>
@@ -57,7 +59,7 @@ const switchHref = localizePath(stripped, otherLang);
       <a
         href={switchHref}
         aria-label={t('lang.toggle.aria')}
-        class="font-mono text-[11px] uppercase tracking-wider text-text-muted hover:text-accent transition-colors border-l border-border pl-5 md:pl-6"
+        class="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-text-muted hover:text-accent transition-colors sm:border-l border-border pl-3 sm:pl-5 md:pl-6 shrink-0"
         title={languages[otherLang]}
       >
         <span class={lang === 'en' ? 'text-accent' : ''}>EN</span>

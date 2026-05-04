@@ -147,20 +147,20 @@ const pathFor = (p: (typeof points)[number]) => {
       <!-- Intent label -->
       <text
         x={INTENT_X}
-        y={INTENT_Y + 80}
+        y={INTENT_Y + 84}
         text-anchor="middle"
         class="font-mono"
-        style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;fill:#9295A0;opacity:0;"
+        style="font-size:14px;letter-spacing:0.22em;text-transform:uppercase;fill:#9295A0;opacity:0;"
         data-intent-label
       >
         intent
       </text>
       <text
         x={INTENT_X}
-        y={INTENT_Y + 96}
+        y={INTENT_Y + 104}
         text-anchor="middle"
         class="font-mono"
-        style="font-size:9px;letter-spacing:0.16em;fill:#5E6068;opacity:0;"
+        style="font-size:12px;letter-spacing:0.16em;fill:#5E6068;opacity:0;"
         data-intent-sublabel
       >
         classifier · router
@@ -206,9 +206,9 @@ const pathFor = (p: (typeof points)[number]) => {
           {/* labels — namespace dim, method bright */}
           <text
             x={TOOL_LABEL_X}
-            y={p.y + 4}
+            y={p.y + 7}
             class="font-mono"
-            style="font-size:13px;letter-spacing:0.02em;opacity:0;"
+            style="font-size:21px;letter-spacing:0.01em;opacity:0;"
             data-tool-label
             data-tool-idx={p.index}
           >
@@ -226,7 +226,7 @@ const pathFor = (p: (typeof points)[number]) => {
       y={H - 16}
       text-anchor="end"
       class="font-mono"
-      style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;fill:#5E6068;opacity:0;"
+      style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;fill:#5E6068;opacity:0;"
       data-router-meta
     >
       9 tools · 12 intents · 3 LLM providers

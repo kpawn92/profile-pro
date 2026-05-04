@@ -54,10 +54,10 @@ const href = localizePath(`/case-studies/${cleanSlug}/`, lang);
   }
 
   <div
-    class="mt-auto pt-8 flex items-center justify-between text-xs font-mono text-text-muted"
+    class="mt-auto pt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs font-mono text-text-muted"
   >
-    <span>{data.role}</span>
-    <span class="text-accent transition-transform group-hover:translate-x-1">
+    <span class="leading-snug">{data.role}</span>
+    <span class="text-accent transition-transform group-hover:translate-x-1 shrink-0">
       {t('cs.read')}
     </span>
   </div>
