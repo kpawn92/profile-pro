@@ -1,4 +1,5 @@
 ---
+lang: en
 title: 'Rebuilding the operational core of a manufacturing ERP'
 summary: 'A 12-year-old monolith powering production planning, purchasing and inventory was rewritten as a hexagonal modular system — without a single day of operational downtime.'
 industry: 'Industrial Manufacturing'

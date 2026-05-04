@@ -1,30 +1,19 @@
 ---
 import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const pillars = [
-  {
-    title: 'Domain modelling',
-    body:
-      'I translate complex accounting, inventory and operational rules into expressive domain models — invariants enforced at compile and runtime, ubiquitous language shared with the business.',
-  },
-  {
-    title: 'Architectural rigor',
-    body:
-      'Hexagonal and clean boundaries that keep the domain pure, integrations swappable, and the test pyramid healthy. Decisions documented; trade-offs explicit.',
-  },
-  {
-    title: 'Operational reality',
-    body:
-      'Systems that survive month-end close, quarterly audits and tax deadlines: idempotent processes, traceable events, predictable performance under real load.',
-  },
+  { title: t('spec.p1.title'), body: t('spec.p1.body') },
+  { title: t('spec.p2.title'), body: t('spec.p2.body') },
+  { title: t('spec.p3.title'), body: t('spec.p3.body') },
 ];
 ---
 
 <section class="container-x py-section">
-  <SectionHeading
-    eyebrow="What I do"
-    title="Backend foundations for systems where correctness is non-negotiable."
-  />
+  <SectionHeading eyebrow={t('spec.eyebrow')} title={t('spec.title')} />
 
   <ul
     class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border"

@@ -5,6 +5,10 @@ import Sparkline from '@components/visuals/Sparkline.astro';
 import LanguageBar from '@components/visuals/LanguageBar.astro';
 import { getStats } from '@/lib/github';
 import { site } from '@/lib/site';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const stats = await getStats();
 
@@ -27,11 +31,7 @@ const hasAnyData =
   hasAnyData && (
     <section class="container-x py-section">
       <div class="flex items-end justify-between gap-8 flex-wrap">
-        <SectionHeading
-          eyebrow="Open source"
-          title="A practice that informs the work."
-          size="m"
-        />
+        <SectionHeading eyebrow={t('os.eyebrow')} title={t('os.title')} size="m" />
         <a
           href={profileUrl}
           target="_blank"
@@ -47,13 +47,13 @@ const hasAnyData =
           class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-px bg-border border border-border reveal-init"
         >
           <div class="bg-bg p-6">
-            <dt class="eyebrow">Public repos</dt>
+            <dt class="eyebrow">{t('os.publicRepos')}</dt>
             <dd class="mt-2 font-display text-3xl text-balance">
               {stats.profile.publicRepos.toLocaleString()}
             </dd>
           </div>
           <div class="bg-bg p-6">
-            <dt class="eyebrow">Stars earned</dt>
+            <dt class="eyebrow">{t('os.starsEarned')}</dt>
             <dd class="mt-2 font-display text-3xl text-accent text-balance">
               {totalStars >= 1000
                 ? `${(totalStars / 1000).toFixed(1)}k`
@@ -61,13 +61,13 @@ const hasAnyData =
             </dd>
           </div>
           <div class="bg-bg p-6">
-            <dt class="eyebrow">Followers</dt>
+            <dt class="eyebrow">{t('os.followers')}</dt>
             <dd class="mt-2 font-display text-3xl text-balance">
               {stats.profile.followers.toLocaleString()}
             </dd>
           </div>
           <div class="bg-bg p-6">
-            <dt class="eyebrow">On GitHub since</dt>
+            <dt class="eyebrow">{t('os.since')}</dt>
             <dd class="mt-2 font-display text-3xl text-balance">
               {accountSinceYear}
             </dd>
@@ -79,15 +79,17 @@ const hasAnyData =
         <div class="mt-16">
           <header class="flex items-end justify-between mb-5">
             <h3 class="eyebrow flex items-center gap-3">
-              <span class="accent-rule" aria-hidden="true" /> Activity
+              <span class="accent-rule" aria-hidden="true" /> {t('os.activity')}
             </h3>
             <span class="font-mono text-[11px] uppercase tracking-wider text-text-dim">
-              Last 12 months
+              {t('os.activitySub')}
             </span>
           </header>
           <Sparkline
             weeks={stats.contributions.weeks}
             total={stats.contributions.total}
+            weeksLabel={t('os.weeks')}
+            contributionsLabel={t('os.contributions')}
           />
         </div>
       )}
@@ -96,10 +98,10 @@ const hasAnyData =
         <div class="mt-16">
           <header class="flex items-end justify-between mb-5">
             <h3 class="eyebrow flex items-center gap-3">
-              <span class="accent-rule" aria-hidden="true" /> Languages
+              <span class="accent-rule" aria-hidden="true" /> {t('os.languages')}
             </h3>
             <span class="font-mono text-[11px] uppercase tracking-wider text-text-dim">
-              By bytes across active repos
+              {t('os.languagesSub')}
             </span>
           </header>
           <LanguageBar languages={stats.languages} />
@@ -110,10 +112,10 @@ const hasAnyData =
         <div class="mt-16">
           <header class="flex items-end justify-between mb-6">
             <h3 class="eyebrow flex items-center gap-3">
-              <span class="accent-rule" aria-hidden="true" /> Repositories
+              <span class="accent-rule" aria-hidden="true" /> {t('os.repos')}
             </h3>
             <span class="font-mono text-[11px] uppercase tracking-wider text-text-dim">
-              Selected · sorted by stars
+              {t('os.reposSub')}
             </span>
           </header>
           <div

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Tag from './Tag.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '@/i18n/utils';
 
 interface Props {
   entry: CollectionEntry<'case-studies'>;
@@ -9,11 +10,19 @@ interface Props {
 
 const { entry, index } = Astro.props;
 const { data, slug } = entry;
-const indexLabel = typeof index === 'number' ? String(index + 1).padStart(2, '0') : null;
+const indexLabel =
+  typeof index === 'number' ? String(index + 1).padStart(2, '0') : null;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Strip the locale prefix (en/foo, es/foo → foo) so URLs are clean.
+const cleanSlug = slug.replace(/^(en|es)\//, '');
+const href = localizePath(`/case-studies/${cleanSlug}/`, lang);
 ---
 
 <a
-  href={`/case-studies/${slug}/`}
+  href={href}
   class="surface-card group flex flex-col h-full p-6 md:p-8 reveal-init"
 >
   <div class="flex items-center justify-between mb-6">
@@ -24,7 +33,9 @@ const indexLabel = typeof index === 'number' ? String(index + 1).padStart(2, '0'
     <span class="font-mono text-xs text-text-dim">{data.year}</span>
   </div>
 
-  <h3 class="font-display text-2xl md:text-[1.65rem] leading-tight text-balance group-hover:text-accent transition-colors">
+  <h3
+    class="font-display text-2xl md:text-[1.65rem] leading-tight text-balance group-hover:text-accent transition-colors"
+  >
     {data.title}
   </h3>
 
@@ -42,10 +53,12 @@ const indexLabel = typeof index === 'number' ? String(index + 1).padStart(2, '0'
     )
   }
 
-  <div class="mt-auto pt-8 flex items-center justify-between text-xs font-mono text-text-muted">
+  <div
+    class="mt-auto pt-8 flex items-center justify-between text-xs font-mono text-text-muted"
+  >
     <span>{data.role}</span>
     <span class="text-accent transition-transform group-hover:translate-x-1">
-      Read case study →
+      {t('cs.read')}
     </span>
   </div>
 </a>

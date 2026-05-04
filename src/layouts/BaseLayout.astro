@@ -4,6 +4,7 @@ import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 import ArchitectureGrid from '@components/visuals/ArchitectureGrid.astro';
 import { site } from '@/lib/site';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
 
 interface Props {
   title?: string;
@@ -11,28 +12,30 @@ interface Props {
   showGrid?: boolean;
 }
 
-const {
-  title,
-  description = site.description,
-  showGrid = true,
-} = Astro.props;
+const { title, description, showGrid = true } = Astro.props;
 
-const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.role}`;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const desc = description ?? t('site.description');
+const role = t('site.role');
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${role}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={desc} />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0A0A0B" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

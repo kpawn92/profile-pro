@@ -1,5 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import {
+  getLangFromUrl,
+  useTranslations,
+  localizePath,
+  formatDate,
+} from '@/i18n/utils';
 
 interface Props {
   entry: CollectionEntry<'articles'>;
@@ -9,25 +15,30 @@ interface Props {
 const { entry, variant = 'default' } = Astro.props;
 const { data, slug } = entry;
 
-const formatDate = (d: Date) =>
-  d.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const cleanSlug = slug.replace(/^(en|es)\//, '');
+const href = localizePath(`/writing/${cleanSlug}/`, lang);
+
+const dateShort = formatDate(data.pubDate, lang, {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
 ---
 
 {
   variant === 'list' ? (
     <a
-      href={`/writing/${slug}/`}
+      href={href}
       class="reveal-init group flex items-baseline gap-6 py-6 border-b border-border hover:border-border-strong transition-colors"
     >
       <time
         datetime={data.pubDate.toISOString()}
         class="font-mono text-xs text-text-dim w-28 shrink-0 pt-1"
       >
-        {formatDate(data.pubDate)}
+        {dateShort}
       </time>
       <div class="flex-1">
         <h3 class="font-display text-xl md:text-2xl leading-tight text-balance group-hover:text-accent transition-colors">
@@ -43,14 +54,14 @@ const formatDate = (d: Date) =>
     </a>
   ) : (
     <a
-      href={`/writing/${slug}/`}
+      href={href}
       class="surface-card group flex flex-col h-full p-6 md:p-7 reveal-init"
     >
       <time
         datetime={data.pubDate.toISOString()}
         class="font-mono text-eyebrow uppercase text-text-dim"
       >
-        {formatDate(data.pubDate)} · {data.readingTime} min
+        {dateShort} · {data.readingTime} {t('writing.minRead')}
       </time>
       <h3 class="mt-4 font-display text-xl md:text-2xl leading-tight text-balance group-hover:text-accent transition-colors">
         {data.title}
@@ -60,7 +71,7 @@ const formatDate = (d: Date) =>
       </p>
       <div class="mt-auto pt-8 flex items-center justify-end text-xs font-mono text-accent">
         <span class="transition-transform group-hover:translate-x-1">
-          Read article →
+          {t('writing.read')}
         </span>
       </div>
     </a>

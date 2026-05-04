@@ -1,4 +1,5 @@
 ---
+lang: en
 title: 'Inventory and warehouse operations, modelled as a real domain'
 summary: 'A retail chain’s inventory module had been written as CRUD over a stock table for years. We replaced it with a true domain model: lot tracking, multi-warehouse reservations and consistent stock across channels.'
 industry: 'Omnichannel Retail'

@@ -1,42 +1,25 @@
 ---
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import FlowDiagram from '@components/visuals/FlowDiagram.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const principles = [
-  {
-    n: '01',
-    title: 'Domain at the core',
-    body:
-      'Pure domain logic — no frameworks, no infrastructure. The accounting rules, the inventory invariants, the order workflow live untouched by transport or persistence concerns.',
-  },
-  {
-    n: '02',
-    title: 'Ports & adapters',
-    body:
-      'Inbound use cases drive the domain through explicit ports; outbound integrations (DB, queues, third parties) implement adapters. Swappable, testable, observable.',
-  },
-  {
-    n: '03',
-    title: 'Tests as design pressure',
-    body:
-      'TDD as a feedback tool: red, green, refactor. Unit tests for the domain, integration tests at the boundaries, contract tests for external systems — pyramid stays in shape.',
-  },
-  {
-    n: '04',
-    title: 'Documented decisions',
-    body:
-      'ADRs for trade-offs, ubiquitous language for shared meaning, runbooks for the things that page someone at 3am. The system explains itself.',
-  },
+  { n: '01', title: t('approach.p1.title'), body: t('approach.p1.body') },
+  { n: '02', title: t('approach.p2.title'), body: t('approach.p2.body') },
+  { n: '03', title: t('approach.p3.title'), body: t('approach.p3.body') },
+  { n: '04', title: t('approach.p4.title'), body: t('approach.p4.body') },
 ];
 ---
 
 <section class="container-x py-section">
-  <SectionHeading
-    eyebrow="Approach"
-    title="A disciplined approach to building software that an organisation can rely on for years."
-  />
+  <SectionHeading eyebrow={t('approach.eyebrow')} title={t('approach.title')} />
 
-  <div class="mt-16 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-14 lg:gap-20 items-center">
+  <div
+    class="mt-16 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-14 lg:gap-20 items-center"
+  >
     <ol class="space-y-8 reveal-stagger" data-principles>
       {
         principles.map((p) => (
@@ -60,7 +43,7 @@ const principles = [
     <div class="reveal-init">
       <FlowDiagram />
       <p class="mt-6 text-center font-mono text-eyebrow uppercase text-text-dim">
-        Hexagonal Architecture · Information Flow
+        {t('approach.diagram.caption')}
       </p>
     </div>
   </div>

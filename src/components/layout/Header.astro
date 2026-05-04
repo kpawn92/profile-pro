@@ -1,9 +1,26 @@
 ---
 import { site, navigation } from '@/lib/site';
+import {
+  getLangFromUrl,
+  useTranslations,
+  localizePath,
+  stripLocale,
+} from '@/i18n/utils';
+import { languages } from '@/i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const path = Astro.url.pathname;
+const stripped = stripLocale(path);
+
 const isActive = (href: string) =>
-  href === '/' ? path === '/' : path.startsWith(href);
+  href === '/'
+    ? stripped === '/' || stripped === ''
+    : stripped.startsWith(href);
+
+const otherLang = lang === 'en' ? 'es' : 'en';
+const switchHref = localizePath(stripped, otherLang);
 ---
 
 <header
@@ -11,31 +28,42 @@ const isActive = (href: string) =>
 >
   <div class="container-x flex items-center justify-between h-16">
     <a
-      href="/"
+      href={localizePath('/', lang)}
       class="font-display text-base tracking-tight hover:text-accent transition-colors"
-      aria-label={`${site.name} — home`}
+      aria-label={`${site.name} — ${t('nav.home')}`}
     >
       <span class="text-accent">/</span> {site.shortName}
     </a>
 
-    <nav>
+    <nav class="flex items-center gap-7 md:gap-9">
       <ul class="flex items-center gap-7 md:gap-9 text-sm">
         {
-          navigation.map(({ label, href }) => (
+          navigation.map(({ key, href }) => (
             <li>
               <a
-                href={href}
+                href={localizePath(href, lang)}
                 class:list={[
                   'transition-colors hover:text-text',
                   isActive(href) ? 'text-text' : 'text-text-muted',
                 ]}
               >
-                {label}
+                {t(key as any)}
               </a>
             </li>
           ))
         }
       </ul>
+
+      <a
+        href={switchHref}
+        aria-label={t('lang.toggle.aria')}
+        class="font-mono text-[11px] uppercase tracking-wider text-text-muted hover:text-accent transition-colors border-l border-border pl-5 md:pl-6"
+        title={languages[otherLang]}
+      >
+        <span class={lang === 'en' ? 'text-accent' : ''}>EN</span>
+        <span class="mx-1 text-text-dim">/</span>
+        <span class={lang === 'es' ? 'text-accent' : ''}>ES</span>
+      </a>
     </nav>
   </div>
 </header>

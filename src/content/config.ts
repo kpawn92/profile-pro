@@ -1,8 +1,11 @@
 import { defineCollection, z } from 'astro:content';
 
+const langSchema = z.enum(['en', 'es']);
+
 const caseStudies = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: langSchema,
     title: z.string(),
     summary: z.string(),
     industry: z.string(),
@@ -28,6 +31,7 @@ const caseStudies = defineCollection({
 const articles = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: langSchema,
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),

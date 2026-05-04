@@ -5,10 +5,10 @@ import CaseStudyLayout from '@layouts/CaseStudyLayout.astro';
 export async function getStaticPaths() {
   const studies = await getCollection(
     'case-studies',
-    ({ data }) => !data.draft && data.lang === 'en',
+    ({ data }) => !data.draft && data.lang === 'es',
   );
   return studies.map((entry) => ({
-    params: { slug: entry.slug.replace(/^en\//, '') },
+    params: { slug: entry.slug.replace(/^es\//, '') },
     props: { entry },
   }));
 }

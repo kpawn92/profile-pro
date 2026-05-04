@@ -1,4 +1,5 @@
 ---
+lang: en
 title: 'Hexagonal architecture for ERPs, without the dogma'
 description: 'Why ports and adapters work especially well for enterprise software — and the practical compromises that keep the team productive instead of pure.'
 pubDate: 2026-03-12

@@ -1,4 +1,5 @@
 ---
+lang: en
 title: 'TDD as a design tool for financial systems'
 description: 'Why test-driven development pays unusually high dividends in financial software — and how the failure modes of a TDD-less codebase look in practice.'
 pubDate: 2026-01-15

@@ -1,12 +1,7 @@
 export const site = {
   name: 'Alejandro Pozo',
   shortName: 'A. Pozo',
-  role: 'Senior Full-Stack Developer for Complex Business Systems',
-  description:
-    'I design robust backend architectures and full-stack solutions for ERP, accounting, inventory, sales and financial operation workflows.',
   email: 'hap921020@gmail.com',
-  location: 'Remote · EU timezone',
-  availability: 'Selectively taking on engagements for 2026',
   social: {
     github: 'https://github.com/',
     linkedin: 'https://linkedin.com/in/',
@@ -27,8 +22,8 @@ export const specialization = [
 ] as const;
 
 export const navigation = [
-  { label: 'Work', href: '/case-studies/' },
-  { label: 'Writing', href: '/writing/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Contact', href: '/contact/' },
+  { key: 'nav.work', href: '/case-studies/' },
+  { key: 'nav.writing', href: '/writing/' },
+  { key: 'nav.about', href: '/about/' },
+  { key: 'nav.contact', href: '/contact/' },
 ] as const;

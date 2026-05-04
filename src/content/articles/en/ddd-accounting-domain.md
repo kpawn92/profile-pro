@@ -1,4 +1,5 @@
 ---
+lang: en
 title: 'Modelling an accounting domain that auditors actually trust'
 description: 'A walkthrough of the core invariants behind a double-entry ledger — and how to encode them so the type system and the test suite, not the developer, enforce them.'
 pubDate: 2026-02-04

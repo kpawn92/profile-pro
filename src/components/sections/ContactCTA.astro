@@ -1,9 +1,15 @@
 ---
 import { site } from '@/lib/site';
+import { getLangFromUrl, useTranslations, localizePath } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <section class="container-x py-section">
-  <div class="border border-border p-10 md:p-16 reveal-init relative overflow-hidden">
+  <div
+    class="border border-border p-10 md:p-16 reveal-init relative overflow-hidden"
+  >
     <div
       class="absolute inset-0 -z-10 pointer-events-none opacity-60"
       style="background:
@@ -14,18 +20,16 @@ import { site } from '@/lib/site';
 
     <p class="eyebrow flex items-center gap-3">
       <span class="accent-rule" aria-hidden="true"></span>
-      Currently
+      {t('ctaSection.eyebrow')}
     </p>
 
     <h2 class="mt-6 font-display text-display-l max-w-3xl text-balance">
-      Designing the next generation of business systems takes
-      <em class="italic font-light text-accent">careful hands.</em>
+      {t('ctaSection.titleA')}
+      <em class="italic font-light text-accent">{t('ctaSection.titleB')}</em>
     </h2>
 
     <p class="mt-6 max-w-xl text-lg text-text-muted leading-relaxed text-pretty">
-      If you're rebuilding a critical part of your operation — accounting, ERP,
-      financial workflows — and need a senior pair of hands on the architecture,
-      I'd like to hear about it.
+      {t('ctaSection.body')}
     </p>
 
     <div class="mt-10 flex flex-wrap gap-4 items-center">
@@ -33,14 +37,14 @@ import { site } from '@/lib/site';
         href={`mailto:${site.email}`}
         class="inline-flex items-center gap-3 px-6 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors"
       >
-        Write me an email
+        {t('ctaSection.email')}
         <span aria-hidden="true">→</span>
       </a>
       <a
-        href="/contact/"
+        href={localizePath('/contact/', lang)}
         class="inline-flex items-center gap-3 px-6 py-3 border border-border hover:border-accent hover:text-accent transition-colors"
       >
-        Contact form
+        {t('ctaSection.form')}
       </a>
     </div>
   </div>

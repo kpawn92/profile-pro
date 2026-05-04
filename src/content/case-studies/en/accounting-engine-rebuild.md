@@ -1,4 +1,5 @@
 ---
+lang: en
 title: 'A double-entry accounting engine that survives the auditors'
 summary: 'A SaaS for SMB accounting needed an engine that could close books without manual intervention. We rebuilt the ledger as a domain-pure module with deterministic posting and full event traceability.'
 industry: 'Fintech · SaaS'

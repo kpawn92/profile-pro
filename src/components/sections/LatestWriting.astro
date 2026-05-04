@@ -2,29 +2,47 @@
 import { getCollection } from 'astro:content';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ArticleCard from '@components/ui/ArticleCard.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '@/i18n/utils';
 
-const articles = (await getCollection('articles', ({ data }) => !data.draft))
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const articles = (
+  await getCollection(
+    'articles',
+    ({ data }) => !data.draft && data.lang === lang,
+  )
+)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
 ---
 
 <section class="container-x py-section">
   <div class="flex items-end justify-between gap-8 flex-wrap">
-    <SectionHeading eyebrow="Writing" title="Notes on architecture & domain." size="m" />
+    <SectionHeading
+      eyebrow={t('writing.latest.eyebrow')}
+      title={t('writing.latest.title')}
+      size="m"
+    />
     <a
-      href="/writing/"
+      href={localizePath('/writing/', lang)}
       class="text-sm font-mono text-text-muted hover:text-accent transition-colors"
     >
-      All articles →
+      {t('writing.viewAll')}
     </a>
   </div>
 
-  <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border" data-articles>
-    {articles.map((entry) => (
-      <div class="bg-bg">
-        <ArticleCard entry={entry} />
-      </div>
-    ))}
+  <div
+    class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border"
+    data-articles
+  >
+    {
+      articles.map((entry) => (
+        <div class="bg-bg">
+          <ArticleCard entry={entry} />
+        </div>
+      ))
+    }
   </div>
 </section>
 

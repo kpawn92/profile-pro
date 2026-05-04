@@ -6,6 +6,8 @@ interface Props {
   total: number;
   width?: number;
   height?: number;
+  weeksLabel?: string;
+  contributionsLabel?: string;
 }
 
 const {
@@ -13,6 +15,8 @@ const {
   total,
   width = 1100,
   height = 80,
+  weeksLabel = '52 weeks',
+  contributionsLabel = 'contributions',
 } = Astro.props;
 
 // Defensive: drop empty / malformed input
@@ -109,9 +113,9 @@ const lastY = points.length ? points[points.length - 1][1] : 0;
   <figcaption
     class="mt-3 flex items-center justify-between font-mono text-[11px] uppercase tracking-wider text-text-dim"
   >
-    <span>52 weeks</span>
+    <span>{weeksLabel}</span>
     <span>
-      <span class="text-text">{total.toLocaleString()}</span> contributions
+      <span class="text-text">{total.toLocaleString()}</span> {contributionsLabel}
     </span>
   </figcaption>
 </figure>
