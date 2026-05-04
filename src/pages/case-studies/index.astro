@@ -43,7 +43,10 @@ const industries = Array.from(new Set(studies.map((s) => s.data.industry)));
     </ul>
 
     <div
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border"
+      class:list={[
+        'grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border',
+        studies.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2',
+      ]}
       data-cs-grid
     >
       {

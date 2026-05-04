@@ -3,7 +3,7 @@ export const site = {
   shortName: 'A. Pozo',
   email: 'hap921020@gmail.com',
   social: {
-    github: 'https://github.com/',
+    github: 'https://github.com/kpawn92',
     linkedin: 'https://linkedin.com/in/',
   },
 } as const;

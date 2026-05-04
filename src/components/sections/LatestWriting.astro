@@ -17,34 +17,39 @@ const articles = (
   .slice(0, 3);
 ---
 
-<section class="container-x py-section">
-  <div class="flex items-end justify-between gap-8 flex-wrap">
-    <SectionHeading
-      eyebrow={t('writing.latest.eyebrow')}
-      title={t('writing.latest.title')}
-      size="m"
-    />
-    <a
-      href={localizePath('/writing/', lang)}
-      class="text-sm font-mono text-text-muted hover:text-accent transition-colors"
-    >
-      {t('writing.viewAll')}
-    </a>
-  </div>
+{
+  articles.length > 0 && (
+    <section class="container-x py-section">
+      <div class="flex items-end justify-between gap-8 flex-wrap">
+        <SectionHeading
+          eyebrow={t('writing.latest.eyebrow')}
+          title={t('writing.latest.title')}
+          size="m"
+        />
+        <a
+          href={localizePath('/writing/', lang)}
+          class="text-sm font-mono text-text-muted hover:text-accent transition-colors"
+        >
+          {t('writing.viewAll')}
+        </a>
+      </div>
 
-  <div
-    class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border"
-    data-articles
-  >
-    {
-      articles.map((entry) => (
-        <div class="bg-bg">
-          <ArticleCard entry={entry} />
-        </div>
-      ))
-    }
-  </div>
-</section>
+      <div
+        class:list={[
+          'mt-12 grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border',
+          articles.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2',
+        ]}
+        data-articles
+      >
+        {articles.map((entry) => (
+          <div class="bg-bg">
+            <ArticleCard entry={entry} />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 <script>
   import { revealOnScroll } from '@/lib/motion';

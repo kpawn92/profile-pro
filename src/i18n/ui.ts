@@ -11,7 +11,7 @@ export const ui = {
     // ─── Site / hero
     'site.role': 'Senior Full-Stack Developer for Complex Business Systems',
     'site.description':
-      'I design robust backend architectures and full-stack solutions for ERP, accounting, inventory, sales and financial operation workflows.',
+      'I design domain-driven backends — Hexagonal, DDD, CQRS — for ERP, accounting, payroll and operational workflows. Same kernel discipline across Java/Spring and TypeScript/NestJS.',
     'site.availability': 'Selectively taking on engagements for 2026',
     'site.location': 'Remote · EU timezone',
 
@@ -97,6 +97,10 @@ export const ui = {
       'Long-form notes on architecture, domain modelling and the practice of building software for organisations that depend on it.',
     'writing.minRead': 'min read',
     'writing.back': 'All writing',
+    'writing.empty.title': 'Notes are in progress.',
+    'writing.empty.body':
+      'Long-form writing on architecture and domain modelling is on the way. In the meantime, the case studies are the best read.',
+    'writing.empty.cta': 'Read the case studies →',
 
     // ─── Contact CTA
     'ctaSection.eyebrow': 'Currently',
@@ -138,28 +142,28 @@ export const ui = {
     'about.eyebrow': 'Profile',
     'about.h1': 'What I do',
     'about.p1':
-      'I design and build the operational core of business software — the accounting engines, ERP modules, inventory systems and financial workflows that an organisation depends on every day. My focus is the backend: domain modelling, architecture, and the discipline that keeps systems editable years after they ship.',
+      'I design and build the backend of business software — the engines that have to run correctly every day: ERP cores, payroll closures, accounting moves, inventory ledgers, scheduling and operational flows. My focus is the architecture: domain modelling, kernel design, and the discipline that keeps systems editable years after they ship.',
     'about.h2': 'How I work',
     'about.p2':
-      'I prefer engagements where I can pair closely with the people who actually run the business. The best architectural decisions I have made came out of conversations with finance teams, warehouse managers and operations leads — not from whiteboards in isolation. Code follows understanding; the reverse is rarely true.',
+      'Every engagement starts with the language of the business. The bounded contexts emerge from how the operations team actually thinks about the work, not from a database schema. Once those seams are clear, I build a kernel — buses, ports, value objects, sagas, an outbox, an idempotence layer — so each new context costs less than the last.',
     'about.p2b':
-      'On a project I tend to spend the first weeks listening, sketching the ubiquitous language, and identifying the bounded contexts that matter. Implementation starts only once those seams are clear. From there: small, deliberate steps; tests that drive design; ADRs for every non-obvious choice.',
+      'Implementation moves in small, deliberate steps. New flows live in clean domain layers; legacy code keeps shipping until its replacement has proven itself in production. Anti-corruption layers bridge the two, and an ADR-style note explains every non-obvious choice.',
     'about.h3': 'Background',
     'about.p3':
-      "Ten plus years of full-stack development, the last six focused on complex business systems across manufacturing, retail and SaaS finance. I have led architectural rebuilds, mentored teams new to DDD and hexagonal architecture, and stayed on call for the systems I built — which I consider non-optional. If a 3am page is impossible to debug, the system isn't really finished.",
+      'Backend architecture in two parallel stacks: Java/Spring and TypeScript/NestJS. The same patterns — Hexagonal, DDD, CQRS — applied across both, so the framework is a delivery vehicle rather than a structural choice. Recent engagements include an ERP backend with a fifteen-context architecture and a hand-built kernel of CQRS / saga / outbox primitives, and a full-stack HR / payroll platform with a parallel kernel design in TypeScript.',
     'about.principles': 'Principles',
-    'about.principle1.title': 'Domain first, frameworks last',
+    'about.principle1.title': 'Build the kernel first',
     'about.principle1.body':
-      'I start every engagement by understanding the business — the rules, the language, the failure modes that matter. Frameworks come after, in service of the domain.',
-    'about.principle2.title': 'Tests as design pressure',
+      'Every reusable pattern — buses, value objects, ports, saga, outbox, idempotence — lives in a hand-built foundation. Each new bounded context costs less because the foundation paid the upfront tax.',
+    'about.principle2.title': 'Patterns over frameworks',
     'about.principle2.body':
-      "A test you can't write is a design you should reconsider. TDD is not a verification ritual; it is the most reliable feedback I have on architectural decisions.",
-    'about.principle3.title': 'Boring tech, deliberate choices',
+      'The architecture travels. Hexagonal, DDD, CQRS work the same in Java/Spring as in TypeScript/NestJS. The framework is a delivery vehicle; the discipline belongs to the architect.',
+    'about.principle3.title': 'Progressive coexistence over rewrites',
     'about.principle3.body':
-      "Postgres, Node, well-understood patterns. New technology must justify itself against operational cost — and most of the time it doesn't.",
-    'about.principle4.title': 'Document the why',
+      'Legacy code keeps shipping while new contexts prove themselves. Anti-corruption layers bridge the two. A god-service retires only when its replacement has earned its place under real production load.',
+    'about.principle4.title': 'Documentation pairs with code',
     'about.principle4.body':
-      'ADRs, runbooks, ubiquitous language documents. Not because process matters; because the team in two years will thank the team today.',
+      'Every non-obvious decision has a markdown next to it. Bounded contexts, refactor narratives, runbooks. The system explains itself before anyone has to open the editor.',
     'about.stackHeading': 'Stack',
 
     // ─── Misc
@@ -171,7 +175,7 @@ export const ui = {
     // ─── Site / hero
     'site.role': 'Senior Full-Stack Developer para sistemas empresariales complejos',
     'site.description':
-      'Diseño arquitecturas backend robustas y soluciones full-stack para ERP, contabilidad, inventario, ventas y operaciones financieras.',
+      'Diseño backends orientados al dominio — Hexagonal, DDD, CQRS — para ERP, contabilidad, nómina y flujos operativos. La misma disciplina de kernel propio en Java/Spring y TypeScript/NestJS.',
     'site.availability': 'Aceptando proyectos seleccionados para 2026',
     'site.location': 'Remoto · zona horaria UE',
 
@@ -257,6 +261,10 @@ export const ui = {
       'Notas extensas sobre arquitectura, modelado de dominio y la práctica de construir software para organizaciones que dependen de él.',
     'writing.minRead': 'min de lectura',
     'writing.back': 'Todos los artículos',
+    'writing.empty.title': 'Notas en preparación.',
+    'writing.empty.body':
+      'Pronto habrá texto largo sobre arquitectura y modelado de dominio. Por ahora, los casos de estudio son la mejor lectura.',
+    'writing.empty.cta': 'Ver los casos de estudio →',
 
     // ─── Contact CTA
     'ctaSection.eyebrow': 'Actualmente',
@@ -302,28 +310,28 @@ export const ui = {
     'about.eyebrow': 'Perfil',
     'about.h1': 'Qué hago',
     'about.p1':
-      'Diseño y construyo el núcleo operativo del software empresarial — los motores contables, los módulos ERP, los sistemas de inventario y los flujos financieros de los que una organización depende cada día. Mi foco es el backend: modelado de dominio, arquitectura y la disciplina que mantiene los sistemas editables años después de su lanzamiento.',
+      'Diseño y construyo el backend del software empresarial — los motores que tienen que ejecutarse correctamente cada día: núcleos de ERP, cierres de nómina, movimientos contables, libros de inventario, programación y flujos operativos. Mi foco es la arquitectura: modelado de dominio, diseño de kernel y la disciplina que mantiene los sistemas editables años después de su lanzamiento.',
     'about.h2': 'Cómo trabajo',
     'about.p2':
-      'Prefiero proyectos donde puedo trabajar codo a codo con quienes operan el negocio. Las mejores decisiones de arquitectura que he tomado salieron de conversaciones con equipos de finanzas, jefes de almacén y responsables de operaciones — no de pizarras en aislamiento. El código sigue al entendimiento; rara vez al revés.',
+      'Cada proyecto empieza por el lenguaje del negocio. Los bounded contexts emergen de cómo el equipo de operaciones piensa realmente el trabajo, no de un esquema de base de datos. Una vez claras esas costuras, construyo un kernel — buses, puertos, value objects, sagas, outbox, capa de idempotencia — para que cada contexto nuevo cueste menos que el anterior.',
     'about.p2b':
-      'En un proyecto suelo dedicar las primeras semanas a escuchar, esbozar el lenguaje ubicuo e identificar los bounded contexts que importan. La implementación empieza solo cuando esas costuras están claras. Desde ahí: pasos pequeños y deliberados; tests que dirigen el diseño; ADRs para cada decisión no evidente.',
+      'La implementación avanza en pasos pequeños y deliberados. Los flujos nuevos viven en capas de dominio limpias; el código legacy sigue funcionando hasta que su reemplazo se ha probado en producción. Capas anti-corrupción puentean ambos lados, y una nota tipo ADR explica cada decisión no evidente.',
     'about.h3': 'Trayectoria',
     'about.p3':
-      'Más de diez años de desarrollo full-stack, los últimos seis enfocados en sistemas empresariales complejos en manufactura, retail y SaaS financiero. He liderado reescrituras arquitectónicas, mentorizado equipos que arrancaban con DDD y arquitectura hexagonal, y mantenido guardia para los sistemas que construí — algo que considero no opcional. Si a las 3am es imposible depurar una alerta, el sistema no está realmente terminado.',
+      'Arquitectura backend en dos stacks paralelos: Java/Spring y TypeScript/NestJS. Los mismos patrones — Hexagonal, DDD, CQRS — aplicados en ambos, de modo que el framework es un vehículo de entrega y no una elección estructural. Proyectos recientes incluyen un backend ERP con una arquitectura de quince contextos y un kernel propio de primitivos CQRS / saga / outbox, y una plataforma full-stack de RR.HH. y nómina con un diseño de kernel paralelo en TypeScript.',
     'about.principles': 'Principios',
-    'about.principle1.title': 'Dominio primero, frameworks después',
+    'about.principle1.title': 'Construir el kernel primero',
     'about.principle1.body':
-      'Empiezo cada proyecto entendiendo el negocio — las reglas, el lenguaje, los modos de fallo que importan. Los frameworks vienen después, al servicio del dominio.',
-    'about.principle2.title': 'Tests como presión de diseño',
+      'Cada patrón reutilizable — buses, value objects, puertos, saga, outbox, idempotencia — vive en una base hecha a mano. Cada bounded context nuevo cuesta menos porque la base ya pagó el coste inicial.',
+    'about.principle2.title': 'Patrones por encima de frameworks',
     'about.principle2.body':
-      'Un test que no puedes escribir es un diseño que deberías reconsiderar. TDD no es un ritual de verificación; es el feedback más fiable que tengo sobre decisiones arquitectónicas.',
-    'about.principle3.title': 'Tecnología aburrida, elecciones deliberadas',
+      'La arquitectura viaja. Hexagonal, DDD, CQRS funcionan igual en Java/Spring que en TypeScript/NestJS. El framework es un vehículo de entrega; la disciplina pertenece al arquitecto.',
+    'about.principle3.title': 'Coexistencia progresiva sobre reescrituras',
     'about.principle3.body':
-      'Postgres, Node, patrones bien entendidos. La tecnología nueva debe justificarse frente al coste operativo — y la mayoría de las veces no lo hace.',
-    'about.principle4.title': 'Documentar el porqué',
+      'El código legacy sigue en producción mientras los contextos nuevos demuestran su valor. Capas anti-corrupción puentean ambos lados. Un god-service se retira solo cuando su reemplazo se ha ganado su lugar bajo carga real.',
+    'about.principle4.title': 'La documentación va con el código',
     'about.principle4.body':
-      'ADRs, runbooks, documentos de lenguaje ubicuo. No porque el proceso importe; porque el equipo de dentro de dos años agradecerá al equipo de hoy.',
+      'Cada decisión no evidente tiene un markdown al lado. Bounded contexts, narrativas de refactor, runbooks. El sistema se explica solo antes de que nadie tenga que abrir el editor.',
     'about.stackHeading': 'Stack',
 
     // ─── Misc
