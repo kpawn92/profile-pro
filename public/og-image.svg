@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0A0A0B"/>
+
+  <!-- Subtle gradient atmosphere -->
+  <defs>
+    <radialGradient id="atmo" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#C9A86A" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#C9A86A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C9A86A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#C9A86A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#atmo)"/>
+
+  <!-- Faint architectural grid -->
+  <g stroke="#FFFFFF" stroke-width="1" opacity="0.04">
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="0" y1="480" x2="1200" y2="480"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+
+  <!-- Hexagonal architecture motif on the right -->
+  <g transform="translate(960, 315)">
+    <circle r="180" fill="none" stroke="#25252C" stroke-width="1"/>
+    <circle r="120" fill="none" stroke="#35353E" stroke-width="1"/>
+    <circle r="60" fill="url(#core)" stroke="#C9A86A" stroke-width="1.2"/>
+    <line x1="-180" y1="0" x2="-120" y2="0" stroke="#C9A86A" stroke-width="1" opacity="0.5"/>
+    <line x1="120" y1="0" x2="180" y2="0" stroke="#C9A86A" stroke-width="1" opacity="0.5"/>
+    <line x1="0" y1="-180" x2="0" y2="-120" stroke="#25252C" stroke-width="1"/>
+    <line x1="0" y1="120" x2="0" y2="180" stroke="#25252C" stroke-width="1"/>
+    <circle cx="-120" cy="0" r="3" fill="#C9A86A"/>
+    <circle cx="120" cy="0" r="3" fill="#C9A86A"/>
+  </g>
+
+  <!-- Eyebrow -->
+  <g transform="translate(72, 140)">
+    <line x1="0" y1="-3" x2="28" y2="-3" stroke="#C9A86A" stroke-width="1"/>
+    <text x="44" y="0" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="16" letter-spacing="3.6" fill="#9295A0" text-transform="uppercase">ALEJANDRO POZO</text>
+  </g>
+
+  <!-- Title -->
+  <text x="72" y="320" font-family="Fraunces, ui-serif, Georgia, serif" font-size="72" font-weight="400" fill="#ECEDEE" letter-spacing="-1">
+    <tspan x="72" dy="0">Senior Full-Stack</tspan>
+    <tspan x="72" dy="84" font-style="italic" font-weight="300">Developer</tspan>
+  </text>
+  <text x="72" y="464" font-family="Fraunces, ui-serif, Georgia, serif" font-size="48" font-weight="400" fill="#ECEDEE" letter-spacing="-0.5">
+    for Complex Business Systems
+  </text>
+
+  <!-- Tags -->
+  <g transform="translate(72, 540)" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="14" letter-spacing="2.4" fill="#9295A0">
+    <text x="0" y="0">DDD</text>
+    <text x="80" y="0" fill="#5E6068">·</text>
+    <text x="100" y="0">HEXAGONAL</text>
+    <text x="240" y="0" fill="#5E6068">·</text>
+    <text x="260" y="0">CQRS</text>
+    <text x="340" y="0" fill="#5E6068">·</text>
+    <text x="360" y="0">SAGA</text>
+    <text x="440" y="0" fill="#5E6068">·</text>
+    <text x="460" y="0">OUTBOX</text>
+  </g>
+
+  <!-- Bottom hairline -->
+  <line x1="72" y1="582" x2="1128" y2="582" stroke="#25252C" stroke-width="1"/>
+
+  <!-- Footer mono -->
+  <g transform="translate(72, 605)" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="13" letter-spacing="2" fill="#5E6068">
+    <text x="0" y="0">ALEJANDROPOZO.DEV</text>
+    <text x="1056" y="0" text-anchor="end">JAVA · TYPESCRIPT</text>
+  </g>
+</svg>

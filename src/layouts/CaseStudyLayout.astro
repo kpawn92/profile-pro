@@ -13,9 +13,19 @@ const { data } = entry;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// Best available "published" anchor: the case-study year. Modified time
+// reflects content updates only when explicitly provided.
+const publishedTime = new Date(Date.UTC(data.year, 0, 1)).toISOString();
 ---
 
-<BaseLayout title={data.title} description={data.summary}>
+<BaseLayout
+  title={data.title}
+  description={data.summary}
+  type="article"
+  publishedTime={publishedTime}
+  tags={data.tags}
+>
   <article class="container-x pt-28 md:pt-36 pb-24">
     <header class="max-w-3xl">
       <a

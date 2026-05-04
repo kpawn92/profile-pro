@@ -20,7 +20,14 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<BaseLayout title={data.title} description={data.description}>
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  type="article"
+  publishedTime={data.pubDate.toISOString()}
+  modifiedTime={data.updatedDate?.toISOString()}
+  tags={data.tags}
+>
   <article class="container-x pt-28 md:pt-36 pb-24">
     <header class="max-w-prose">
       <a

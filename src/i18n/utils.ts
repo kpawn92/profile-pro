@@ -35,7 +35,8 @@ export const useTranslations = (lang: Lang) => {
 export const localizePath = (path: string, lang: Lang): string => {
   const clean = path.startsWith('/') ? path : `/${path}`;
   if (lang === defaultLang) return clean;
-  return `/${lang}${clean === '/' ? '' : clean}` || `/${lang}/`;
+  if (clean === '/') return `/${lang}/`;
+  return `/${lang}${clean}`;
 };
 
 /**

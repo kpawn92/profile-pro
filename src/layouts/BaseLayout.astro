@@ -4,15 +4,37 @@ import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 import ArchitectureGrid from '@components/visuals/ArchitectureGrid.astro';
 import { site } from '@/lib/site';
-import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import { getLangFromUrl, useTranslations, localizePath, stripLocale } from '@/i18n/utils';
+import { languages } from '@/i18n/ui';
 
 interface Props {
   title?: string;
   description?: string;
   showGrid?: boolean;
+  /** SEO type — `article` enables Article JSON-LD on case studies / articles */
+  type?: 'website' | 'article';
+  /** Optional override for the OG/Twitter image (relative or absolute URL) */
+  image?: string;
+  /** ISO date strings for Article schema */
+  publishedTime?: string;
+  modifiedTime?: string;
+  /** Topic tags for Article schema */
+  tags?: string[];
+  /** Set to true to mark a page as noindex */
+  noIndex?: boolean;
 }
 
-const { title, description, showGrid = true } = Astro.props;
+const {
+  title,
+  description,
+  showGrid = true,
+  type = 'website',
+  image,
+  publishedTime,
+  modifiedTime,
+  tags,
+  noIndex = false,
+} = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -20,6 +42,63 @@ const t = useTranslations(lang);
 const desc = description ?? t('site.description');
 const role = t('site.role');
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${role}`;
+
+// Canonical and hreflang URLs derived from Astro.site (configured in
+// astro.config.mjs) and the current locale-stripped path.
+const siteOrigin = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const canonicalPath = Astro.url.pathname.replace(/\/$/, '') + '/';
+const canonical = `${siteOrigin}${canonicalPath}`;
+const stripped = stripLocale(canonicalPath);
+const alternates = (Object.keys(languages) as Array<keyof typeof languages>).map(
+  (l) => ({
+    lang: l,
+    href: `${siteOrigin}${localizePath(stripped, l)}`,
+  }),
+);
+const xDefault = `${siteOrigin}${localizePath(stripped, 'en')}`;
+
+const ogImage = image ?? `${siteOrigin}/og-image.svg`;
+const ogLocale = lang === 'es' ? 'es_ES' : 'en_US';
+const ogLocaleAlt = lang === 'es' ? 'en_US' : 'es_ES';
+
+// JSON-LD documents
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: `${siteOrigin}${localizePath('/', lang)}`,
+  jobTitle: role,
+  email: `mailto:${site.email}`,
+  description: desc,
+  sameAs: [site.social.github, site.social.linkedin].filter(
+    (u) => u && !u.endsWith('/'),
+  ),
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: siteOrigin || canonical,
+  inLanguage: lang === 'es' ? 'es' : 'en',
+};
+
+const articleSchema =
+  type === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description: desc,
+        author: { '@type': 'Person', name: site.name, url: siteOrigin },
+        inLanguage: lang === 'es' ? 'es' : 'en',
+        mainEntityOfPage: canonical,
+        image: ogImage,
+        ...(publishedTime ? { datePublished: publishedTime } : {}),
+        ...(modifiedTime ? { dateModified: modifiedTime } : {}),
+        ...(tags && tags.length ? { keywords: tags.join(', ') } : {}),
+      }
+    : null;
 ---
 
 <!doctype html>
@@ -28,14 +107,57 @@ const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${role}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
+    <meta name="author" content={site.name} />
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0A0A0B" />
+
+    <!-- Canonical & hreflang -->
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.lang} href={a.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
+    {type === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {type === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
+    {type === 'article' && tags && tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- JSON-LD -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    {articleSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    )}
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
