@@ -102,6 +102,26 @@ export const ui = {
       'Long-form writing on architecture and domain modelling is on the way. In the meantime, the case studies are the best read.',
     'writing.empty.cta': 'Read the case studies →',
 
+    // ─── On the horizon (AI assistant)
+    'horizon.eyebrow': 'On the horizon',
+    'horizon.title':
+      'Natural language as a first-class interface to enterprise systems.',
+    'horizon.body':
+      'An AI assistant module currently in production-readiness on top of the ERP backend. Natural-language requests are classified into intents and routed deterministically to a registry of read-only Tools that wrap existing application services. Authorization stays inside the access context — no parallel permission model. The next phase brings command-side tools with HITL confirmation and conversational state for end-to-end operational sales management.',
+    'horizon.stat1': 'Tools registered',
+    'horizon.stat2': 'Intents classified',
+    'horizon.stat3': 'LLM providers',
+    'horizon.stat4': 'Confirmation flow',
+    'horizon.cap1.title': 'Deterministic tool routing',
+    'horizon.cap1.body':
+      'Intents are resolved by a keyword classifier, not by the LLM. The LLM composes the response, never decides what to call. Failure modes degrade to a deterministic fallback.',
+    'horizon.cap2.title': 'Swappable LLM providers',
+    'horizon.cap2.body':
+      'A single provider port — three implementations: mock for tests, Ollama for local privacy-first inference, OpenAI-compatible for managed deployment. Switch by config; the domain never knows.',
+    'horizon.cap3.title': 'Authorization stays where it lives',
+    'horizon.cap3.body':
+      'Every tool call goes through the existing AuthorizeActionHandler. Tenant, business unit and permissions remain owned by the access context. The assistant never reaches around them.',
+
     // ─── Contact CTA
     'ctaSection.eyebrow': 'Currently',
     'ctaSection.titleA': 'Designing the next generation of business systems takes',
@@ -265,6 +285,26 @@ export const ui = {
     'writing.empty.body':
       'Pronto habrá texto largo sobre arquitectura y modelado de dominio. Por ahora, los casos de estudio son la mejor lectura.',
     'writing.empty.cta': 'Ver los casos de estudio →',
+
+    // ─── On the horizon (AI assistant)
+    'horizon.eyebrow': 'En el horizonte',
+    'horizon.title':
+      'Lenguaje natural como interfaz de primer nivel a los sistemas empresariales.',
+    'horizon.body':
+      'Un módulo de asistente IA actualmente en endurecimiento de producción sobre el backend ERP. Las peticiones en lenguaje natural se clasifican en intents y se enrutan de forma determinista a un registro de Tools de solo lectura que envuelven los servicios de aplicación existentes. La autorización vive dentro del contexto de access — sin modelo de permisos paralelo. La siguiente fase incorpora tools de escritura con confirmación HITL y estado conversacional para gestión operacional de ventas end-to-end.',
+    'horizon.stat1': 'Tools registradas',
+    'horizon.stat2': 'Intents clasificadas',
+    'horizon.stat3': 'Proveedores LLM',
+    'horizon.stat4': 'Flujo de confirmación',
+    'horizon.cap1.title': 'Routing determinista de tools',
+    'horizon.cap1.body':
+      'Las intents se resuelven con un clasificador por keywords, no con el LLM. El LLM compone la respuesta, nunca decide qué llamar. Los modos de fallo degradan a un fallback determinista.',
+    'horizon.cap2.title': 'Proveedores LLM intercambiables',
+    'horizon.cap2.body':
+      'Un único puerto de proveedor — tres implementaciones: mock para tests, Ollama para inferencia local privacy-first, compatible con OpenAI para despliegue gestionado. Se cambia por configuración; el dominio no se entera.',
+    'horizon.cap3.title': 'La autorización vive donde le toca',
+    'horizon.cap3.body':
+      'Cada llamada a una tool pasa por el AuthorizeActionHandler existente. Tenant, business unit y permisos siguen siendo propiedad del contexto de access. El asistente nunca los esquiva.',
 
     // ─── Contact CTA
     'ctaSection.eyebrow': 'Actualmente',

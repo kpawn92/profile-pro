@@ -1,0 +1,482 @@
+---
+// Intent-routing visualisation for the "On the horizon" section.
+//
+// Editorial visual that mirrors the actual architecture of the assistant
+// module being built on top of the ERP backend: a central "intent" node
+// resolves a natural-language request, then routes execution to one of
+// the registered Tools. Names here are real (matching the assistant
+// docs registry).
+//
+// Continuous gold pulse travels from intent to a random tool every
+// ~1.8s, simulating tool routing. Reduced motion: static final state.
+
+interface ToolEntry {
+  ns: 'Sale' | 'Inventory' | 'Catalog';
+  method: string;
+}
+
+const tools: ToolEntry[] = [
+  { ns: 'Sale', method: 'getSaleById' },
+  { ns: 'Sale', method: 'searchSales' },
+  { ns: 'Sale', method: 'getTopSellingProducts' },
+  { ns: 'Sale', method: 'createDraft' },
+  { ns: 'Sale', method: 'removeDraft' },
+  { ns: 'Inventory', method: 'getStockAvailability' },
+  { ns: 'Catalog', method: 'getProductDefinition' },
+  { ns: 'Catalog', method: 'searchProducts' },
+];
+
+const W = 800;
+const H = 560;
+const INTENT_X = 140;
+const INTENT_Y = H / 2;
+const TOOL_DOT_X = 470;
+const TOOL_LABEL_X = TOOL_DOT_X + 20;
+const TOP_PAD = 60;
+const BOTTOM_PAD = 60;
+const STEP = (H - TOP_PAD - BOTTOM_PAD) / (tools.length - 1);
+
+const points = tools.map((t, i) => ({
+  ...t,
+  x: TOOL_DOT_X,
+  y: TOP_PAD + i * STEP,
+  index: i,
+}));
+
+// Curved Bézier path from intent node to each tool dot.
+const pathFor = (p: (typeof points)[number]) => {
+  const midX = (INTENT_X + p.x) / 2 + 50;
+  return `M ${INTENT_X},${INTENT_Y} C ${midX},${INTENT_Y} ${midX},${p.y} ${p.x},${p.y}`;
+};
+---
+
+<figure
+  class="relative w-full max-w-[720px] mx-auto"
+  data-intent-router
+  aria-label="AI assistant intent-routing diagram"
+>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    class="w-full h-auto"
+    role="img"
+  >
+    <defs>
+      <radialGradient id="intent-halo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#C9A86A" stop-opacity="0.45" />
+        <stop offset="60%" stop-color="#C9A86A" stop-opacity="0.08" />
+        <stop offset="100%" stop-color="#C9A86A" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#C9A86A" stop-opacity="0.7" />
+        <stop offset="100%" stop-color="#C9A86A" stop-opacity="0" />
+      </radialGradient>
+      <filter id="ir-blur" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" />
+      </filter>
+    </defs>
+
+    <!-- Faint base lines (drawn on reveal) -->
+    {
+      points.map((p) => (
+        <path
+          d={pathFor(p)}
+          stroke="#25252C"
+          stroke-width="1"
+          fill="none"
+          data-static-path
+          data-tool-idx={p.index}
+        />
+      ))
+    }
+
+    <!-- Active "comet" path overlay (repositioned each pulse) -->
+    <path
+      d={pathFor(points[0])}
+      stroke="#C9A86A"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      fill="none"
+      data-active-path
+      style="opacity:0;"
+    />
+
+    <!-- Intent group (left) -->
+    <g data-intent-group>
+      <!-- Outer halo (continuous pulse) -->
+      <circle
+        cx={INTENT_X}
+        cy={INTENT_Y}
+        r="58"
+        fill="url(#intent-halo)"
+        data-intent-halo
+        style="opacity:0; transform-box: fill-box; transform-origin: center;"
+      />
+      <!-- Outer ring -->
+      <circle
+        cx={INTENT_X}
+        cy={INTENT_Y}
+        r="34"
+        fill="none"
+        stroke="#35353E"
+        stroke-width="1"
+        data-intent-ring-outer
+        style="opacity:0;"
+      />
+      <!-- Inner ring -->
+      <circle
+        cx={INTENT_X}
+        cy={INTENT_Y}
+        r="18"
+        fill="none"
+        stroke="#C9A86A"
+        stroke-opacity="0.55"
+        stroke-width="1"
+        data-intent-ring
+        style="opacity:0;"
+      />
+      <!-- Core -->
+      <circle
+        cx={INTENT_X}
+        cy={INTENT_Y}
+        r="3.5"
+        fill="#C9A86A"
+        data-intent-core
+        style="opacity:0;"
+      />
+
+      <!-- Intent label -->
+      <text
+        x={INTENT_X}
+        y={INTENT_Y + 80}
+        text-anchor="middle"
+        class="font-mono"
+        style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;fill:#9295A0;opacity:0;"
+        data-intent-label
+      >
+        intent
+      </text>
+      <text
+        x={INTENT_X}
+        y={INTENT_Y + 96}
+        text-anchor="middle"
+        class="font-mono"
+        style="font-size:9px;letter-spacing:0.16em;fill:#5E6068;opacity:0;"
+        data-intent-sublabel
+      >
+        classifier · router
+      </text>
+    </g>
+
+    <!-- Vertical guide for tools (very faint) -->
+    <line
+      x1={TOOL_DOT_X}
+      y1={TOP_PAD - 10}
+      x2={TOOL_DOT_X}
+      y2={H - BOTTOM_PAD + 10}
+      stroke="#1A1A1F"
+      stroke-width="1"
+      data-tools-guide
+      style="opacity:0;"
+    />
+
+    <!-- Tools (right) -->
+    {
+      points.map((p) => (
+        <g data-tool-row data-tool-idx={p.index}>
+          {/* glow under dot, fades in/out when tool activates */}
+          <circle
+            cx={p.x}
+            cy={p.y}
+            r="14"
+            fill="url(#dot-glow)"
+            data-tool-glow
+            data-tool-idx={p.index}
+            style="opacity:0;"
+          />
+          {/* base dot */}
+          <circle
+            cx={p.x}
+            cy={p.y}
+            r="3"
+            fill="#5E6068"
+            data-tool-dot
+            data-tool-idx={p.index}
+            style="opacity:0;"
+          />
+          {/* labels — namespace dim, method bright */}
+          <text
+            x={TOOL_LABEL_X}
+            y={p.y + 4}
+            class="font-mono"
+            style="font-size:13px;letter-spacing:0.02em;opacity:0;"
+            data-tool-label
+            data-tool-idx={p.index}
+          >
+            <tspan fill="#5E6068">{p.ns}</tspan>
+            <tspan fill="#9295A0">.</tspan>
+            <tspan fill="#ECEDEE" data-tool-method>{p.method}</tspan>
+          </text>
+        </g>
+      ))
+    }
+
+    <!-- Bottom-right meta text -->
+    <text
+      x={W - 16}
+      y={H - 16}
+      text-anchor="end"
+      class="font-mono"
+      style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;fill:#5E6068;opacity:0;"
+      data-router-meta
+    >
+      9 tools · 12 intents · 3 LLM providers
+    </text>
+  </svg>
+</figure>
+
+<style>
+  /* Active label gets a brief gold sweep */
+  [data-tool-label].active [data-tool-method] {
+    fill: #c9a86a;
+  }
+  [data-tool-label] [data-tool-method] {
+    transition: fill 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-intent-router] [style*='opacity:0'] {
+      opacity: 1 !important;
+    }
+  }
+</style>
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { prefersReducedMotion } from '@/lib/motion';
+
+  const root = document.querySelector<HTMLElement>('[data-intent-router]');
+  if (root) {
+    const reduce = prefersReducedMotion();
+
+    const staticPaths = Array.from(
+      root.querySelectorAll<SVGPathElement>('[data-static-path]'),
+    );
+    const activePath = root.querySelector<SVGPathElement>('[data-active-path]');
+    const dots = Array.from(
+      root.querySelectorAll<SVGCircleElement>('[data-tool-dot]'),
+    );
+    const glows = Array.from(
+      root.querySelectorAll<SVGCircleElement>('[data-tool-glow]'),
+    );
+    const labels = Array.from(
+      root.querySelectorAll<SVGTextElement>('[data-tool-label]'),
+    );
+
+    const settle = () => {
+      // Final visible state without animation
+      staticPaths.forEach((p) => {
+        p.style.strokeDashoffset = '0';
+        p.style.opacity = '1';
+      });
+      [
+        '[data-intent-halo]',
+        '[data-intent-ring-outer]',
+        '[data-intent-ring]',
+        '[data-intent-core]',
+        '[data-intent-label]',
+        '[data-intent-sublabel]',
+        '[data-tool-dot]',
+        '[data-tool-label]',
+        '[data-tools-guide]',
+        '[data-router-meta]',
+      ].forEach((sel) =>
+        root.querySelectorAll<HTMLElement>(sel).forEach((el) => {
+          el.style.opacity = '1';
+        }),
+      );
+    };
+
+    if (reduce) {
+      settle();
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            observer.unobserve(entry.target);
+            playReveal();
+            startContinuousPulse();
+          });
+        },
+        { threshold: 0.25 },
+      );
+      observer.observe(root);
+    }
+
+    function playReveal() {
+      // Prepare static paths for line-draw
+      staticPaths.forEach((p) => {
+        const len = p.getTotalLength();
+        p.style.strokeDasharray = `${len}`;
+        p.style.strokeDashoffset = `${len}`;
+      });
+
+      // Intent appears first
+      anime({
+        targets: '[data-intent-core]',
+        opacity: [0, 1],
+        easing: 'easeOutCubic',
+        duration: 400,
+      });
+      anime({
+        targets: '[data-intent-ring]',
+        opacity: [0, 1],
+        easing: 'easeOutCubic',
+        duration: 600,
+        delay: 150,
+      });
+      anime({
+        targets: '[data-intent-ring-outer]',
+        opacity: [0, 1],
+        easing: 'easeOutCubic',
+        duration: 600,
+        delay: 300,
+      });
+      anime({
+        targets: '[data-intent-halo]',
+        opacity: [0, 0.55],
+        easing: 'easeOutCubic',
+        duration: 800,
+        delay: 200,
+      });
+      anime({
+        targets: '[data-intent-label], [data-intent-sublabel]',
+        opacity: [0, 1],
+        translateY: [4, 0],
+        easing: 'easeOutCubic',
+        duration: 500,
+        delay: anime.stagger(80, { start: 500 }),
+      });
+
+      // Tools guide line + meta
+      anime({
+        targets: '[data-tools-guide]',
+        opacity: [0, 1],
+        easing: 'easeOutCubic',
+        duration: 600,
+        delay: 600,
+      });
+
+      // Lines draw (staggered) and dots/labels fade in
+      anime({
+        targets: '[data-static-path]',
+        strokeDashoffset: 0,
+        easing: 'easeInOutCubic',
+        duration: 1100,
+        delay: anime.stagger(60, { start: 700 }),
+      });
+      anime({
+        targets: '[data-tool-dot]',
+        opacity: [0, 1],
+        easing: 'easeOutCubic',
+        duration: 500,
+        delay: anime.stagger(60, { start: 1200 }),
+      });
+      anime({
+        targets: '[data-tool-label]',
+        opacity: [0, 1],
+        translateX: [-6, 0],
+        easing: 'easeOutCubic',
+        duration: 500,
+        delay: anime.stagger(60, { start: 1300 }),
+      });
+      anime({
+        targets: '[data-router-meta]',
+        opacity: [0, 1],
+        easing: 'easeOutCubic',
+        duration: 500,
+        delay: 2200,
+      });
+
+      // Continuous halo breathing
+      anime({
+        targets: '[data-intent-halo]',
+        scale: [
+          { value: 1, duration: 0 },
+          { value: 1.18, duration: 1400 },
+          { value: 1, duration: 1400 },
+        ],
+        opacity: [
+          { value: 0.55, duration: 0 },
+          { value: 0.85, duration: 1400 },
+          { value: 0.5, duration: 1400 },
+        ],
+        easing: 'easeInOutSine',
+        loop: true,
+        delay: 1400,
+      });
+    }
+
+    function startContinuousPulse() {
+      if (!activePath) return;
+      let last = -1;
+      const fire = () => {
+        let idx = Math.floor(Math.random() * staticPaths.length);
+        if (idx === last) idx = (idx + 1) % staticPaths.length;
+        last = idx;
+
+        const target = staticPaths[idx];
+        const d = target.getAttribute('d') || '';
+        activePath.setAttribute('d', d);
+        const len = activePath.getTotalLength();
+        // "comet" ~18% of the line, traveling along it
+        const cometLen = len * 0.18;
+        activePath.style.strokeDasharray = `${cometLen}, ${len + cometLen}`;
+        activePath.style.strokeDashoffset = `${len}`;
+        activePath.style.opacity = '1';
+
+        anime({
+          targets: activePath,
+          strokeDashoffset: -cometLen,
+          easing: 'easeInOutCubic',
+          duration: 1100,
+          complete: () => {
+            // fade out
+            anime({
+              targets: activePath,
+              opacity: [1, 0],
+              easing: 'easeOutCubic',
+              duration: 220,
+            });
+          },
+        });
+
+        // Glow + dot pulse at the destination, slightly delayed (when comet "arrives")
+        const glow = glows[idx];
+        const dot = dots[idx];
+        const label = labels[idx];
+        anime({
+          targets: glow,
+          opacity: [0, 0.8, 0],
+          easing: 'easeOutCubic',
+          duration: 700,
+          delay: 700,
+        });
+        anime({
+          targets: dot,
+          r: [3, 5, 3],
+          easing: 'easeInOutCubic',
+          duration: 700,
+          delay: 700,
+        });
+        if (label) {
+          setTimeout(() => label.classList.add('active'), 700);
+          setTimeout(() => label.classList.remove('active'), 1500);
+        }
+
+        const nextDelay = 1700 + Math.random() * 900;
+        setTimeout(fire, nextDelay);
+      };
+      setTimeout(fire, 2400);
+    }
+  }
+</script>

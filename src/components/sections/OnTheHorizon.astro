@@ -1,0 +1,81 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import IntentRouter from '@components/visuals/IntentRouter.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stats = [
+  { value: '9', label: t('horizon.stat1') },
+  { value: '12', label: t('horizon.stat2') },
+  { value: '3', label: t('horizon.stat3') },
+  { value: 'HITL', label: t('horizon.stat4') },
+];
+
+const capabilities = [
+  { title: t('horizon.cap1.title'), body: t('horizon.cap1.body') },
+  { title: t('horizon.cap2.title'), body: t('horizon.cap2.body') },
+  { title: t('horizon.cap3.title'), body: t('horizon.cap3.body') },
+];
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('horizon.eyebrow')} title={t('horizon.title')} />
+
+  <div
+    class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init"
+  >
+    <p>{t('horizon.body')}</p>
+  </div>
+
+  <div
+    class="mt-16 grid grid-cols-1 lg:grid-cols-[1fr_1.05fr] gap-14 lg:gap-20 items-center"
+  >
+    <div class="reveal-init">
+      <IntentRouter />
+    </div>
+
+    <ol class="space-y-8" data-horizon-caps>
+      {
+        capabilities.map((c, i) => (
+          <li class="grid grid-cols-[auto_1fr] gap-6 pb-8 border-b border-border last:border-b-0 reveal-init">
+            <span class="font-mono text-eyebrow uppercase text-accent pt-1">
+              0{i + 1}
+            </span>
+            <div>
+              <h3 class="font-display text-xl md:text-2xl text-balance leading-tight">
+                {c.title}
+              </h3>
+              <p class="mt-3 text-text-muted leading-relaxed text-pretty">
+                {c.body}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <!-- Stat strip -->
+  <dl
+    class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-border border border-border reveal-init"
+  >
+    {
+      stats.map((s) => (
+        <div class="bg-bg p-6 md:p-7">
+          <dt class="eyebrow">{s.label}</dt>
+          <dd class="mt-2 font-display text-3xl text-accent text-balance">
+            {s.value}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+  revealOnScroll('[data-horizon-caps] li', { stagger: 110, translateY: 12 });
+</script>
