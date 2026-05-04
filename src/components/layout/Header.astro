@@ -21,10 +21,14 @@ const isActive = (href: string) =>
 
 const otherLang = lang === 'en' ? 'es' : 'en';
 const switchHref = localizePath(stripped, otherLang);
+
+const menuOpenLabel = lang === 'es' ? 'Menú' : 'Menu';
+const menuCloseLabel = lang === 'es' ? 'Cerrar' : 'Close';
 ---
 
 <header
-  class="fixed top-0 inset-x-0 z-40 border-b border-border/60 backdrop-blur-md bg-bg/70"
+  class="fixed top-0 inset-x-0 z-40 border-b border-border/60 backdrop-blur-md bg-bg/85"
+  data-header
 >
   <div class="container-x flex items-center justify-between h-16 gap-3">
     <a
@@ -35,10 +39,9 @@ const switchHref = localizePath(stripped, otherLang);
       <span class="text-accent">/</span> {site.shortName}
     </a>
 
-    <nav class="flex items-center gap-3 sm:gap-5 md:gap-9">
-      <ul
-        class="flex items-center gap-3 sm:gap-5 md:gap-9 text-[13px] sm:text-sm"
-      >
+    <!-- Desktop nav (sm+) -->
+    <nav class="hidden sm:flex items-center gap-5 md:gap-9">
+      <ul class="flex items-center gap-5 md:gap-9 text-sm">
         {
           navigation.map(({ key, href }) => (
             <li>
@@ -59,7 +62,7 @@ const switchHref = localizePath(stripped, otherLang);
       <a
         href={switchHref}
         aria-label={t('lang.toggle.aria')}
-        class="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-text-muted hover:text-accent transition-colors sm:border-l border-border pl-3 sm:pl-5 md:pl-6 shrink-0"
+        class="font-mono text-[11px] uppercase tracking-wider text-text-muted hover:text-accent transition-colors border-l border-border pl-5 md:pl-6 shrink-0"
         title={languages[otherLang]}
       >
         <span class={lang === 'en' ? 'text-accent' : ''}>EN</span>
@@ -67,5 +70,138 @@ const switchHref = localizePath(stripped, otherLang);
         <span class={lang === 'es' ? 'text-accent' : ''}>ES</span>
       </a>
     </nav>
+
+    <!-- Mobile toggle (under sm) -->
+    <button
+      type="button"
+      class="sm:hidden inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted hover:text-accent transition-colors"
+      aria-label={t('lang.toggle.aria')}
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      data-menu-toggle
+      data-label-open={menuOpenLabel}
+      data-label-close={menuCloseLabel}
+    >
+      <span data-menu-bars aria-hidden="true" class="relative w-4 h-3 inline-block">
+        <span class="absolute left-0 right-0 top-0 h-px bg-current transition-transform duration-300"></span>
+        <span class="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-current transition-opacity duration-200"></span>
+        <span class="absolute left-0 right-0 bottom-0 h-px bg-current transition-transform duration-300"></span>
+      </span>
+      <span data-menu-label>{menuOpenLabel}</span>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div
+    id="mobile-nav"
+    class="sm:hidden overflow-hidden max-h-0 border-t border-border/0 bg-bg/95 backdrop-blur-md transition-[max-height,border-color] duration-300 ease-out"
+    data-mobile-nav
+  >
+    <nav class="container-x py-3" aria-label="Mobile">
+      <ul class="flex flex-col">
+        {
+          navigation.map(({ key, href }) => (
+            <li class="border-b border-border/60 last:border-b-0">
+              <a
+                href={localizePath(href, lang)}
+                class:list={[
+                  'flex items-center justify-between py-4 text-base transition-colors',
+                  isActive(href)
+                    ? 'text-text'
+                    : 'text-text-muted hover:text-text',
+                ]}
+                data-mobile-link
+              >
+                <span>{t(key as any)}</span>
+                <span class="font-mono text-[10px] tracking-wider text-text-dim">
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-2 pt-5 pb-4 border-t border-border flex items-center justify-between">
+        <span class="eyebrow">{t('lang.label')}</span>
+        <a
+          href={switchHref}
+          aria-label={t('lang.toggle.aria')}
+          class="font-mono text-xs uppercase tracking-wider hover:text-accent transition-colors"
+          data-mobile-link
+        >
+          <span class={lang === 'en' ? 'text-accent' : 'text-text-muted'}>EN</span>
+          <span class="mx-1 text-text-dim">/</span>
+          <span class={lang === 'es' ? 'text-accent' : 'text-text-muted'}>ES</span>
+        </a>
+      </div>
+    </nav>
   </div>
 </header>
+
+<style>
+  [data-mobile-nav].open {
+    max-height: 60vh;
+    border-top-color: var(--color-border);
+  }
+
+  /* Hamburger ↔ X transform */
+  [data-menu-toggle][aria-expanded='true'] [data-menu-bars] > span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+  }
+  [data-menu-toggle][aria-expanded='true'] [data-menu-bars] > span:nth-child(2) {
+    opacity: 0;
+  }
+  [data-menu-toggle][aria-expanded='true'] [data-menu-bars] > span:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-mobile-nav],
+    [data-menu-bars] > span {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const drawer = document.querySelector<HTMLElement>('[data-mobile-nav]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-mobile-link]');
+
+  if (toggle && drawer && label) {
+    const openLabel = toggle.dataset.labelOpen ?? 'Menu';
+    const closeLabel = toggle.dataset.labelClose ?? 'Close';
+
+    const setState = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      drawer.classList.toggle('open', open);
+      label.textContent = open ? closeLabel : openLabel;
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      setState(open);
+    });
+
+    // Close when a drawer link is clicked
+    links.forEach((a) =>
+      a.addEventListener('click', () => setState(false)),
+    );
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setState(false);
+      }
+    });
+
+    // Close if viewport grows past sm (avoids stuck-open state on rotation)
+    const mq = window.matchMedia('(min-width: 640px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches) setState(false);
+    });
+  }
+</script>
