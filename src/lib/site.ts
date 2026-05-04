@@ -4,7 +4,7 @@ export const site = {
   email: 'hap921020@gmail.com',
   social: {
     github: 'https://github.com/kpawn92',
-    linkedin: 'https://linkedin.com/in/',
+    linkedin: 'https://linkedin.com/in/0xkpawn',
   },
 } as const;
 

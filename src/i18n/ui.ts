@@ -13,7 +13,7 @@ export const ui = {
     'site.description':
       'I design domain-driven backends — Hexagonal, DDD, CQRS — for ERP, accounting, payroll and operational workflows. Same kernel discipline across Java/Spring and TypeScript/NestJS.',
     'site.availability': 'Selectively taking on engagements for 2026',
-    'site.location': 'Remote · EU timezone',
+    'site.location': 'Havana, Cuba',
 
     'hero.eyebrow': 'Available · Selectively taking on engagements for 2026',
     'hero.cta.primary': 'View case studies',
@@ -177,7 +177,7 @@ export const ui = {
     'site.description':
       'Diseño backends orientados al dominio — Hexagonal, DDD, CQRS — para ERP, contabilidad, nómina y flujos operativos. La misma disciplina de kernel propio en Java/Spring y TypeScript/NestJS.',
     'site.availability': 'Aceptando proyectos seleccionados para 2026',
-    'site.location': 'Remoto · zona horaria UE',
+    'site.location': 'La Habana, Cuba',
 
     'hero.eyebrow': 'Disponible · Aceptando proyectos seleccionados para 2026',
     'hero.cta.primary': 'Ver casos de estudio',
