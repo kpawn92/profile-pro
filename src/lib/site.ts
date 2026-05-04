@@ -6,9 +6,6 @@ export const site = {
     github: 'https://github.com/',
     linkedin: 'https://linkedin.com/in/',
   },
-  // GitHub username used for the open-source stats section.
-  // Override in .env (GITHUB_USERNAME) — this is just the fallback for display.
-  githubHandle: 'alejandropozo',
 } as const;
 
 export const specialization = [

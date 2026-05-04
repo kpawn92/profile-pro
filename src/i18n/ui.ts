@@ -98,22 +98,6 @@ export const ui = {
     'writing.minRead': 'min read',
     'writing.back': 'All writing',
 
-    // ─── Open source
-    'os.eyebrow': 'Open source',
-    'os.title': 'A practice that informs the work.',
-    'os.activity': 'Activity',
-    'os.activitySub': 'Last 12 months',
-    'os.languages': 'Languages',
-    'os.languagesSub': 'By bytes across active repos',
-    'os.repos': 'Repositories',
-    'os.reposSub': 'Selected · sorted by stars',
-    'os.weeks': '52 weeks',
-    'os.contributions': 'contributions',
-    'os.publicRepos': 'Public repos',
-    'os.starsEarned': 'Stars earned',
-    'os.followers': 'Followers',
-    'os.since': 'On GitHub since',
-
     // ─── Contact CTA
     'ctaSection.eyebrow': 'Currently',
     'ctaSection.titleA': 'Designing the next generation of business systems takes',
@@ -273,22 +257,6 @@ export const ui = {
       'Notas extensas sobre arquitectura, modelado de dominio y la práctica de construir software para organizaciones que dependen de él.',
     'writing.minRead': 'min de lectura',
     'writing.back': 'Todos los artículos',
-
-    // ─── Open source
-    'os.eyebrow': 'Open source',
-    'os.title': 'Una práctica que alimenta el trabajo.',
-    'os.activity': 'Actividad',
-    'os.activitySub': 'Últimos 12 meses',
-    'os.languages': 'Lenguajes',
-    'os.languagesSub': 'Por bytes en repos activos',
-    'os.repos': 'Repositorios',
-    'os.reposSub': 'Selección · ordenados por estrellas',
-    'os.weeks': '52 semanas',
-    'os.contributions': 'contribuciones',
-    'os.publicRepos': 'Repos públicos',
-    'os.starsEarned': 'Estrellas conseguidas',
-    'os.followers': 'Seguidores',
-    'os.since': 'En GitHub desde',
 
     // ─── Contact CTA
     'ctaSection.eyebrow': 'Actualmente',
