@@ -1,0 +1,39 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="The page you were looking for does not exist." noIndex>
+  <section class="container-x pt-40 md:pt-48 pb-section text-center md:text-left">
+    <p class="eyebrow flex items-center gap-3 justify-center md:justify-start">
+      <span class="accent-rule" aria-hidden="true"></span>
+      404
+    </p>
+
+    <h1 class="font-display text-display-xl mt-8 max-w-[18ch] mx-auto md:mx-0 text-balance">
+      Page <em class="italic font-light">not found</em>.
+    </h1>
+
+    <p class="mt-8 max-w-2xl mx-auto md:mx-0 text-lg md:text-xl text-text-muted leading-relaxed text-pretty">
+      The page you were looking for does not exist or has moved. Try one of the links below.
+    </p>
+    <p class="mt-2 max-w-2xl mx-auto md:mx-0 text-text-dim leading-relaxed text-pretty">
+      La página que buscas no existe o se ha movido. Prueba con uno de los enlaces de abajo.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-6 justify-center md:justify-start">
+      <a
+        href="/"
+        class="inline-flex items-center gap-3 px-6 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors"
+      >
+        Home · Inicio
+        <span aria-hidden="true">→</span>
+      </a>
+      <a
+        href="/case-studies/"
+        class="inline-flex items-center gap-3 px-6 py-3 border border-border hover:border-accent hover:text-accent transition-colors"
+      >
+        Case studies · Casos
+      </a>
+    </div>
+  </section>
+</BaseLayout>

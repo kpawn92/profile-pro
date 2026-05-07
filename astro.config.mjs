@@ -2,9 +2,9 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
-// Production canonical URL. Change this when the real domain is registered;
-// every canonical, sitemap entry, OG and Twitter URL derives from it.
-const SITE = 'https://alejandropozo.dev';
+// Production canonical URL. Every canonical, sitemap entry, OG and Twitter
+// URL derives from it. Update when the production domain changes.
+const SITE = 'https://aless-dev.beyondhabitsllc.com';
 
 export default defineConfig({
   site: SITE,

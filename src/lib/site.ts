@@ -20,7 +20,6 @@ export const specialization = [
 
 export const navigation = [
   { key: 'nav.work', href: '/case-studies/' },
-  { key: 'nav.writing', href: '/writing/' },
   { key: 'nav.about', href: '/about/' },
   { key: 'nav.contact', href: '/contact/' },
 ] as const;

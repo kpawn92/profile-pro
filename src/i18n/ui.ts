@@ -29,7 +29,6 @@ export const ui = {
 
     // ─── Navigation
     'nav.work': 'Work',
-    'nav.writing': 'Writing',
     'nav.about': 'About',
     'nav.contact': 'Contact',
     'nav.home': 'Home',
@@ -86,22 +85,6 @@ export const ui = {
       'ADRs for trade-offs, ubiquitous language for shared meaning, runbooks for the things that page someone at 3am. The system explains itself.',
     'approach.diagram.caption': 'Hexagonal Architecture · Information Flow',
 
-    // ─── Latest writing / writing index
-    'writing.latest.eyebrow': 'Writing',
-    'writing.latest.title': 'Notes on architecture & domain.',
-    'writing.viewAll': 'All articles →',
-    'writing.read': 'Read article →',
-    'writing.indexTitle': 'Writing',
-    'writing.indexEyebrow': 'Notes',
-    'writing.indexLede':
-      'Long-form notes on architecture, domain modelling and the practice of building software for organisations that depend on it.',
-    'writing.minRead': 'min read',
-    'writing.back': 'All writing',
-    'writing.empty.title': 'Notes are in progress.',
-    'writing.empty.body':
-      'Long-form writing on architecture and domain modelling is on the way. In the meantime, the case studies are the best read.',
-    'writing.empty.cta': 'Read the case studies →',
-
     // ─── On the horizon (AI assistant)
     'horizon.eyebrow': 'On the horizon',
     'horizon.title':
@@ -129,7 +112,7 @@ export const ui = {
     'ctaSection.body':
       "If you're rebuilding a critical part of your operation — accounting, ERP, financial workflows — and need a senior pair of hands on the architecture, I'd like to hear about it.",
     'ctaSection.email': 'Write me an email',
-    'ctaSection.form': 'Contact form',
+    'ctaSection.form': 'Working together',
 
     // ─── Contact page
     'contact.title': 'Contact',
@@ -145,17 +128,6 @@ export const ui = {
     'contact.workingItem2': 'Remote-first; on-site for kick-off when it helps.',
     'contact.workingItem3': 'I work independently or embed within your existing team.',
     'contact.workingItem4': 'References available on request.',
-    'contact.form.name': 'Name',
-    'contact.form.email': 'Email',
-    'contact.form.org': 'Organisation',
-    'contact.form.topic': 'Topic',
-    'contact.form.message': 'Message',
-    'contact.form.submit': 'Send via email',
-    'contact.form.topic.erp': 'ERP engagement',
-    'contact.form.topic.accounting': 'Accounting / financial system',
-    'contact.form.topic.architecture': 'Architecture review',
-    'contact.form.topic.advisory': 'Advisory / mentoring',
-    'contact.form.topic.other': 'Other',
 
     // ─── About page
     'about.title': 'About',
@@ -213,7 +185,6 @@ export const ui = {
 
     // ─── Navigation
     'nav.work': 'Trabajo',
-    'nav.writing': 'Artículos',
     'nav.about': 'Sobre mí',
     'nav.contact': 'Contacto',
     'nav.home': 'Inicio',
@@ -270,22 +241,6 @@ export const ui = {
       'ADRs para los trade-offs, lenguaje ubicuo para significado compartido, runbooks para lo que despierta a alguien a las 3am. El sistema se explica solo.',
     'approach.diagram.caption': 'Arquitectura hexagonal · flujo de información',
 
-    // ─── Latest writing / writing index
-    'writing.latest.eyebrow': 'Artículos',
-    'writing.latest.title': 'Notas sobre arquitectura y dominio.',
-    'writing.viewAll': 'Todos los artículos →',
-    'writing.read': 'Leer artículo →',
-    'writing.indexTitle': 'Artículos',
-    'writing.indexEyebrow': 'Notas',
-    'writing.indexLede':
-      'Notas extensas sobre arquitectura, modelado de dominio y la práctica de construir software para organizaciones que dependen de él.',
-    'writing.minRead': 'min de lectura',
-    'writing.back': 'Todos los artículos',
-    'writing.empty.title': 'Notas en preparación.',
-    'writing.empty.body':
-      'Pronto habrá texto largo sobre arquitectura y modelado de dominio. Por ahora, los casos de estudio son la mejor lectura.',
-    'writing.empty.cta': 'Ver los casos de estudio →',
-
     // ─── On the horizon (AI assistant)
     'horizon.eyebrow': 'En el horizonte',
     'horizon.title':
@@ -314,7 +269,7 @@ export const ui = {
     'ctaSection.body':
       'Si estás reconstruyendo una parte crítica de tu operación — contabilidad, ERP, flujos financieros — y necesitas un par de manos senior en la arquitectura, me gustaría escucharlo.',
     'ctaSection.email': 'Escríbeme un email',
-    'ctaSection.form': 'Formulario de contacto',
+    'ctaSection.form': 'Trabajar juntos',
 
     // ─── Contact page
     'contact.title': 'Contacto',
@@ -333,17 +288,6 @@ export const ui = {
     'contact.workingItem3':
       'Trabajo de forma independiente o integrado en tu equipo existente.',
     'contact.workingItem4': 'Referencias disponibles bajo petición.',
-    'contact.form.name': 'Nombre',
-    'contact.form.email': 'Email',
-    'contact.form.org': 'Organización',
-    'contact.form.topic': 'Asunto',
-    'contact.form.message': 'Mensaje',
-    'contact.form.submit': 'Enviar por email',
-    'contact.form.topic.erp': 'Proyecto ERP',
-    'contact.form.topic.accounting': 'Sistema contable / financiero',
-    'contact.form.topic.architecture': 'Revisión de arquitectura',
-    'contact.form.topic.advisory': 'Asesoría / mentoría',
-    'contact.form.topic.other': 'Otro',
 
     // ─── About page
     'about.title': 'Sobre mí',

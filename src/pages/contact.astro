@@ -13,7 +13,7 @@ const t = useTranslations(lang);
   lede={t('contact.lede')}
 >
   <section
-    class="container-x pb-section grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16"
+    class="container-x pb-section grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-16"
   >
     <div class="space-y-10 reveal-init">
       <div>
@@ -33,6 +33,36 @@ const t = useTranslations(lang);
 
       <div>
         <h3 class="eyebrow mb-3 flex items-center gap-3">
+          <span class="accent-rule" aria-hidden="true"></span> {t('footer.elsewhere')}
+        </h3>
+        <ul class="space-y-2 text-text-muted leading-relaxed">
+          <li>
+            <a
+              href={site.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-underline"
+            >
+              GitHub · @kpawn92
+            </a>
+          </li>
+          <li>
+            <a
+              href={site.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-underline"
+            >
+              LinkedIn · 0xkpawn
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="space-y-10 reveal-init">
+      <div>
+        <h3 class="eyebrow mb-3 flex items-center gap-3">
           <span class="accent-rule" aria-hidden="true"></span> {t('contact.availability')}
         </h3>
         <p class="text-text leading-relaxed">{t('site.availability')}</p>
@@ -50,79 +80,6 @@ const t = useTranslations(lang);
         </ul>
       </div>
     </div>
-
-    <form
-      method="post"
-      action={`mailto:${site.email}`}
-      enctype="text/plain"
-      class="border border-border p-7 md:p-9 space-y-6 reveal-init bg-surface/30"
-    >
-      <div>
-        <label for="name" class="block eyebrow mb-2">{t('contact.form.name')}</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
-        />
-      </div>
-
-      <div>
-        <label for="email" class="block eyebrow mb-2">{t('contact.form.email')}</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
-        />
-      </div>
-
-      <div>
-        <label for="org" class="block eyebrow mb-2">{t('contact.form.org')}</label>
-        <input
-          id="org"
-          name="organisation"
-          type="text"
-          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
-        />
-      </div>
-
-      <div>
-        <label for="topic" class="block eyebrow mb-2">{t('contact.form.topic')}</label>
-        <select
-          id="topic"
-          name="topic"
-          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text"
-        >
-          <option value="erp">{t('contact.form.topic.erp')}</option>
-          <option value="accounting">{t('contact.form.topic.accounting')}</option>
-          <option value="architecture">{t('contact.form.topic.architecture')}</option>
-          <option value="advisory">{t('contact.form.topic.advisory')}</option>
-          <option value="other">{t('contact.form.topic.other')}</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="message" class="block eyebrow mb-2">{t('contact.form.message')}</label>
-        <textarea
-          id="message"
-          name="message"
-          rows="6"
-          required
-          class="w-full bg-transparent border-b border-border focus:border-accent outline-none py-2 text-text resize-none"
-        ></textarea>
-      </div>
-
-      <button
-        type="submit"
-        class="inline-flex items-center gap-3 px-6 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors"
-      >
-        {t('contact.form.submit')}
-        <span aria-hidden="true">→</span>
-      </button>
-    </form>
   </section>
 
   <script>
