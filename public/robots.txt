@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alejandropozo.dev/sitemap-index.xml
+Sitemap: https://aless-dev.beyondhabitsllc.com/sitemap-index.xml

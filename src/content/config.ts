@@ -28,21 +28,6 @@ const caseStudies = defineCollection({
   }),
 });
 
-const articles = defineCollection({
-  type: 'content',
-  schema: z.object({
-    lang: langSchema,
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    readingTime: z.number().default(5),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false),
-  }),
-});
-
 export const collections = {
   'case-studies': caseStudies,
-  articles,
 };
