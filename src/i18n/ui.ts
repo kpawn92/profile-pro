@@ -11,7 +11,7 @@ export const ui = {
     // ─── Site / hero
     'site.role': 'Senior Full-Stack Developer for Complex Business Systems',
     'site.description':
-      'I design domain-driven backends — Hexagonal, DDD, CQRS — for ERP, accounting, payroll and operational workflows. Same kernel discipline across Java/Spring and TypeScript/NestJS.',
+      'I design domain-driven backends — Hexagonal, DDD, CQRS — for ERP, accounting, payroll and operational workflows. Java/Spring on the backend, React/TypeScript on the frontend, with the same kernel discipline on both sides.',
     'site.availability': 'Selectively taking on engagements for 2026',
     'site.location': 'Havana, Cuba',
 
@@ -22,7 +22,7 @@ export const ui = {
     'hero.meta.focus.label': 'Focus',
     'hero.meta.focus.value': 'ERP · Accounting · Operations',
     'hero.meta.stack.label': 'Stack',
-    'hero.meta.stack.value': 'TypeScript · Node · Postgres',
+    'hero.meta.stack.value': 'React · TypeScript · Spring · Postgres',
     'hero.meta.approach.label': 'Approach',
     'hero.meta.approach.value': 'DDD · Hex · TDD',
     'hero.meta.location.label': 'Based in',
@@ -167,7 +167,7 @@ export const ui = {
     // ─── Site / hero
     'site.role': 'Senior Full-Stack Developer para sistemas empresariales complejos',
     'site.description':
-      'Diseño backends orientados al dominio — Hexagonal, DDD, CQRS — para ERP, contabilidad, nómina y flujos operativos. La misma disciplina de kernel propio en Java/Spring y TypeScript/NestJS.',
+      'Diseño backends orientados al dominio — Hexagonal, DDD, CQRS — para ERP, contabilidad, nómina y flujos operativos. Java/Spring en el backend, React/TypeScript en el frontend, con la misma disciplina de kernel en ambos lados.',
     'site.availability': 'Aceptando proyectos seleccionados para 2026',
     'site.location': 'La Habana, Cuba',
 
@@ -178,7 +178,7 @@ export const ui = {
     'hero.meta.focus.label': 'Enfoque',
     'hero.meta.focus.value': 'ERP · Contabilidad · Operaciones',
     'hero.meta.stack.label': 'Stack',
-    'hero.meta.stack.value': 'TypeScript · Node · Postgres',
+    'hero.meta.stack.value': 'React · TypeScript · Spring · Postgres',
     'hero.meta.approach.label': 'Aproximación',
     'hero.meta.approach.value': 'DDD · Hex · TDD',
     'hero.meta.location.label': 'Ubicación',
