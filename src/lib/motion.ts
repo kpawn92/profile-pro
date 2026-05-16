@@ -271,6 +271,81 @@ export const startArchitectureGrid = (selector: string): void => {
 };
 
 /**
+ * Bind a native range input to a callback receiving normalised 0..1 progress.
+ * Fires once immediately so the visual starts in sync with the control.
+ */
+export const bindRange = (
+  input: HTMLInputElement,
+  onChange: (t: number) => void,
+): void => {
+  const emit = () => {
+    const min = Number(input.min || '0');
+    const max = Number(input.max || '100');
+    const span = max - min || 1;
+    onChange(Math.min(1, Math.max(0, (Number(input.value) - min) / span)));
+  };
+  input.addEventListener('input', emit);
+  emit();
+};
+
+/**
+ * Drives a 0..1 progress value from an element's scroll position.
+ * Progress runs 0 → 1 while the element travels from 80% to 20% of the
+ * viewport height. Reduced motion: settles immediately at 1.
+ */
+export const scrollScrub = (
+  el: Element,
+  onProgress: (t: number) => void,
+): void => {
+  if (prefersReducedMotion()) {
+    onProgress(1);
+    return;
+  }
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const rect = (el as HTMLElement).getBoundingClientRect();
+    const vh = window.innerHeight || 1;
+    const t = (vh * 0.8 - rect.top) / (vh * 0.6);
+    onProgress(Math.min(1, Math.max(0, t)));
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+};
+
+/**
+ * Magnetic hover — element drifts slightly toward the pointer, easing back
+ * on leave. Skipped entirely under reduced motion or on coarse pointers.
+ */
+export const magneticHover = (selector: string, strength = 0.22): void => {
+  if (prefersReducedMotion()) return;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) * strength;
+      const y = (e.clientY - r.top - r.height / 2) * strength;
+      el.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    el.addEventListener('pointerleave', () => {
+      anime({
+        targets: el,
+        translateX: 0,
+        translateY: 0,
+        easing: 'cubicBezier(.22,1,.36,1)',
+        duration: 500,
+      });
+    });
+  });
+};
+
+/**
  * Count-up for impact metrics.
  */
 export const countUp = (selector: string): void => {

@@ -1,0 +1,166 @@
+---
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const titleWords = t('lev.hero.title').split(' ');
+// Italicise the two pivotal words per language.
+const italicIdx = lang === 'es' ? [3, 4] : [2, 4];
+
+// Plausible-but-wrong code: a percentage discount that subtracts the raw
+// percentage instead of a proportion of the total.
+const codeLines = [
+  '<span class="text-text-dim">// discount engine</span>',
+  '<span class="text-accent">function</span> applyDiscount(total, pct) {',
+  '&nbsp;&nbsp;<span class="text-accent">return</span> <span data-bug>total - pct</span>;',
+  '}',
+];
+---
+
+<section class="container-x pt-36 md:pt-44 pb-section-sm relative">
+  <p
+    class="eyebrow flex items-center gap-3"
+    data-hero-reveal="eyebrow"
+    style="opacity:0;"
+  >
+    <span class="accent-rule" aria-hidden="true"></span>
+    {t('lev.hero.eyebrow')}
+  </p>
+
+  <div class="mt-8 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+    <div>
+      <h1
+        class="font-display text-display-xl max-w-[16ch] text-balance"
+        data-hero-reveal="title"
+      >
+        {
+          titleWords.map((w, i) => (
+            <span class="word inline-block mr-[0.2em]" style="opacity:0;">
+              {italicIdx.includes(i) ? <em class="italic font-light">{w}</em> : w}
+            </span>
+          ))
+        }
+      </h1>
+
+      <p
+        class="mt-8 max-w-xl text-lg md:text-xl text-text-muted leading-relaxed text-pretty"
+        data-hero-reveal="sub"
+        style="opacity:0;"
+      >
+        {t('lev.hero.sub')}
+      </p>
+
+      <div data-hero-reveal="cta" style="opacity:0;" class="mt-12">
+        <a
+          href="#shift"
+          class="group inline-flex items-center gap-3 font-mono text-eyebrow uppercase text-text-muted hover:text-accent transition-colors"
+        >
+          {t('lev.hero.scroll')}
+          <span
+            class="inline-block transition-transform group-hover:translate-y-0.5"
+            aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- AI-generated code card -->
+    <figure class="surface-card p-6 md:p-7" data-hero-code aria-label="AI-generated code sample">
+      <figcaption class="flex items-center justify-between mb-5">
+        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-text-dim">
+          {t('lev.hero.codeLabel')}
+        </span>
+        <span class="flex gap-1.5" aria-hidden="true">
+          <span class="w-1.5 h-1.5 rounded-full bg-border-strong"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-border-strong"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+        </span>
+      </figcaption>
+
+      <pre class="font-mono text-sm md:text-[15px] leading-7 overflow-x-auto"><code>{
+        codeLines.map((l) => (
+          <span class="block" data-code-line style="opacity:0;" set:html={l} />
+        ))
+      }</code></pre>
+
+      <div
+        class="mt-5 pt-4 border-t border-border flex items-center gap-2.5"
+        data-verdict
+        style="opacity:0;"
+      >
+        <span class="font-mono text-[11px] text-bg bg-accent px-1.5 py-0.5">✗</span>
+        <span class="text-sm text-text-muted">{t('lev.hero.verdict')}</span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  [data-hero-code] [data-bug] {
+    position: relative;
+    transition: color 300ms var(--ease-precise);
+  }
+  [data-hero-code].flagged [data-bug] {
+    color: var(--color-accent);
+  }
+  [data-hero-code] [data-bug]::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1.5px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 420ms var(--ease-precise);
+  }
+  [data-hero-code].flagged [data-bug]::after {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-hero-code] [data-code-line],
+    [data-hero-code] [data-verdict] {
+      opacity: 1 !important;
+    }
+  }
+</style>
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { playHeroReveal, prefersReducedMotion } from '@/lib/motion';
+
+  playHeroReveal();
+
+  const card = document.querySelector<HTMLElement>('[data-hero-code]');
+  if (card) {
+    const lines = card.querySelectorAll<HTMLElement>('[data-code-line]');
+    const verdict = card.querySelector<HTMLElement>('[data-verdict]');
+
+    if (prefersReducedMotion()) {
+      card.classList.add('flagged');
+    } else {
+      anime({
+        targets: lines,
+        opacity: [0, 1],
+        translateX: [-8, 0],
+        easing: 'cubicBezier(.22,1,.36,1)',
+        duration: 420,
+        delay: anime.stagger(220, { start: 600 }),
+        complete: () => {
+          card.classList.add('flagged');
+          if (verdict) {
+            anime({
+              targets: verdict,
+              opacity: [0, 1],
+              translateY: [6, 0],
+              easing: 'cubicBezier(.22,1,.36,1)',
+              duration: 500,
+              delay: 320,
+            });
+          }
+        },
+      });
+    }
+  }
+</script>

@@ -1,0 +1,208 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const chaosPairs = [[0,3],[1,6],[2,5],[4,0],[3,1],[5,6],[2,4],[0,5]];
+const orderPairs = [[0,1],[1,2],[3,4],[5,6],[1,3],[1,5]];
+const boxes = [
+  { x: 60, y: 60, w: 185, h: 150, label: 'Sales' },
+  { x: 60, y: 240, w: 185, h: 130, label: 'Inventory' },
+  { x: 300, y: 130, w: 175, h: 200, label: 'Billing' },
+];
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('lev.spec.eyebrow')} title={t('lev.spec.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('lev.spec.body')}</p>
+  </div>
+
+  <div class="mt-12 reveal-init" data-spec>
+    <!-- Segmented toggle -->
+    <div class="inline-flex border border-border" role="group" aria-label={t('lev.spec.eyebrow')}>
+      <button
+        type="button"
+        data-spec-btn="vague"
+        aria-pressed="true"
+        class="px-5 py-2.5 text-sm font-mono uppercase tracking-wider transition-colors"
+      >
+        {t('lev.spec.vague')}
+      </button>
+      <button
+        type="button"
+        data-spec-btn="precise"
+        aria-pressed="false"
+        class="px-5 py-2.5 text-sm font-mono uppercase tracking-wider transition-colors border-l border-border"
+      >
+        {t('lev.spec.precise')}
+      </button>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-14 items-center">
+      <!-- Input text -->
+      <div class="grid">
+        <div data-panel="vague" class="spec-panel">
+          <span class="font-mono text-eyebrow uppercase text-text-dim">input</span>
+          <p class="mt-4 font-display text-2xl md:text-3xl italic font-light text-balance">
+            {t('lev.spec.vagueText')}
+          </p>
+          <p class="mt-6 pt-5 border-t border-border text-text-muted leading-relaxed text-pretty">
+            {t('lev.spec.vagueVerdict')}
+          </p>
+        </div>
+        <div data-panel="precise" class="spec-panel" style="opacity:0;">
+          <span class="font-mono text-eyebrow uppercase text-accent">input</span>
+          <p class="mt-4 font-mono text-sm md:text-[15px] leading-7 text-text text-pretty">
+            {t('lev.spec.preciseText')}
+          </p>
+          <p class="mt-6 pt-5 border-t border-border text-text-muted leading-relaxed text-pretty">
+            {t('lev.spec.preciseVerdict')}
+          </p>
+        </div>
+      </div>
+
+      <!-- Architecture diagram -->
+      <figure class="surface-card p-4 md:p-6">
+        <svg viewBox="0 0 510 410" class="w-full h-auto" role="img"
+          aria-label="Architecture diagram morphing from a tangled graph to three bounded contexts">
+          <!-- bounded context boxes (precise only) -->
+          <g data-boxes style="opacity:0;">
+            {boxes.map((b) => (
+              <g>
+                <rect x={b.x} y={b.y} width={b.w} height={b.h}
+                  fill="rgba(201,168,106,0.04)" stroke="#35353E" stroke-width="1" />
+                <text x={b.x + 12} y={b.y + 22} class="font-mono"
+                  style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;fill:#9295A0;">
+                  {b.label}
+                </text>
+              </g>
+            ))}
+          </g>
+
+          <!-- chaos lines -->
+          <g data-chaos-lines stroke="#5E6068" stroke-width="1" fill="none">
+            {chaosPairs.map(() => <path d="" />)}
+          </g>
+          <!-- order lines -->
+          <g data-order-lines stroke="#C9A86A" stroke-width="1.5" fill="none" style="opacity:0;">
+            {orderPairs.map(() => <path d="" />)}
+          </g>
+
+          <!-- nodes -->
+          <g data-nodes>
+            {Array.from({ length: 7 }).map((_, i) => (
+              <circle data-i={i} r="5" fill="#C9A86A" cx="0" cy="0" />
+            ))}
+          </g>
+        </svg>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .spec-panel {
+    grid-area: 1 / 1;
+    transition: opacity 300ms var(--ease-precise);
+  }
+  .spec-panel[style*='opacity:0'],
+  .spec-panel[style*='opacity: 0'] {
+    pointer-events: none;
+  }
+  [data-spec-btn][aria-pressed='true'] {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+  [data-spec-btn][aria-pressed='false'] {
+    color: var(--color-text-muted);
+  }
+  [data-spec-btn][aria-pressed='false']:hover {
+    color: var(--color-text);
+  }
+</style>
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { prefersReducedMotion, revealOnScroll } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-spec]');
+  if (root) {
+    const chaos = [[180,120],[340,95],[130,255],[305,300],[240,175],[400,150],[215,340]];
+    const order = [[115,105],[195,140],[125,180],[115,285],[185,330],[360,195],[410,285]];
+    const chaosPairs = [[0,3],[1,6],[2,5],[4,0],[3,1],[5,6],[2,4],[0,5]];
+    const orderPairs = [[0,1],[1,2],[3,4],[5,6],[1,3],[1,5]];
+
+    const nodeEls = Array.from(root.querySelectorAll<SVGCircleElement>('[data-nodes] circle'));
+    const chaosLineEls = Array.from(root.querySelectorAll<SVGPathElement>('[data-chaos-lines] path'));
+    const orderLineEls = Array.from(root.querySelectorAll<SVGPathElement>('[data-order-lines] path'));
+    const chaosGroup = root.querySelector<SVGGElement>('[data-chaos-lines]')!;
+    const orderGroup = root.querySelector<SVGGElement>('[data-order-lines]')!;
+    const boxesGroup = root.querySelector<SVGGElement>('[data-boxes]')!;
+    const btns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-spec-btn]'));
+    const panels = {
+      vague: root.querySelector<HTMLElement>('[data-panel="vague"]')!,
+      precise: root.querySelector<HTMLElement>('[data-panel="precise"]')!,
+    };
+
+    const pos = chaos.map((c) => [c[0], c[1]]);
+    const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
+
+    const paint = (p: number) => {
+      for (let i = 0; i < pos.length; i++) {
+        pos[i][0] = lerp(chaos[i][0], order[i][0], p);
+        pos[i][1] = lerp(chaos[i][1], order[i][1], p);
+        nodeEls[i].setAttribute('cx', pos[i][0].toFixed(1));
+        nodeEls[i].setAttribute('cy', pos[i][1].toFixed(1));
+      }
+      const draw = (els: SVGPathElement[], pairs: number[][]) => {
+        pairs.forEach((pr, k) => {
+          els[k].setAttribute(
+            'd',
+            `M ${pos[pr[0]][0].toFixed(1)} ${pos[pr[0]][1].toFixed(1)} L ${pos[pr[1]][0].toFixed(1)} ${pos[pr[1]][1].toFixed(1)}`,
+          );
+        });
+      };
+      draw(chaosLineEls, chaosPairs);
+      draw(orderLineEls, orderPairs);
+      chaosGroup.style.opacity = String(1 - p);
+      orderGroup.style.opacity = String(p);
+      boxesGroup.style.opacity = String(p);
+    };
+
+    let precise = false;
+    const setState = (toPrecise: boolean) => {
+      if (toPrecise === precise) return;
+      precise = toPrecise;
+      btns.forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.specBtn === (toPrecise ? 'precise' : 'vague'))),
+      );
+      panels.vague.style.opacity = toPrecise ? '0' : '1';
+      panels.precise.style.opacity = toPrecise ? '1' : '0';
+
+      if (prefersReducedMotion()) {
+        paint(toPrecise ? 1 : 0);
+        return;
+      }
+      const state = { p: toPrecise ? 0 : 1 };
+      anime({
+        targets: state,
+        p: toPrecise ? 1 : 0,
+        easing: 'cubicBezier(.65,0,.35,1)',
+        duration: 900,
+        update: () => paint(state.p),
+      });
+    };
+
+    btns.forEach((b) =>
+      b.addEventListener('click', () => setState(b.dataset.specBtn === 'precise')),
+    );
+
+    paint(0);
+  }
+</script>

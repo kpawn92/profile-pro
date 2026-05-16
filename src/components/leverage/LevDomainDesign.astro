@@ -1,0 +1,296 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const C = 230;
+const coreR = 64;
+const ringR = 96;
+const satR = 36;
+const D = 160;
+
+const hex = (cx: number, cy: number, r: number): string => {
+  const pts: string[] = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 180) * (60 * i - 90);
+    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
+  }
+  return 'M ' + pts.join(' L ') + ' Z';
+};
+
+const sats = [
+  { a: -90, label: 'Sales' },
+  { a: 30, label: 'Billing' },
+  { a: 150, label: 'Inventory' },
+].map((s) => {
+  const rad = (Math.PI / 180) * s.a;
+  return { ...s, x: C + D * Math.cos(rad), y: C + D * Math.sin(rad) };
+});
+
+const ringVerts = Array.from({ length: 6 }, (_, i) => {
+  const a = (Math.PI / 180) * (60 * i - 90);
+  return { x: C + ringR * Math.cos(a), y: C + ringR * Math.sin(a) };
+});
+
+const layers = [
+  { id: 'language', label: t('lev.sdd.t1.label'), body: t('lev.sdd.t1.body') },
+  { id: 'invariants', label: t('lev.sdd.t2.label'), body: t('lev.sdd.t2.body') },
+  { id: 'contexts', label: t('lev.sdd.t3.label'), body: t('lev.sdd.t3.body') },
+];
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading
+    eyebrow={t('lev.sdd.eyebrow')}
+    title={t('lev.sdd.title')}
+    size="m"
+  />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('lev.sdd.body')}</p>
+  </div>
+
+  <div class="mt-14 grid grid-cols-1 lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center" data-sdd>
+    <!-- Toggles -->
+    <ul class="space-y-3">
+      {layers.map((l) => (
+        <li>
+          <button
+            type="button"
+            role="switch"
+            aria-checked="false"
+            data-layer-toggle={l.id}
+            class="sdd-toggle w-full text-left flex gap-4 p-5 border border-border transition-colors"
+          >
+            <span class="sdd-switch mt-1 shrink-0" aria-hidden="true">
+              <span class="sdd-knob"></span>
+            </span>
+            <span>
+              <span class="font-display text-xl leading-tight">{l.label}</span>
+              <span class="block mt-1.5 text-sm text-text-muted leading-relaxed text-pretty">
+                {l.body}
+              </span>
+            </span>
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Diagram -->
+    <div>
+      <figure class="surface-card p-4 md:p-6">
+        <svg viewBox="0 0 460 460" class="w-full h-auto" role="img"
+          aria-label="A specification compiling into a hexagonal domain architecture">
+          <!-- core domain (always present) -->
+          <path d={hex(C, C, coreR)} fill="rgba(201,168,106,0.06)"
+            stroke="#C9A86A" stroke-width="1.5" data-core />
+
+          <!-- invariants layer -->
+          <g data-layer="invariants" style="opacity:0;">
+            <path d={hex(C, C, ringR)} fill="none" stroke="#C9A86A"
+              stroke-width="1" stroke-dasharray="4 5" data-ring />
+            {ringVerts.map((v) => (
+              <circle cx={v.x} cy={v.y} r="3.5" fill="#0A0A0B"
+                stroke="#C9A86A" stroke-width="1" data-lock />
+            ))}
+          </g>
+
+          <!-- contexts layer -->
+          <g data-layer="contexts" style="opacity:0;">
+            {sats.map((s) => (
+              <line x1={C} y1={C} x2={s.x} y2={s.y}
+                stroke="#35353E" stroke-width="1" />
+            ))}
+            {sats.map((s) => (
+              <g data-sat style="transform-box: fill-box; transform-origin: center;">
+                <path d={hex(s.x, s.y, satR)} fill="#131317"
+                  stroke="#35353E" stroke-width="1" />
+                <circle cx={s.x} cy={s.y} r="3" fill="#C9A86A" />
+              </g>
+            ))}
+          </g>
+
+          <!-- language layer (labels) -->
+          <g data-layer="language" style="opacity:0;" class="font-mono">
+            <text x={C} y={C + 4} text-anchor="middle" data-term
+              style="font-size:13px;letter-spacing:0.04em;fill:#ECEDEE;">Domain</text>
+            {sats.map((s) => (
+              <text x={s.x} y={s.y + satR + 18} text-anchor="middle" data-term
+                style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;fill:#9295A0;">
+                {s.label}
+              </text>
+            ))}
+          </g>
+        </svg>
+      </figure>
+
+      <!-- compile status -->
+      <div class="mt-5 flex items-center gap-4">
+        <div class="flex gap-1.5" data-sdd-segments aria-hidden="true">
+          <span class="w-8 h-1 bg-border"></span>
+          <span class="w-8 h-1 bg-border"></span>
+          <span class="w-8 h-1 bg-border"></span>
+        </div>
+        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-text-dim">
+          {t('lev.sdd.compiled')}
+        </span>
+      </div>
+      <p
+        data-sdd-status
+        data-complete={t('lev.sdd.complete')}
+        class="mt-3 text-text-muted leading-relaxed text-pretty"
+      >
+        {t('lev.sdd.empty')}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sdd-toggle:hover {
+    border-color: var(--color-border-strong);
+  }
+  .sdd-toggle[aria-checked='true'] {
+    border-color: var(--color-accent-line);
+    background: var(--color-accent-soft);
+  }
+  .sdd-switch {
+    display: inline-block;
+    width: 34px;
+    height: 18px;
+    border-radius: 9px;
+    background: var(--color-border-strong);
+    position: relative;
+    transition: background-color 250ms var(--ease-precise);
+  }
+  .sdd-toggle[aria-checked='true'] .sdd-switch {
+    background: var(--color-accent);
+  }
+  .sdd-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-text);
+    transition: transform 250ms var(--ease-precise);
+  }
+  .sdd-toggle[aria-checked='true'] .sdd-knob {
+    transform: translateX(16px);
+    background: var(--color-bg);
+  }
+  [data-sdd-status].complete {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { prefersReducedMotion, revealOnScroll } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-sdd]');
+  if (root) {
+    const reduce = prefersReducedMotion();
+    const toggles = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-layer-toggle]'),
+    );
+    const segments = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-sdd-segments] span'),
+    );
+    const status = root.querySelector<HTMLElement>('[data-sdd-status]')!;
+    const emptyMsg = (status.textContent ?? '').trim();
+    const completeMsg = status.dataset.complete ?? '';
+
+    const layerEl = (id: string) =>
+      root.querySelector<SVGGElement>(`[data-layer="${id}"]`)!;
+
+    const state: Record<string, boolean> = {
+      language: false,
+      invariants: false,
+      contexts: false,
+    };
+
+    const ring = root.querySelector<SVGPathElement>('[data-ring]');
+    if (ring && !reduce) {
+      const len = ring.getTotalLength();
+      ring.dataset.len = String(len);
+    }
+
+    const showLayer = (id: string, on: boolean) => {
+      const g = layerEl(id);
+      if (reduce) {
+        g.style.opacity = on ? '1' : '0';
+        return;
+      }
+      if (!on) {
+        anime({ targets: g, opacity: 0, easing: 'easeOutQuad', duration: 280 });
+        return;
+      }
+      g.style.opacity = '1';
+      if (id === 'invariants') {
+        const locks = g.querySelectorAll('[data-lock]');
+        if (ring && ring.dataset.len) {
+          const len = Number(ring.dataset.len);
+          anime({
+            targets: ring,
+            strokeDashoffset: [len, 0],
+            easing: 'easeInOutCubic',
+            duration: 900,
+          });
+        }
+        anime({
+          targets: locks,
+          opacity: [0, 1],
+          scale: [0.4, 1],
+          easing: 'cubicBezier(.22,1,.36,1)',
+          duration: 500,
+          delay: anime.stagger(70, { start: 250 }),
+        });
+      } else if (id === 'contexts') {
+        anime({
+          targets: g.querySelectorAll('[data-sat]'),
+          opacity: [0, 1],
+          scale: [0.6, 1],
+          easing: 'cubicBezier(.22,1,.36,1)',
+          duration: 600,
+          delay: anime.stagger(110),
+        });
+      } else {
+        anime({
+          targets: g.querySelectorAll('[data-term]'),
+          opacity: [0, 1],
+          translateY: [5, 0],
+          easing: 'cubicBezier(.22,1,.36,1)',
+          duration: 500,
+          delay: anime.stagger(80),
+        });
+      }
+    };
+
+    const refresh = () => {
+      const count = Object.values(state).filter(Boolean).length;
+      segments.forEach((s, i) => {
+        s.classList.toggle('bg-accent', i < count);
+        s.classList.toggle('bg-border', i >= count);
+      });
+      const complete = count === 3;
+      status.textContent = complete ? completeMsg : emptyMsg;
+      status.classList.toggle('complete', complete);
+    };
+
+    toggles.forEach((btn) => {
+      const id = btn.dataset.layerToggle!;
+      btn.addEventListener('click', () => {
+        state[id] = !state[id];
+        btn.setAttribute('aria-checked', String(state[id]));
+        showLayer(id, state[id]);
+        refresh();
+      });
+    });
+  }
+</script>

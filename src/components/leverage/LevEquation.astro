@@ -1,0 +1,166 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('lev.eq.eyebrow')} title={t('lev.eq.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('lev.eq.body')}</p>
+  </div>
+
+  <div class="mt-14 surface-card p-6 md:p-12 reveal-init" data-eq>
+    <!-- equation -->
+    <div class="flex items-end justify-center gap-4 md:gap-8">
+      <!-- AI throughput -->
+      <div class="flex flex-col items-center">
+        <div class="eq-meter">
+          <div class="eq-fill bg-accent" style="height:100%;"></div>
+          <span class="eq-value font-display italic">∞</span>
+        </div>
+        <span class="eq-label">{t('lev.eq.factorAi')}</span>
+      </div>
+
+      <span class="font-display italic text-3xl md:text-4xl text-text-dim pb-16">×</span>
+
+      <!-- Architectural judgment -->
+      <div class="flex flex-col items-center">
+        <div class="eq-meter">
+          <div class="eq-fill bg-accent" data-eq-judgment style="height:78%;"></div>
+          <span class="eq-value font-display italic tabular-nums" data-eq-judgment-val>78</span>
+        </div>
+        <span class="eq-label">{t('lev.eq.factorHuman')}</span>
+      </div>
+
+      <span class="font-display italic text-3xl md:text-4xl text-text-dim pb-16">=</span>
+
+      <!-- Result -->
+      <div class="flex flex-col items-center">
+        <div class="eq-meter eq-meter-result">
+          <div class="eq-fill bg-accent" data-eq-result style="height:78%;"></div>
+          <span class="eq-value font-display italic tabular-nums" data-eq-result-val>78</span>
+        </div>
+        <span class="eq-label">{t('lev.eq.result')}</span>
+      </div>
+    </div>
+
+    <!-- control -->
+    <div class="mt-12 max-w-md mx-auto">
+      <label for="eq-slider" class="font-mono text-eyebrow uppercase text-text-muted">
+        {t('lev.eq.slider')}
+      </label>
+      <input
+        id="eq-slider"
+        type="range"
+        min="0"
+        max="100"
+        value="78"
+        class="lev-range mt-3"
+        data-eq-slider
+      />
+    </div>
+
+    <p
+      data-eq-collapsed
+      class="mt-10 mx-auto max-w-xl text-center font-display text-xl md:text-2xl text-balance text-accent"
+      style="opacity:0;"
+    >
+      {t('lev.eq.collapsed')}
+    </p>
+  </div>
+</section>
+
+<style>
+  .eq-meter {
+    position: relative;
+    width: 64px;
+    height: 220px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .eq-meter { width: 92px; }
+  }
+  .eq-fill {
+    width: 100%;
+    transition: height 140ms var(--ease-precise),
+      background-color 220ms var(--ease-precise);
+  }
+  .eq-fill.low {
+    background: var(--color-border-strong) !important;
+  }
+  .eq-value {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 1.25rem;
+    color: var(--color-text);
+  }
+  .eq-label {
+    margin-top: 0.9rem;
+    max-width: 9rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .eq-meter-result::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent 0 6px,
+      rgba(255, 255, 255, 0.02) 6px 12px
+    );
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eq-fill { transition: none; }
+  }
+</style>
+
+<script>
+  import { bindRange, revealOnScroll } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-eq]');
+  const slider = document.querySelector<HTMLInputElement>('[data-eq-slider]');
+
+  if (root && slider) {
+    const jFill = root.querySelector<HTMLElement>('[data-eq-judgment]')!;
+    const jVal = root.querySelector<HTMLElement>('[data-eq-judgment-val]')!;
+    const rFill = root.querySelector<HTMLElement>('[data-eq-result]')!;
+    const rVal = root.querySelector<HTMLElement>('[data-eq-result-val]')!;
+    const collapsed = root.querySelector<HTMLElement>('[data-eq-collapsed]')!;
+
+    bindRange(slider, (t) => {
+      // AI throughput is effectively 1 (unlimited); output = throughput × judgment.
+      const judgment = t;
+      const result = judgment; // throughput normalised to 1
+      jFill.style.height = `${(judgment * 100).toFixed(0)}%`;
+      jVal.textContent = `${Math.round(judgment * 100)}`;
+      rFill.style.height = `${(result * 100).toFixed(0)}%`;
+      rVal.textContent = `${Math.round(result * 100)}`;
+
+      const low = judgment < 0.22;
+      rFill.classList.toggle('low', low);
+      collapsed.style.opacity = String(
+        Math.min(1, Math.max(0, (0.12 - judgment) / 0.12)),
+      );
+    });
+  }
+</script>

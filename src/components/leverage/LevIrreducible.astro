@@ -1,0 +1,60 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const cards = [
+  { title: t('lev.irr.c1.title'), body: t('lev.irr.c1.body') },
+  { title: t('lev.irr.c2.title'), body: t('lev.irr.c2.body') },
+  { title: t('lev.irr.c3.title'), body: t('lev.irr.c3.body') },
+  { title: t('lev.irr.c4.title'), body: t('lev.irr.c4.body') },
+];
+
+const humanOnly = lang === 'es' ? 'solo humano' : 'human only';
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('lev.irr.eyebrow')} title={t('lev.irr.title')} />
+
+  <ul
+    class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border"
+    data-irr
+  >
+    {
+      cards.map((c, i) => (
+        <li class="bg-bg reveal-init">
+          <div
+            class="group relative h-full p-8 md:p-10 transition-colors hover:bg-surface"
+            data-irr-card
+          >
+            <div class="flex items-baseline justify-between">
+              <span class="font-mono text-eyebrow uppercase text-accent">
+                0{i + 1}
+              </span>
+              <span
+                class="font-mono text-eyebrow uppercase text-text-dim opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
+                aria-hidden="true"
+              >
+                {humanOnly}
+              </span>
+            </div>
+            <h3 class="mt-7 font-display text-2xl md:text-[1.7rem] leading-tight text-balance">
+              {c.title}
+            </h3>
+            <p class="mt-4 text-text-muted leading-relaxed text-pretty">
+              {c.body}
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  import { revealOnScroll, magneticHover } from '@/lib/motion';
+  revealOnScroll('[data-irr] li', { stagger: 110, translateY: 18 });
+  magneticHover('[data-irr-card]', 0.06);
+</script>

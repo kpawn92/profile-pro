@@ -1,0 +1,119 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const axisLabel = t('lev.cost.axis');
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('lev.cost.eyebrow')} title={t('lev.cost.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('lev.cost.body')}</p>
+  </div>
+
+  <div class="mt-14 surface-card p-6 md:p-10 reveal-init">
+    <div class="flex flex-wrap gap-x-8 gap-y-2 mb-6">
+      <span class="flex items-center gap-2.5 text-sm text-text-muted">
+        <span class="w-6 h-px bg-text-dim inline-block"></span>
+        {t('lev.cost.lineA')}
+      </span>
+      <span class="flex items-center gap-2.5 text-sm text-text-muted">
+        <span class="w-6 h-px bg-accent inline-block"></span>
+        {t('lev.cost.lineB')}
+      </span>
+    </div>
+
+    <figure data-cost>
+      <svg viewBox="0 0 620 380" class="w-full h-auto" role="img"
+        aria-label="Cost of change over eighteen months: disciplined architecture stays flat, undisciplined cost rises steeply">
+        <!-- axes -->
+        <line x1="70" y1="320" x2="580" y2="320" stroke="#25252C" stroke-width="1" />
+        <line x1="70" y1="50" x2="70" y2="320" stroke="#25252C" stroke-width="1" />
+
+        <!-- divergence bracket -->
+        <line data-diverge x1="580" y1="0" x2="580" y2="0"
+          stroke="#35353E" stroke-width="1" stroke-dasharray="3 4" style="opacity:0;" />
+        <text data-multiplier x="566" y="120" text-anchor="end" class="font-display"
+          style="font-size:30px;font-style:italic;fill:#C9A86A;opacity:0;">3×</text>
+
+        <!-- curve A: disciplined -->
+        <path data-cost-a fill="none" stroke="#5E6068" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" d="" />
+        <!-- curve B: undisciplined -->
+        <path data-cost-b fill="none" stroke="#C9A86A" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" d="" />
+
+        <circle data-dot-a r="3.5" fill="#5E6068" cx="70" cy="320" />
+        <circle data-dot-b r="4" fill="#C9A86A" cx="70" cy="320" />
+
+        <!-- axis captions -->
+        <text x="70" y="345" class="font-mono"
+          style="font-size:11px;letter-spacing:0.12em;fill:#5E6068;">{t('lev.cost.t0')}</text>
+        <text x="580" y="345" text-anchor="end" class="font-mono"
+          style="font-size:11px;letter-spacing:0.12em;fill:#5E6068;">{t('lev.cost.t1')}</text>
+        <text x="58" y="60" text-anchor="end" class="font-mono"
+          style="font-size:11px;letter-spacing:0.12em;fill:#5E6068;text-transform:uppercase;"
+          transform="rotate(-90 58 60)">{axisLabel} ↑</text>
+      </svg>
+    </figure>
+
+    <p class="mt-6 pt-5 border-t border-border text-sm text-text-muted text-pretty">
+      {t('lev.cost.caption')}
+    </p>
+  </div>
+</section>
+
+<script>
+  import { scrollScrub, revealOnScroll } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+
+  const fig = document.querySelector<HTMLElement>('[data-cost]');
+  if (fig) {
+    const pathA = fig.querySelector<SVGPathElement>('[data-cost-a]')!;
+    const pathB = fig.querySelector<SVGPathElement>('[data-cost-b]')!;
+    const dotA = fig.querySelector<SVGCircleElement>('[data-dot-a]')!;
+    const dotB = fig.querySelector<SVGCircleElement>('[data-dot-b]')!;
+    const diverge = fig.querySelector<SVGLineElement>('[data-diverge]')!;
+    const mult = fig.querySelector<SVGTextElement>('[data-multiplier]')!;
+
+    const X0 = 70, PW = 510, Y0 = 320, PH = 270, N = 48;
+    const costA = (x: number) => 0.1 + 0.2 * x;
+    const costB = (x: number) => 0.1 + 0.85 * Math.pow(x, 2.6);
+
+    const render = (t: number) => {
+      const a: string[] = [];
+      const b: string[] = [];
+      for (let i = 0; i <= N; i++) {
+        const x = (i / N) * t;
+        const px = X0 + x * PW;
+        a.push(`${px.toFixed(1)},${(Y0 - costA(x) * PH).toFixed(1)}`);
+        b.push(`${px.toFixed(1)},${(Y0 - costB(x) * PH).toFixed(1)}`);
+      }
+      pathA.setAttribute('d', 'M ' + a.join(' L '));
+      pathB.setAttribute('d', 'M ' + b.join(' L '));
+
+      const ex = X0 + t * PW;
+      const ay = Y0 - costA(t) * PH;
+      const by = Y0 - costB(t) * PH;
+      dotA.setAttribute('cx', ex.toFixed(1));
+      dotA.setAttribute('cy', ay.toFixed(1));
+      dotB.setAttribute('cx', ex.toFixed(1));
+      dotB.setAttribute('cy', by.toFixed(1));
+
+      const show = Math.min(1, Math.max(0, (t - 0.82) / 0.18));
+      diverge.style.opacity = String(show);
+      diverge.setAttribute('x1', ex.toFixed(1));
+      diverge.setAttribute('x2', ex.toFixed(1));
+      diverge.setAttribute('y1', by.toFixed(1));
+      diverge.setAttribute('y2', ay.toFixed(1));
+      mult.style.opacity = String(show);
+    };
+
+    render(0);
+    scrollScrub(fig, render);
+  }
+</script>

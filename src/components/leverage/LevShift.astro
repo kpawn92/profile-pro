@@ -1,0 +1,142 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const riskLabel = lang === 'es' ? 'RIESGO' : 'RISK';
+---
+
+<section id="shift" class="container-x py-section relative scroll-mt-20">
+  <SectionHeading eyebrow={t('lev.shift.eyebrow')} title={t('lev.shift.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('lev.shift.body')}</p>
+  </div>
+
+  <div class="mt-14 surface-card p-6 md:p-10 reveal-init" data-shift>
+    <!-- Legend -->
+    <div class="flex flex-wrap gap-x-8 gap-y-2 mb-6">
+      <span class="flex items-center gap-2.5 text-sm text-text-muted">
+        <span class="w-6 h-px bg-accent inline-block"></span>
+        {t('lev.shift.curve1')}
+      </span>
+      <span class="flex items-center gap-2.5 text-sm text-text-muted">
+        <span class="w-6 h-px bg-text-dim inline-block"></span>
+        {t('lev.shift.curve2')}
+      </span>
+    </div>
+
+    <svg viewBox="0 0 620 380" class="w-full h-auto" role="img"
+      aria-label="Code volume rises steeply with AI capability while architectural coherence stays flat">
+      <!-- axes -->
+      <line x1="70" y1="320" x2="580" y2="320" stroke="#25252C" stroke-width="1" />
+      <line x1="70" y1="50" x2="70" y2="320" stroke="#25252C" stroke-width="1" />
+
+      <!-- gap (risk) fill -->
+      <path data-gap fill="rgba(201,168,106,0.07)" stroke="none" d="" />
+
+      <!-- coherence curve -->
+      <path data-coh-path fill="none" stroke="#5E6068" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" d="" />
+      <!-- volume curve -->
+      <path data-vol-path fill="none" stroke="#C9A86A" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round" d="" />
+
+      <!-- end dots -->
+      <circle data-coh-dot r="3.5" fill="#5E6068" cx="70" cy="320" />
+      <circle data-vol-dot r="4" fill="#C9A86A" cx="70" cy="320" />
+
+      <!-- risk label -->
+      <text data-gap-label x="380" y="200" text-anchor="middle" class="font-mono"
+        style="font-size:12px;letter-spacing:0.22em;fill:#C9A86A;opacity:0;">
+        {riskLabel}
+      </text>
+
+      <!-- axis captions -->
+      <text x="70" y="345" class="font-mono"
+        style="font-size:11px;letter-spacing:0.14em;fill:#5E6068;">0</text>
+      <text x="580" y="345" text-anchor="end" class="font-mono"
+        style="font-size:11px;letter-spacing:0.14em;fill:#5E6068;text-transform:uppercase;">
+        {t('lev.shift.slider')} →
+      </text>
+    </svg>
+
+    <!-- control -->
+    <div class="mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <label for="shift-slider"
+          class="font-mono text-eyebrow uppercase text-text-muted">
+          {t('lev.shift.slider')}
+        </label>
+        <span data-shift-readout
+          class="font-mono text-sm text-accent tabular-nums">58%</span>
+      </div>
+      <input
+        id="shift-slider"
+        type="range"
+        min="0"
+        max="100"
+        value="58"
+        class="lev-range"
+        data-shift-slider
+        aria-describedby="shift-note"
+      />
+    </div>
+
+    <p id="shift-note" class="mt-6 pt-5 border-t border-border text-sm text-text-muted text-pretty">
+      {t('lev.shift.note')}
+    </p>
+  </div>
+</section>
+
+<script>
+  import { bindRange, revealOnScroll } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-shift]');
+  const slider = document.querySelector<HTMLInputElement>('[data-shift-slider]');
+
+  if (root && slider) {
+    const volPath = root.querySelector<SVGPathElement>('[data-vol-path]')!;
+    const cohPath = root.querySelector<SVGPathElement>('[data-coh-path]')!;
+    const gap = root.querySelector<SVGPathElement>('[data-gap]')!;
+    const volDot = root.querySelector<SVGCircleElement>('[data-vol-dot]')!;
+    const cohDot = root.querySelector<SVGCircleElement>('[data-coh-dot]')!;
+    const gapLabel = root.querySelector<SVGTextElement>('[data-gap-label]')!;
+    const readout = root.querySelector<HTMLElement>('[data-shift-readout]')!;
+
+    const X0 = 70, PW = 510, Y0 = 320, PH = 270, N = 46;
+    const volume = (x: number) => Math.pow(x, 2.3);
+    const coherence = (x: number) => 0.08 + 0.13 * x;
+
+    const render = (t: number) => {
+      const vol: string[] = [];
+      const coh: string[] = [];
+      for (let i = 0; i <= N; i++) {
+        const x = (i / N) * t;
+        const px = X0 + x * PW;
+        vol.push(`${px.toFixed(1)},${(Y0 - volume(x) * PH).toFixed(1)}`);
+        coh.push(`${px.toFixed(1)},${(Y0 - coherence(x) * PH).toFixed(1)}`);
+      }
+      volPath.setAttribute('d', 'M ' + vol.join(' L '));
+      cohPath.setAttribute('d', 'M ' + coh.join(' L '));
+      gap.setAttribute(
+        'd',
+        'M ' + vol.join(' L ') + ' L ' + [...coh].reverse().join(' L ') + ' Z',
+      );
+
+      const ex = X0 + t * PW;
+      volDot.setAttribute('cx', ex.toFixed(1));
+      volDot.setAttribute('cy', (Y0 - volume(t) * PH).toFixed(1));
+      cohDot.setAttribute('cx', ex.toFixed(1));
+      cohDot.setAttribute('cy', (Y0 - coherence(t) * PH).toFixed(1));
+
+      gapLabel.style.opacity = String(Math.min(1, Math.max(0, (t - 0.3) / 0.35)));
+      readout.textContent = `${Math.round(t * 100)}%`;
+    };
+
+    bindRange(slider, render);
+  }
+</script>

@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import LevHero from '@components/leverage/LevHero.astro';
+import LevShift from '@components/leverage/LevShift.astro';
+import LevSpec from '@components/leverage/LevSpec.astro';
+import LevDomainDesign from '@components/leverage/LevDomainDesign.astro';
+import LevIrreducible from '@components/leverage/LevIrreducible.astro';
+import LevCompounding from '@components/leverage/LevCompounding.astro';
+import LevEquation from '@components/leverage/LevEquation.astro';
+import LevDecision from '@components/leverage/LevDecision.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t('lev.meta.title')} description={t('lev.meta.desc')}>
+  <LevHero />
+  <LevShift />
+  <LevSpec />
+  <LevDomainDesign />
+  <LevIrreducible />
+  <LevCompounding />
+  <LevEquation />
+  <LevDecision />
+</BaseLayout>

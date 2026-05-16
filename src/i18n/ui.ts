@@ -158,6 +158,107 @@ export const ui = {
       'Every non-obvious decision has a markdown next to it. Bounded contexts, refactor narratives, runbooks. The system explains itself before anyone has to open the editor.',
     'about.stackHeading': 'Stack',
 
+    // ─── Leverage page (the case for funding architecture)
+    'nav.case': 'The case',
+    'lev.meta.title': 'The case for architecture',
+    'lev.meta.desc':
+      'AI made code cheap. It did not make the wrong system cheap. Why funding architectural judgment — patterns, algorithms, spec-driven domain design — is the highest-leverage investment in the age of AI.',
+
+    'lev.hero.eyebrow': 'The case for funding architecture',
+    'lev.hero.title': "Code got cheap. Being right didn't.",
+    'lev.hero.sub':
+      'AI collapsed the cost of producing code. It did nothing to the cost of producing the wrong system. This page is about that gap — and why the person who controls it is the highest-leverage thing you can fund.',
+    'lev.hero.codeLabel': 'AI-generated · 0.4s',
+    'lev.hero.verdict': 'Plausible. Compiles. Wrong.',
+    'lev.hero.scroll': 'Read the case',
+
+    'lev.shift.eyebrow': 'The shift',
+    'lev.shift.title': 'AI scaled output. It never scaled coherence.',
+    'lev.shift.body':
+      'Drag the slider. As AI capability grows, the volume of code an organisation can produce explodes. Whether that code forms a system that holds together does not move on its own — a person moves it.',
+    'lev.shift.slider': 'AI capability',
+    'lev.shift.curve1': 'Code volume',
+    'lev.shift.curve2': 'Architectural coherence',
+    'lev.shift.note':
+      'The distance between these two lines is risk. It is paid later, with interest.',
+
+    'lev.spec.eyebrow': 'Specification',
+    'lev.spec.title': 'The same request. Two completely different systems.',
+    'lev.spec.body':
+      'A model is a function of its input. Give it a vague prompt and it fills the gaps with guesses. Give it a precise specification and it fills them with your intent. Toggle the input below.',
+    'lev.spec.vague': 'Vague prompt',
+    'lev.spec.precise': 'Precise specification',
+    'lev.spec.vagueText': '“Build me an orders module.”',
+    'lev.spec.preciseText':
+      'Order is an aggregate. It cannot ship below available stock. Totals are derived from lines — never stored raw. Cancellation after fulfilment is forbidden. Money is an explicit value object.',
+    'lev.spec.vagueVerdict':
+      'Tangled. No boundaries. The bugs are structural — you cannot test them away.',
+    'lev.spec.preciseVerdict':
+      'Bounded. Invariants enforced at the type level. The model resists misuse by construction.',
+
+    'lev.sdd.eyebrow': 'Spec-driven domain design',
+    'lev.sdd.title': 'The specification is the asset. The code is a build artefact.',
+    'lev.sdd.body':
+      'When the spec is the source of truth, code can be regenerated — but the thinking behind it cannot. Activate each layer of the specification and watch the architecture compile.',
+    'lev.sdd.t1.label': 'Ubiquitous language',
+    'lev.sdd.t1.body':
+      'Names mean exactly one thing — in the spec, in the code, and in the conversation with the business.',
+    'lev.sdd.t2.label': 'Invariants',
+    'lev.sdd.t2.body':
+      'Rules that must always hold. Encoded once, they make whole categories of bug unrepresentable.',
+    'lev.sdd.t3.label': 'Bounded contexts',
+    'lev.sdd.t3.body':
+      'Explicit seams. Each context owns its model; integration becomes deliberate, never accidental.',
+    'lev.sdd.empty': 'An empty spec compiles to nothing you can trust.',
+    'lev.sdd.complete': 'A complete spec compiles to a system that defends itself.',
+    'lev.sdd.compiled': 'spec → architecture',
+
+    'lev.irr.eyebrow': 'The irreducible',
+    'lev.irr.title': 'Four things a model cannot decide for you.',
+    'lev.irr.c1.title': 'Judgment under ambiguity',
+    'lev.irr.c1.body':
+      'When a requirement contradicts itself, someone has to choose what the business actually means. A model averages the training data; an architect decides.',
+    'lev.irr.c2.title': 'Trade-offs with consequences',
+    'lev.irr.c2.body':
+      'Consistency or availability. Speed or auditability. Every real system is a chain of trade-offs that only a human can own and defend.',
+    'lev.irr.c3.title': 'Irreversible decisions',
+    'lev.irr.c3.body':
+      'Schema shape, context boundaries, the public API. Get these wrong and no volume of generated code buys them back.',
+    'lev.irr.c4.title': 'The invariants of your business',
+    'lev.irr.c4.body':
+      'That an invoice can never be negative is not in the training data. It is in your domain. Someone has to know it — and encode it.',
+
+    'lev.cost.eyebrow': 'The compounding cost',
+    'lev.cost.title': 'Architectural debt does not add up. It multiplies.',
+    'lev.cost.body':
+      'Scroll through eighteen months of the same project. One path had an architect shaping every boundary. The other shipped whatever generated fastest.',
+    'lev.cost.lineA': 'With architectural discipline',
+    'lev.cost.lineB': 'Without it',
+    'lev.cost.t0': 'Month 0',
+    'lev.cost.t1': 'Month 18',
+    'lev.cost.axis': 'Cost of change',
+    'lev.cost.caption':
+      'Both teams used the same AI. Only one stayed cheap to change.',
+
+    'lev.eq.eyebrow': 'The leverage equation',
+    'lev.eq.title': 'AI is a multiplier. A multiplier needs something worth multiplying.',
+    'lev.eq.body':
+      'Trustworthy output is AI throughput multiplied by human judgment. Throughput is now effectively unlimited. Drag judgment toward zero and watch what unlimited throughput is worth.',
+    'lev.eq.factorAi': 'AI throughput',
+    'lev.eq.factorHuman': 'Architectural judgment',
+    'lev.eq.result': 'Trustworthy output',
+    'lev.eq.slider': 'Architectural judgment',
+    'lev.eq.collapsed':
+      'Unlimited speed times zero judgment is still zero. This is the case for funding the judgment.',
+
+    'lev.cta.eyebrow': 'The decision',
+    'lev.cta.titleA': 'Fund the person who makes the AI',
+    'lev.cta.titleB': 'worth the spend.',
+    'lev.cta.body':
+      "I design domain-driven backends — DDD, Hexagonal, CQRS — for systems where being wrong is expensive. If you're investing in AI-accelerated delivery and want it to compound instead of decay, let's talk.",
+    'lev.cta.email': 'Start a conversation',
+    'lev.cta.work': 'See how I work',
+
     // ─── Misc
     'lang.label': 'Language',
     'lang.toggle.aria': 'Switch language',
@@ -317,6 +418,107 @@ export const ui = {
     'about.principle4.body':
       'Cada decisión no evidente tiene un markdown al lado. Bounded contexts, narrativas de refactor, runbooks. El sistema se explica solo antes de que nadie tenga que abrir el editor.',
     'about.stackHeading': 'Stack',
+
+    // ─── Leverage page (the case for funding architecture)
+    'nav.case': 'El argumento',
+    'lev.meta.title': 'El argumento por la arquitectura',
+    'lev.meta.desc':
+      'La IA abarató el código. No abarató el sistema equivocado. Por qué financiar el juicio arquitectónico — patrones, algoritmos, diseño de dominio guiado por especificación — es la inversión de mayor apalancamiento en la era de la IA.',
+
+    'lev.hero.eyebrow': 'El argumento para financiar arquitectura',
+    'lev.hero.title': 'El código se abarató. Acertar no.',
+    'lev.hero.sub':
+      'La IA desplomó el costo de producir código. No hizo nada con el costo de producir el sistema equivocado. Esta página trata de esa brecha — y de por qué la persona que la controla es lo de mayor apalancamiento que puedes financiar.',
+    'lev.hero.codeLabel': 'Generado por IA · 0.4s',
+    'lev.hero.verdict': 'Plausible. Compila. Incorrecto.',
+    'lev.hero.scroll': 'Lee el argumento',
+
+    'lev.shift.eyebrow': 'El desplazamiento',
+    'lev.shift.title': 'La IA escaló la producción. Nunca escaló la coherencia.',
+    'lev.shift.body':
+      'Arrastra el control. A medida que crece la capacidad de la IA, el volumen de código que una organización puede producir se dispara. Que ese código forme un sistema que se sostiene no se mueve solo — lo mueve una persona.',
+    'lev.shift.slider': 'Capacidad de la IA',
+    'lev.shift.curve1': 'Volumen de código',
+    'lev.shift.curve2': 'Coherencia arquitectónica',
+    'lev.shift.note':
+      'La distancia entre estas dos líneas es riesgo. Se paga después, con intereses.',
+
+    'lev.spec.eyebrow': 'Especificación',
+    'lev.spec.title': 'La misma petición. Dos sistemas completamente distintos.',
+    'lev.spec.body':
+      'Un modelo es una función de su entrada. Dale un prompt vago y rellena los huecos con conjeturas. Dale una especificación precisa y los rellena con tu intención. Cambia la entrada abajo.',
+    'lev.spec.vague': 'Prompt vago',
+    'lev.spec.precise': 'Especificación precisa',
+    'lev.spec.vagueText': '«Hazme un módulo de pedidos.»',
+    'lev.spec.preciseText':
+      'Order es un agregado. No puede despachar por debajo del stock disponible. Los totales se derivan de las líneas — nunca se almacenan crudos. Cancelar tras el despacho está prohibido. El dinero es un value object explícito.',
+    'lev.spec.vagueVerdict':
+      'Enredado. Sin fronteras. Los bugs son estructurales — no se eliminan con tests.',
+    'lev.spec.preciseVerdict':
+      'Acotado. Invariantes garantizadas a nivel de tipos. El modelo resiste el mal uso por construcción.',
+
+    'lev.sdd.eyebrow': 'Diseño de dominio guiado por especificación',
+    'lev.sdd.title': 'La especificación es el activo. El código es un artefacto de build.',
+    'lev.sdd.body':
+      'Cuando la especificación es la fuente de verdad, el código se puede regenerar — pero el pensamiento detrás de él no. Activa cada capa de la especificación y observa cómo compila la arquitectura.',
+    'lev.sdd.t1.label': 'Lenguaje ubicuo',
+    'lev.sdd.t1.body':
+      'Los nombres significan exactamente una cosa — en la especificación, en el código y en la conversación con el negocio.',
+    'lev.sdd.t2.label': 'Invariantes',
+    'lev.sdd.t2.body':
+      'Reglas que siempre deben cumplirse. Codificadas una vez, vuelven categorías enteras de bugs imposibles de representar.',
+    'lev.sdd.t3.label': 'Bounded contexts',
+    'lev.sdd.t3.body':
+      'Costuras explícitas. Cada contexto es dueño de su modelo; la integración se vuelve deliberada, nunca accidental.',
+    'lev.sdd.empty': 'Una especificación vacía compila a algo en lo que no puedes confiar.',
+    'lev.sdd.complete': 'Una especificación completa compila a un sistema que se defiende solo.',
+    'lev.sdd.compiled': 'especificación → arquitectura',
+
+    'lev.irr.eyebrow': 'Lo irreducible',
+    'lev.irr.title': 'Cuatro cosas que un modelo no puede decidir por ti.',
+    'lev.irr.c1.title': 'Juicio bajo ambigüedad',
+    'lev.irr.c1.body':
+      'Cuando un requisito se contradice a sí mismo, alguien tiene que elegir qué quiere decir realmente el negocio. Un modelo promedia los datos de entrenamiento; un arquitecto decide.',
+    'lev.irr.c2.title': 'Trade-offs con consecuencias',
+    'lev.irr.c2.body':
+      'Consistencia o disponibilidad. Velocidad o auditabilidad. Todo sistema real es una cadena de trade-offs que solo un humano puede asumir y defender.',
+    'lev.irr.c3.title': 'Decisiones irreversibles',
+    'lev.irr.c3.body':
+      'La forma del esquema, las fronteras de contexto, la API pública. Equivócate en esto y ningún volumen de código generado lo recompra.',
+    'lev.irr.c4.title': 'Las invariantes de tu negocio',
+    'lev.irr.c4.body':
+      'Que una factura nunca pueda ser negativa no está en los datos de entrenamiento. Está en tu dominio. Alguien tiene que conocerla — y codificarla.',
+
+    'lev.cost.eyebrow': 'El costo compuesto',
+    'lev.cost.title': 'La deuda arquitectónica no se suma. Se multiplica.',
+    'lev.cost.body':
+      'Recorre dieciocho meses del mismo proyecto. Un camino tuvo a un arquitecto dando forma a cada frontera. El otro entregó lo que se generara más rápido.',
+    'lev.cost.lineA': 'Con disciplina arquitectónica',
+    'lev.cost.lineB': 'Sin ella',
+    'lev.cost.t0': 'Mes 0',
+    'lev.cost.t1': 'Mes 18',
+    'lev.cost.axis': 'Costo de cambiar',
+    'lev.cost.caption':
+      'Ambos equipos usaron la misma IA. Solo uno siguió siendo barato de cambiar.',
+
+    'lev.eq.eyebrow': 'La ecuación de apalancamiento',
+    'lev.eq.title': 'La IA es un multiplicador. Un multiplicador necesita algo que valga la pena multiplicar.',
+    'lev.eq.body':
+      'La producción confiable es el rendimiento de la IA multiplicado por el juicio humano. El rendimiento es ya prácticamente ilimitado. Lleva el juicio hacia cero y observa cuánto vale ese rendimiento ilimitado.',
+    'lev.eq.factorAi': 'Rendimiento de la IA',
+    'lev.eq.factorHuman': 'Juicio arquitectónico',
+    'lev.eq.result': 'Producción confiable',
+    'lev.eq.slider': 'Juicio arquitectónico',
+    'lev.eq.collapsed':
+      'Velocidad ilimitada por juicio cero sigue siendo cero. Este es el argumento para financiar el juicio.',
+
+    'lev.cta.eyebrow': 'La decisión',
+    'lev.cta.titleA': 'Financia a quien hace que la IA',
+    'lev.cta.titleB': 'valga lo que cuesta.',
+    'lev.cta.body':
+      'Diseño backends orientados al dominio — DDD, Hexagonal, CQRS — para sistemas donde equivocarse sale caro. Si estás invirtiendo en entrega acelerada por IA y quieres que se componga en vez de degradarse, hablemos.',
+    'lev.cta.email': 'Iniciar una conversación',
+    'lev.cta.work': 'Ver cómo trabajo',
 
     // ─── Misc
     'lang.label': 'Idioma',

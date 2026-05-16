@@ -159,6 +159,42 @@
     transform: translateY(10px);
     will-change: opacity, transform;
   }
+
+  /* Shared range control used by the interactive Leverage sections */
+  .lev-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 2px;
+    background: var(--color-border-strong);
+    cursor: pointer;
+    outline: none;
+  }
+  .lev-range:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+  .lev-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 0 0 1px var(--color-accent-line);
+    transition: transform 200ms var(--ease-precise);
+  }
+  .lev-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+  .lev-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 0 0 1px var(--color-accent-line);
+  }
 }
 
 @layer utilities {
