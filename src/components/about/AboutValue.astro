@@ -1,0 +1,24 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('ab.value.eyebrow')} title={t('ab.value.title')} />
+
+  <div class="mt-10 max-w-2xl reveal-init">
+    <p
+      class="text-lg md:text-xl text-text-muted leading-relaxed text-pretty border-l border-accent-line pl-6"
+    >
+      {t('ab.value.body')}
+    </p>
+  </div>
+</section>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+</script>

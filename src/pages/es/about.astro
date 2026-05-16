@@ -1,87 +1,24 @@
 ---
-import PageLayout from '@layouts/PageLayout.astro';
-import { useTranslations, getLangFromUrl } from '@/i18n/utils';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import AboutIntro from '@components/about/AboutIntro.astro';
+import AboutValue from '@components/about/AboutValue.astro';
+import AboutMethod from '@components/about/AboutMethod.astro';
+import AboutKernel from '@components/about/AboutKernel.astro';
+import AboutPrinciples from '@components/about/AboutPrinciples.astro';
+import AboutStacks from '@components/about/AboutStacks.astro';
+import AboutClose from '@components/about/AboutClose.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const principles = [
-  { title: t('about.principle1.title'), body: t('about.principle1.body') },
-  { title: t('about.principle2.title'), body: t('about.principle2.body') },
-  { title: t('about.principle3.title'), body: t('about.principle3.body') },
-  { title: t('about.principle4.title'), body: t('about.principle4.body') },
-];
-
-const stack = [
-  { group: 'Languages', items: ['TypeScript', 'Java', 'SQL'] },
-  { group: 'Backend', items: ['Spring Boot'] },
-  { group: 'Frontend', items: ['React', 'Vite'] },
-  { group: 'Persistence', items: ['PostgreSQL', 'Spring Data JPA'] },
-  { group: 'Patterns', items: ['DDD', 'Hexagonal', 'CQRS', 'Saga', 'Outbox', 'Idempotence'] },
-  { group: 'Operations', items: ['Docker', 'OpenAPI / Swagger'] },
-];
 ---
 
-<PageLayout
-  title={t('about.title')}
-  eyebrow={t('about.eyebrow')}
-  lede={t('site.role') + '. ' + t('about.p1')}
->
-  <section
-    class="container-x pb-24 grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-16 items-start"
-  >
-    <article class="prose prose-invert max-w-prose reveal-init">
-      <h2>{t('about.h1')}</h2>
-      <p>{t('about.p1')}</p>
-
-      <h2>{t('about.h2')}</h2>
-      <p>{t('about.p2')}</p>
-      <p>{t('about.p2b')}</p>
-
-      <h2>{t('about.h3')}</h2>
-      <p>{t('about.p3')}</p>
-    </article>
-
-    <aside class="space-y-12">
-      <div class="reveal-init">
-        <h3 class="eyebrow mb-4 flex items-center gap-3">
-          <span class="accent-rule" aria-hidden="true"></span> {t('about.principles')}
-        </h3>
-        <ul class="space-y-6" data-principles>
-          {
-            principles.map((p) => (
-              <li class="border-l border-border pl-5">
-                <h4 class="font-display text-lg leading-tight">{p.title}</h4>
-                <p class="mt-2 text-sm text-text-muted leading-relaxed">{p.body}</p>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div class="reveal-init">
-        <h3 class="eyebrow mb-4 flex items-center gap-3">
-          <span class="accent-rule" aria-hidden="true"></span> {t('about.stackHeading')}
-        </h3>
-        <dl class="space-y-4">
-          {
-            stack.map((s) => (
-              <div class="grid grid-cols-[1fr] sm:grid-cols-[130px_1fr] gap-1 sm:gap-4 py-2 border-b border-border last:border-b-0">
-                <dt class="font-mono text-xs uppercase text-text-dim tracking-wider pt-0.5">
-                  {s.group}
-                </dt>
-                <dd class="text-sm text-text-muted">{s.items.join(' · ')}</dd>
-              </div>
-            ))
-          }
-        </dl>
-      </div>
-    </aside>
-  </section>
-
-  <script>
-    import { revealOnScroll } from '@/lib/motion';
-    revealOnScroll('.reveal-init');
-    revealOnScroll('[data-principles] li', { stagger: 80, translateY: 10 });
-  </script>
-</PageLayout>
+<BaseLayout title={t('about.title')} description={t('about.meta.desc')}>
+  <AboutIntro />
+  <AboutValue />
+  <AboutMethod />
+  <AboutKernel />
+  <AboutPrinciples />
+  <AboutStacks />
+  <AboutClose />
+</BaseLayout>

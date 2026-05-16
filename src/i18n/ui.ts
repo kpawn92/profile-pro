@@ -131,32 +131,84 @@ export const ui = {
 
     // ─── About page
     'about.title': 'About',
-    'about.eyebrow': 'Profile',
-    'about.h1': 'What I do',
-    'about.p1':
-      'I design and build the backend of business software — the engines that have to run correctly every day: ERP cores, payroll closures, accounting moves, inventory ledgers, scheduling and operational flows. My focus is the architecture: domain modelling, kernel design, and the discipline that keeps systems editable years after they ship.',
-    'about.h2': 'How I work',
-    'about.p2':
-      'Every engagement starts with the language of the business. The bounded contexts emerge from how the operations team actually thinks about the work, not from a database schema. Once those seams are clear, I build a kernel — buses, ports, value objects, sagas, an outbox, an idempotence layer — so each new context costs less than the last.',
-    'about.p2b':
-      'Implementation moves in small, deliberate steps. New flows live in clean domain layers; legacy code keeps shipping until its replacement has proven itself in production. Anti-corruption layers bridge the two, and an ADR-style note explains every non-obvious choice.',
-    'about.h3': 'Background',
-    'about.p3':
-      'Software Engineer, graduated from Universidad de Oriente (Santiago de Cuba). Backend architecture in two parallel stacks: Java/Spring and TypeScript/NestJS. The same patterns — Hexagonal, DDD, CQRS — applied across both, so the framework is a delivery vehicle rather than a structural choice. Recent engagements include an ERP backend with a fifteen-context architecture and a hand-built kernel of CQRS / saga / outbox primitives, and a full-stack HR / payroll platform with a parallel kernel design in TypeScript.',
-    'about.principles': 'Principles',
-    'about.principle1.title': 'Build the kernel first',
-    'about.principle1.body':
-      'Every reusable pattern — buses, value objects, ports, saga, outbox, idempotence — lives in a hand-built foundation. Each new bounded context costs less because the foundation paid the upfront tax.',
-    'about.principle2.title': 'Patterns over frameworks',
-    'about.principle2.body':
-      'The architecture travels. Hexagonal, DDD, CQRS work the same in Java/Spring as in TypeScript/NestJS. The framework is a delivery vehicle; the discipline belongs to the architect.',
-    'about.principle3.title': 'Progressive coexistence over rewrites',
-    'about.principle3.body':
-      'Legacy code keeps shipping while new contexts prove themselves. Anti-corruption layers bridge the two. A god-service retires only when its replacement has earned its place under real production load.',
-    'about.principle4.title': 'Documentation pairs with code',
-    'about.principle4.body':
-      'Every non-obvious decision has a markdown next to it. Bounded contexts, refactor narratives, runbooks. The system explains itself before anyone has to open the editor.',
-    'about.stackHeading': 'Stack',
+    'about.meta.desc':
+      'Alejandro Pozo — senior backend architect for complex business systems. ERP and payroll engines built on DDD, Hexagonal and CQRS, with a hand-built kernel that makes every new context cost less.',
+
+    'ab.intro.eyebrow': 'Who you would be funding',
+    'ab.intro.title': 'I design the part of the system that has to be right.',
+    'ab.intro.lede':
+      "I'm Alejandro Pozo — a senior backend architect for complex business software. ERP cores, payroll closures, accounting moves: the engines where a wrong answer is not a bug, it is a liability.",
+
+    'ab.value.eyebrow': 'The work',
+    'ab.value.title': 'Not features. Foundations.',
+    'ab.value.body':
+      'Anyone can add a screen. I build the layer underneath it — the domain model, the boundaries, the kernel — so the tenth feature costs less than the first and the system is still editable years after it ships. That is the line between software that compounds and software that decays.',
+
+    'ab.method.eyebrow': 'How I work',
+    'ab.method.title': 'Every engagement runs the same disciplined path.',
+    'ab.method.body':
+      'Select each phase. None of it is improvised — the sequence holds whether the stack is Java or TypeScript.',
+    'ab.method.p1.title': 'Start with the language',
+    'ab.method.p1.body':
+      'Bounded contexts emerge from how the operations team actually thinks about the work — not from a database schema. Shared vocabulary before a line of code.',
+    'ab.method.p2.title': 'Draw the boundaries',
+    'ab.method.p2.body':
+      'Explicit seams between contexts. Each one owns its model; integration is deliberate. This is where most systems are quietly won or lost.',
+    'ab.method.p3.title': 'Build the kernel',
+    'ab.method.p3.body':
+      'Buses, ports, value objects, saga, outbox, idempotence — a hand-built foundation. Pay the upfront tax once; every context after it costs less.',
+    'ab.method.p4.title': 'Coexist, never rewrite blindly',
+    'ab.method.p4.body':
+      'New contexts ship into clean layers while legacy keeps running. Anti-corruption layers bridge the two. A god-service retires only when its replacement has earned it under real load.',
+
+    'ab.kernel.eyebrow': 'The compounding asset',
+    'ab.kernel.title': 'Each bounded context costs less than the last.',
+    'ab.kernel.body':
+      'The kernel is built once. After that, every new context reuses it — so the marginal cost of growth falls instead of rising. Add contexts and watch the two cost curves separate.',
+    'ab.kernel.cta': 'Add a bounded context',
+    'ab.kernel.reset': 'Reset',
+    'ab.kernel.unit': 'context',
+    'ab.kernel.units': 'contexts',
+    'ab.kernel.withKernel': 'With a kernel',
+    'ab.kernel.ghost': 'Without a kernel',
+    'ab.kernel.note':
+      'Most systems get more expensive to extend every year. A kernel makes them get cheaper. That gap is what you are funding.',
+
+    'ab.principles.eyebrow': 'Principles',
+    'ab.principles.title': 'Four rules I do not bend.',
+    'ab.pr1.title': 'Build the kernel first',
+    'ab.pr1.body':
+      'Every reusable pattern lives in a hand-built foundation. Each new context costs less because the foundation already paid the upfront tax.',
+    'ab.pr2.title': 'Patterns over frameworks',
+    'ab.pr2.body':
+      'The architecture travels. Hexagonal, DDD and CQRS work the same in Java/Spring as in TypeScript/NestJS. The framework is only a delivery vehicle.',
+    'ab.pr3.title': 'Coexistence over rewrites',
+    'ab.pr3.body':
+      'Legacy keeps shipping while new contexts prove themselves. Anti-corruption layers bridge the two. Nothing is retired on faith.',
+    'ab.pr4.title': 'Documentation pairs with code',
+    'ab.pr4.body':
+      'Every non-obvious decision has a markdown beside it — bounded contexts, refactor narratives, runbooks. The system explains itself.',
+
+    'ab.stacks.eyebrow': 'Two stacks, one architecture',
+    'ab.stacks.title': 'The framework is the vehicle. The discipline is the asset.',
+    'ab.stacks.body':
+      'I work in two parallel stacks. The patterns are identical in both. Switch the stack below — only the adapters change; the domain at the core never moves.',
+    'ab.stacks.note':
+      'This is why funding judgment beats funding a framework specialist. Judgment travels between stacks; framework knowledge expires with them.',
+    'ab.stacks.core': 'Domain',
+    'ab.stacks.patterns': 'Hexagonal · DDD · CQRS — unchanged',
+
+    'ab.bg.eyebrow': 'Background',
+    'ab.bg.title': 'Where the discipline comes from.',
+    'ab.bg.body':
+      'Software Engineer, graduated from Universidad de Oriente in Santiago de Cuba. Recent engagements: an ERP backend with a fifteen-context architecture and a hand-built kernel of CQRS, saga and outbox primitives; and a full-stack HR and payroll platform with a parallel kernel in TypeScript. The same patterns, proven twice, in two languages.',
+    'ab.stack.heading': 'Stack',
+
+    'ab.cta.eyebrow': 'Working together',
+    'ab.cta.title': 'If correctness is non-negotiable, we should talk.',
+    'ab.cta.body':
+      'I selectively take on engagements where the architecture is the thing that matters. Email is the fastest path — I read every message myself.',
+    'ab.cta.email': 'Start a conversation',
 
     // ─── Leverage page (the case for funding architecture)
     'nav.case': 'The case',
@@ -392,32 +444,84 @@ export const ui = {
 
     // ─── About page
     'about.title': 'Sobre mí',
-    'about.eyebrow': 'Perfil',
-    'about.h1': 'Qué hago',
-    'about.p1':
-      'Diseño y construyo el backend del software empresarial — los motores que tienen que ejecutarse correctamente cada día: núcleos de ERP, cierres de nómina, movimientos contables, libros de inventario, programación y flujos operativos. Mi foco es la arquitectura: modelado de dominio, diseño de kernel y la disciplina que mantiene los sistemas editables años después de su lanzamiento.',
-    'about.h2': 'Cómo trabajo',
-    'about.p2':
-      'Cada proyecto empieza por el lenguaje del negocio. Los bounded contexts emergen de cómo el equipo de operaciones piensa realmente el trabajo, no de un esquema de base de datos. Una vez claras esas costuras, construyo un kernel — buses, puertos, value objects, sagas, outbox, capa de idempotencia — para que cada contexto nuevo cueste menos que el anterior.',
-    'about.p2b':
-      'La implementación avanza en pasos pequeños y deliberados. Los flujos nuevos viven en capas de dominio limpias; el código legacy sigue funcionando hasta que su reemplazo se ha probado en producción. Capas anti-corrupción puentean ambos lados, y una nota tipo ADR explica cada decisión no evidente.',
-    'about.h3': 'Trayectoria',
-    'about.p3':
-      'Ingeniero de Software, graduado por la Universidad de Oriente (Santiago de Cuba). Arquitectura backend en dos stacks paralelos: Java/Spring y TypeScript/NestJS. Los mismos patrones — Hexagonal, DDD, CQRS — aplicados en ambos, de modo que el framework es un vehículo de entrega y no una elección estructural. Proyectos recientes incluyen un backend ERP con una arquitectura de quince contextos y un kernel propio de primitivos CQRS / saga / outbox, y una plataforma full-stack de RR.HH. y nómina con un diseño de kernel paralelo en TypeScript.',
-    'about.principles': 'Principios',
-    'about.principle1.title': 'Construir el kernel primero',
-    'about.principle1.body':
-      'Cada patrón reutilizable — buses, value objects, puertos, saga, outbox, idempotencia — vive en una base hecha a mano. Cada bounded context nuevo cuesta menos porque la base ya pagó el coste inicial.',
-    'about.principle2.title': 'Patrones por encima de frameworks',
-    'about.principle2.body':
-      'La arquitectura viaja. Hexagonal, DDD, CQRS funcionan igual en Java/Spring que en TypeScript/NestJS. El framework es un vehículo de entrega; la disciplina pertenece al arquitecto.',
-    'about.principle3.title': 'Coexistencia progresiva sobre reescrituras',
-    'about.principle3.body':
-      'El código legacy sigue en producción mientras los contextos nuevos demuestran su valor. Capas anti-corrupción puentean ambos lados. Un god-service se retira solo cuando su reemplazo se ha ganado su lugar bajo carga real.',
-    'about.principle4.title': 'La documentación va con el código',
-    'about.principle4.body':
-      'Cada decisión no evidente tiene un markdown al lado. Bounded contexts, narrativas de refactor, runbooks. El sistema se explica solo antes de que nadie tenga que abrir el editor.',
-    'about.stackHeading': 'Stack',
+    'about.meta.desc':
+      'Alejandro Pozo — arquitecto backend senior para sistemas empresariales complejos. Motores de ERP y nómina sobre DDD, Hexagonal y CQRS, con un kernel hecho a mano que abarata cada contexto nuevo.',
+
+    'ab.intro.eyebrow': 'A quién estarías financiando',
+    'ab.intro.title': 'Diseño la parte del sistema que tiene que estar bien.',
+    'ab.intro.lede':
+      'Soy Alejandro Pozo — arquitecto backend senior para software empresarial complejo. Núcleos de ERP, cierres de nómina, movimientos contables: los motores donde una respuesta equivocada no es un bug, es un pasivo.',
+
+    'ab.value.eyebrow': 'El trabajo',
+    'ab.value.title': 'No funcionalidades. Cimientos.',
+    'ab.value.body':
+      'Cualquiera puede añadir una pantalla. Yo construyo la capa que va debajo — el modelo de dominio, las fronteras, el kernel — para que la décima funcionalidad cueste menos que la primera y el sistema siga siendo editable años después de su lanzamiento. Esa es la línea entre el software que se compone y el que se degrada.',
+
+    'ab.method.eyebrow': 'Cómo trabajo',
+    'ab.method.title': 'Cada proyecto recorre el mismo camino disciplinado.',
+    'ab.method.body':
+      'Selecciona cada fase. Nada se improvisa — la secuencia se sostiene tanto si el stack es Java como TypeScript.',
+    'ab.method.p1.title': 'Empezar por el lenguaje',
+    'ab.method.p1.body':
+      'Los bounded contexts emergen de cómo el equipo de operaciones piensa realmente el trabajo — no de un esquema de base de datos. Vocabulario compartido antes de una línea de código.',
+    'ab.method.p2.title': 'Trazar las fronteras',
+    'ab.method.p2.body':
+      'Costuras explícitas entre contextos. Cada uno es dueño de su modelo; la integración es deliberada. Aquí es donde la mayoría de los sistemas se ganan o se pierden en silencio.',
+    'ab.method.p3.title': 'Construir el kernel',
+    'ab.method.p3.body':
+      'Buses, puertos, value objects, saga, outbox, idempotencia — una base hecha a mano. Pagas el coste inicial una vez; cada contexto posterior cuesta menos.',
+    'ab.method.p4.title': 'Coexistir, nunca reescribir a ciegas',
+    'ab.method.p4.body':
+      'Los contextos nuevos llegan a capas limpias mientras el legacy sigue funcionando. Capas anti-corrupción puentean ambos lados. Un god-service se retira solo cuando su reemplazo se lo ha ganado bajo carga real.',
+
+    'ab.kernel.eyebrow': 'El activo que se compone',
+    'ab.kernel.title': 'Cada bounded context cuesta menos que el anterior.',
+    'ab.kernel.body':
+      'El kernel se construye una vez. Después, cada contexto nuevo lo reutiliza — así el costo marginal de crecer baja en vez de subir. Añade contextos y observa cómo se separan las dos curvas de costo.',
+    'ab.kernel.cta': 'Añadir un bounded context',
+    'ab.kernel.reset': 'Reiniciar',
+    'ab.kernel.unit': 'contexto',
+    'ab.kernel.units': 'contextos',
+    'ab.kernel.withKernel': 'Con un kernel',
+    'ab.kernel.ghost': 'Sin un kernel',
+    'ab.kernel.note':
+      'La mayoría de los sistemas se vuelven más caros de extender cada año. Un kernel hace que se vuelvan más baratos. Esa brecha es lo que estás financiando.',
+
+    'ab.principles.eyebrow': 'Principios',
+    'ab.principles.title': 'Cuatro reglas que no negocio.',
+    'ab.pr1.title': 'Construir el kernel primero',
+    'ab.pr1.body':
+      'Cada patrón reutilizable vive en una base hecha a mano. Cada contexto nuevo cuesta menos porque la base ya pagó el coste inicial.',
+    'ab.pr2.title': 'Patrones por encima de frameworks',
+    'ab.pr2.body':
+      'La arquitectura viaja. Hexagonal, DDD y CQRS funcionan igual en Java/Spring que en TypeScript/NestJS. El framework es solo un vehículo de entrega.',
+    'ab.pr3.title': 'Coexistencia sobre reescrituras',
+    'ab.pr3.body':
+      'El legacy sigue en producción mientras los contextos nuevos demuestran su valor. Capas anti-corrupción puentean ambos lados. Nada se retira por fe.',
+    'ab.pr4.title': 'La documentación va con el código',
+    'ab.pr4.body':
+      'Cada decisión no evidente tiene un markdown al lado — bounded contexts, narrativas de refactor, runbooks. El sistema se explica solo.',
+
+    'ab.stacks.eyebrow': 'Dos stacks, una arquitectura',
+    'ab.stacks.title': 'El framework es el vehículo. La disciplina es el activo.',
+    'ab.stacks.body':
+      'Trabajo en dos stacks paralelos. Los patrones son idénticos en ambos. Cambia el stack abajo — solo cambian los adaptadores; el dominio del núcleo nunca se mueve.',
+    'ab.stacks.note':
+      'Por esto financiar juicio supera a financiar a un especialista en frameworks. El juicio viaja entre stacks; el conocimiento de framework caduca con ellos.',
+    'ab.stacks.core': 'Dominio',
+    'ab.stacks.patterns': 'Hexagonal · DDD · CQRS — sin cambios',
+
+    'ab.bg.eyebrow': 'Trayectoria',
+    'ab.bg.title': 'De dónde viene la disciplina.',
+    'ab.bg.body':
+      'Ingeniero de Software, graduado por la Universidad de Oriente en Santiago de Cuba. Proyectos recientes: un backend ERP con una arquitectura de quince contextos y un kernel propio de primitivos CQRS, saga y outbox; y una plataforma full-stack de RR.HH. y nómina con un kernel paralelo en TypeScript. Los mismos patrones, probados dos veces, en dos lenguajes.',
+    'ab.stack.heading': 'Stack',
+
+    'ab.cta.eyebrow': 'Trabajar juntos',
+    'ab.cta.title': 'Si la corrección no es negociable, deberíamos hablar.',
+    'ab.cta.body':
+      'Acepto de forma selectiva proyectos donde la arquitectura es lo que importa. El correo es el camino más rápido — leo cada mensaje yo mismo.',
+    'ab.cta.email': 'Iniciar una conversación',
 
     // ─── Leverage page (the case for funding architecture)
     'nav.case': 'El argumento',

@@ -1,0 +1,47 @@
+---
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const titleWords = t('ab.intro.title').split(' ');
+// Italicise the opening verb and the closing word per language.
+const italicIdx = lang === 'es' ? [0, 9] : [1, 11];
+---
+
+<section class="container-x pt-36 md:pt-44 pb-section-sm relative">
+  <p
+    class="eyebrow flex items-center gap-3"
+    data-hero-reveal="eyebrow"
+    style="opacity:0;"
+  >
+    <span class="accent-rule" aria-hidden="true"></span>
+    {t('ab.intro.eyebrow')}
+  </p>
+
+  <h1
+    class="font-display text-display-xl mt-8 max-w-[18ch] text-balance"
+    data-hero-reveal="title"
+  >
+    {
+      titleWords.map((w, i) => (
+        <span class="word inline-block mr-[0.2em]" style="opacity:0;">
+          {italicIdx.includes(i) ? <em class="italic font-light">{w}</em> : w}
+        </span>
+      ))
+    }
+  </h1>
+
+  <p
+    class="mt-8 max-w-2xl text-lg md:text-xl text-text-muted leading-relaxed text-pretty"
+    data-hero-reveal="sub"
+    style="opacity:0;"
+  >
+    {t('ab.intro.lede')}
+  </p>
+</section>
+
+<script>
+  import { playHeroReveal } from '@/lib/motion';
+  playHeroReveal();
+</script>

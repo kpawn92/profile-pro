@@ -1,0 +1,190 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const X0 = 80;
+const SLOT = 65;
+const Y0 = 300;
+const axisLabel = lang === 'es' ? 'Costo de añadir' : 'Cost to add';
+const slots = Array.from({ length: 8 }, (_, i) => ({
+  i,
+  cx: X0 + SLOT * (i + 0.5),
+}));
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('ab.kernel.eyebrow')} title={t('ab.kernel.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('ab.kernel.body')}</p>
+  </div>
+
+  <div class="mt-14 surface-card p-6 md:p-10 reveal-init" data-kernel>
+    <!-- legend + readout -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="flex flex-wrap gap-x-7 gap-y-2">
+        <span class="flex items-center gap-2.5 text-sm text-text-muted">
+          <span class="w-3 h-3 bg-accent inline-block"></span>
+          {t('ab.kernel.withKernel')}
+        </span>
+        <span class="flex items-center gap-2.5 text-sm text-text-muted">
+          <span class="w-6 border-t border-dashed border-text-dim inline-block"></span>
+          {t('ab.kernel.ghost')}
+        </span>
+      </div>
+      <span
+        class="font-mono text-sm text-accent tabular-nums"
+        data-kernel-readout
+        data-unit={t('ab.kernel.unit')}
+        data-units={t('ab.kernel.units')}
+      >
+        1 {t('ab.kernel.unit')}
+      </span>
+    </div>
+
+    <svg viewBox="0 0 640 360" class="w-full h-auto" role="img"
+      aria-label="Cost per bounded context: with a kernel it falls, without one it rises">
+      <line x1="80" y1="300" x2="600" y2="300" stroke="#25252C" stroke-width="1" />
+      <line x1="80" y1="50" x2="80" y2="300" stroke="#25252C" stroke-width="1" />
+
+      <!-- ghost line: without a kernel -->
+      <path data-kernel-ghost fill="none" stroke="#5E6068" stroke-width="1.5"
+        stroke-dasharray="4 4" d="" />
+      {slots.map((s) => (
+        <circle data-ghost-dot data-i={s.i} cx={s.cx} cy={Y0} r="3"
+          fill="#5E6068" style={s.i === 0 ? '' : 'opacity:0;'} />
+      ))}
+
+      <!-- bars: with a kernel -->
+      {slots.map((s) => (
+        <rect data-bar data-i={s.i} x={s.cx - 15} y={Y0} width="30" height="0"
+          fill="#C9A86A" />
+      ))}
+
+      <!-- x labels -->
+      {slots.map((s) => (
+        <text data-xlabel data-i={s.i} x={s.cx} y="320" text-anchor="middle"
+          class="font-mono" style={`font-size:11px;fill:#5E6068;${s.i === 0 ? '' : 'opacity:0;'}`}>
+          {s.i + 1}
+        </text>
+      ))}
+
+      <text x="74" y="56" text-anchor="end" class="font-mono"
+        style="font-size:11px;letter-spacing:0.1em;fill:#5E6068;text-transform:uppercase;"
+        transform="rotate(-90 74 56)">{axisLabel} ↑</text>
+    </svg>
+
+    <!-- controls -->
+    <div class="mt-7 flex flex-wrap items-center gap-5">
+      <button
+        type="button"
+        data-kernel-add
+        class="inline-flex items-center gap-3 px-5 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors disabled:opacity-40 disabled:pointer-events-none"
+      >
+        {t('ab.kernel.cta')}
+        <span aria-hidden="true">+</span>
+      </button>
+      <button
+        type="button"
+        data-kernel-reset
+        class="font-mono text-eyebrow uppercase text-text-muted hover:text-accent transition-colors"
+      >
+        {t('ab.kernel.reset')}
+      </button>
+    </div>
+
+    <p class="mt-7 pt-6 border-t border-border text-sm text-text-muted text-pretty">
+      {t('ab.kernel.note')}
+    </p>
+  </div>
+</section>
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { revealOnScroll, prefersReducedMotion } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-kernel]');
+  if (root) {
+    const reduce = prefersReducedMotion();
+    const X0 = 80, SLOT = 65, Y0 = 300, PH = 240, MAX = 8;
+    const cx = (i: number) => X0 + SLOT * (i + 0.5);
+    // marginal cost per context
+    const withKernel = [0.92, 0.44, 0.37, 0.32, 0.29, 0.26, 0.24, 0.22];
+    const without = [0.3, 0.4, 0.5, 0.61, 0.72, 0.83, 0.93, 1.0];
+
+    const bars = Array.from(root.querySelectorAll<SVGRectElement>('[data-bar]'));
+    const ghostDots = Array.from(root.querySelectorAll<SVGCircleElement>('[data-ghost-dot]'));
+    const xLabels = Array.from(root.querySelectorAll<SVGTextElement>('[data-xlabel]'));
+    const ghost = root.querySelector<SVGPathElement>('[data-kernel-ghost]')!;
+    const addBtn = root.querySelector<HTMLButtonElement>('[data-kernel-add]')!;
+    const resetBtn = root.querySelector<HTMLButtonElement>('[data-kernel-reset]')!;
+    const readout = root.querySelector<HTMLElement>('[data-kernel-readout]')!;
+    const unit = readout.dataset.unit ?? '';
+    const units = readout.dataset.units ?? '';
+
+    let count = 1;
+
+    const setBar = (i: number, on: boolean, animate: boolean) => {
+      const h = on ? withKernel[i] * PH : 0;
+      if (!animate || reduce) {
+        bars[i].setAttribute('height', String(h));
+        bars[i].setAttribute('y', String(Y0 - h));
+        return;
+      }
+      const proxy = { h: Number(bars[i].getAttribute('height')) };
+      anime({
+        targets: proxy,
+        h,
+        easing: 'cubicBezier(.22,1,.36,1)',
+        duration: 600,
+        update: () => {
+          bars[i].setAttribute('height', String(proxy.h));
+          bars[i].setAttribute('y', String(Y0 - proxy.h));
+        },
+      });
+    };
+
+    const drawGhost = () => {
+      const pts: string[] = [];
+      for (let i = 0; i < count; i++) {
+        pts.push(`${cx(i).toFixed(1)},${(Y0 - without[i] * PH).toFixed(1)}`);
+      }
+      ghost.setAttribute('d', pts.length > 1 ? 'M ' + pts.join(' L ') : '');
+      ghostDots.forEach((d, i) => {
+        d.style.opacity = i < count ? '1' : '0';
+        d.setAttribute('cy', String(Y0 - without[i] * PH));
+      });
+      xLabels.forEach((l, i) => (l.style.opacity = i < count ? '1' : '0'));
+    };
+
+    const refresh = () => {
+      readout.textContent = `${count} ${count === 1 ? unit : units}`;
+      addBtn.disabled = count >= MAX;
+    };
+
+    addBtn.addEventListener('click', () => {
+      if (count >= MAX) return;
+      count++;
+      setBar(count - 1, true, true);
+      drawGhost();
+      refresh();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      for (let i = 1; i < count; i++) setBar(i, false, true);
+      count = 1;
+      drawGhost();
+      refresh();
+    });
+
+    // initial state — first context already present
+    setBar(0, true, false);
+    drawGhost();
+    refresh();
+  }
+</script>

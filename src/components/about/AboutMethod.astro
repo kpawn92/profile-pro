@@ -1,0 +1,151 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const phases = [
+  { title: t('ab.method.p1.title'), body: t('ab.method.p1.body') },
+  { title: t('ab.method.p2.title'), body: t('ab.method.p2.body') },
+  { title: t('ab.method.p3.title'), body: t('ab.method.p3.body') },
+  { title: t('ab.method.p4.title'), body: t('ab.method.p4.body') },
+];
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('ab.method.eyebrow')} title={t('ab.method.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('ab.method.body')}</p>
+  </div>
+
+  <div class="mt-14 reveal-init" data-method>
+    <!-- Stepper -->
+    <div class="relative">
+      <div class="absolute left-0 right-0 top-[15px] h-px bg-border"></div>
+      <div
+        class="absolute left-0 top-[15px] h-px bg-accent"
+        data-method-fill
+        style="width:0%; transition:width 450ms cubic-bezier(.22,1,.36,1);"
+      >
+      </div>
+      <div class="relative flex justify-between">
+        {
+          phases.map((p, i) => (
+            <button
+              type="button"
+              data-step={i}
+              aria-current={i === 0 ? 'step' : 'false'}
+              class="method-step group flex flex-col items-center gap-3 max-w-[8rem]"
+            >
+              <span class="method-dot font-mono text-sm">0{i + 1}</span>
+              <span class="method-label hidden sm:block font-mono text-[11px] uppercase tracking-wider text-center leading-snug">
+                {p.title}
+              </span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="mt-12 grid border-t border-border pt-10">
+      {
+        phases.map((p, i) => (
+          <div
+            data-panel={i}
+            class:list={['method-panel grid-cols-1', i === 0 && 'active']}
+          >
+            <div class="grid grid-cols-[auto_1fr] gap-6 md:gap-10 items-start">
+              <span class="font-display text-display-m text-accent leading-none">
+                0{i + 1}
+              </span>
+              <div class="max-w-xl">
+                <h3 class="font-display text-2xl md:text-3xl text-balance leading-tight">
+                  {p.title}
+                </h3>
+                <p class="mt-4 text-text-muted leading-relaxed text-pretty">
+                  {p.body}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .method-dot {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text-dim);
+    transition: border-color 250ms var(--ease-precise),
+      color 250ms var(--ease-precise), background-color 250ms var(--ease-precise);
+  }
+  .method-step:hover .method-dot {
+    border-color: var(--color-accent-line);
+    color: var(--color-text-muted);
+  }
+  .method-step[aria-current='step'] .method-dot {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+  .method-label {
+    color: var(--color-text-dim);
+    transition: color 250ms var(--ease-precise);
+  }
+  .method-step[aria-current='step'] .method-label,
+  .method-step:hover .method-label {
+    color: var(--color-text-muted);
+  }
+  .method-panel {
+    grid-area: 1 / 1;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 350ms var(--ease-precise),
+      transform 350ms var(--ease-precise);
+  }
+  .method-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .method-panel {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-method]');
+  if (root) {
+    const steps = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-step]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
+    const fill = root.querySelector<HTMLElement>('[data-method-fill]')!;
+    const last = steps.length - 1;
+
+    const setActive = (i: number) => {
+      steps.forEach((s, k) =>
+        s.setAttribute('aria-current', k === i ? 'step' : 'false'),
+      );
+      panels.forEach((p, k) => p.classList.toggle('active', k === i));
+      fill.style.width = `${(i / last) * 100}%`;
+    };
+
+    steps.forEach((s, i) => s.addEventListener('click', () => setActive(i)));
+  }
+</script>

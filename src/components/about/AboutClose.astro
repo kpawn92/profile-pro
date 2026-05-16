@@ -1,0 +1,91 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { site } from '@/lib/site';
+import { getLangFromUrl, useTranslations, localizePath } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stack = [
+  { group: 'Languages', items: ['TypeScript', 'Java', 'SQL'] },
+  { group: 'Backend', items: ['Spring Boot', 'NestJS'] },
+  { group: 'Frontend', items: ['React', 'Vite'] },
+  { group: 'Persistence', items: ['PostgreSQL', 'Spring Data JPA'] },
+  { group: 'Patterns', items: ['DDD', 'Hexagonal', 'CQRS', 'Saga', 'Outbox', 'Idempotence'] },
+  { group: 'Operations', items: ['Docker', 'OpenAPI / Swagger'] },
+];
+---
+
+<section class="container-x py-section relative">
+  <div class="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-14 lg:gap-20 items-start">
+    <!-- Background -->
+    <div>
+      <SectionHeading eyebrow={t('ab.bg.eyebrow')} title={t('ab.bg.title')} size="m" />
+      <p class="mt-8 text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+        {t('ab.bg.body')}
+      </p>
+    </div>
+
+    <!-- Stack -->
+    <div class="reveal-init">
+      <h3 class="eyebrow mb-5 flex items-center gap-3">
+        <span class="accent-rule" aria-hidden="true"></span>
+        {t('ab.stack.heading')}
+      </h3>
+      <dl>
+        {
+          stack.map((s) => (
+            <div class="grid grid-cols-[1fr] sm:grid-cols-[130px_1fr] gap-1 sm:gap-4 py-3 border-b border-border last:border-b-0">
+              <dt class="font-mono text-xs uppercase text-text-dim tracking-wider pt-0.5">
+                {s.group}
+              </dt>
+              <dd class="text-sm text-text-muted">{s.items.join(' · ')}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="mt-20 border border-border p-10 md:p-14 reveal-init relative overflow-hidden">
+    <div
+      class="absolute inset-0 -z-10 pointer-events-none opacity-60"
+      style="background:
+        radial-gradient(ellipse 50% 50% at 25% 0%, rgba(201,168,106,0.10), transparent 70%),
+        radial-gradient(ellipse 60% 60% at 100% 100%, rgba(201,168,106,0.05), transparent 70%);"
+    >
+    </div>
+
+    <p class="eyebrow flex items-center gap-3">
+      <span class="accent-rule" aria-hidden="true"></span>
+      {t('ab.cta.eyebrow')}
+    </p>
+    <h2 class="mt-6 font-display text-display-m max-w-2xl text-balance">
+      {t('ab.cta.title')}
+    </h2>
+    <p class="mt-5 max-w-xl text-text-muted leading-relaxed text-pretty">
+      {t('ab.cta.body')}
+    </p>
+    <div class="mt-9 flex flex-wrap gap-4 items-center">
+      <a
+        href={`mailto:${site.email}`}
+        class="inline-flex items-center gap-3 px-6 py-3 bg-text text-bg font-medium hover:bg-accent transition-colors"
+      >
+        {t('ab.cta.email')}
+        <span aria-hidden="true">→</span>
+      </a>
+      <a
+        href={localizePath('/case-studies/', lang)}
+        class="inline-flex items-center gap-3 px-6 py-3 border border-border hover:border-accent hover:text-accent transition-colors"
+      >
+        {t('cs.viewAll')}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+</script>

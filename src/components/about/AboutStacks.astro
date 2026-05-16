@@ -1,0 +1,149 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const C = { x: 230, y: 210 };
+const coreR = 66;
+const satR = 38;
+const D = 150;
+
+const hex = (cx: number, cy: number, r: number): string => {
+  const pts: string[] = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 180) * (60 * i - 90);
+    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
+  }
+  return 'M ' + pts.join(' L ') + ' Z';
+};
+
+const adapters = [
+  { a: -90, java: 'Spring Web', ts: 'NestJS HTTP' },
+  { a: 30, java: 'Spring Data JPA', ts: 'Prisma ORM' },
+  { a: 150, java: 'Spring Events', ts: 'Event Emitter' },
+].map((s) => {
+  const rad = (Math.PI / 180) * s.a;
+  return { ...s, x: C.x + D * Math.cos(rad), y: C.y + D * Math.sin(rad) };
+});
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading
+    eyebrow={t('ab.stacks.eyebrow')}
+    title={t('ab.stacks.title')}
+    size="m"
+  />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('ab.stacks.body')}</p>
+  </div>
+
+  <div class="mt-12 reveal-init" data-stacks>
+    <!-- toggle -->
+    <div class="inline-flex border border-border" role="group" aria-label={t('ab.stacks.eyebrow')}>
+      <button type="button" data-stack-btn="java" aria-pressed="true"
+        class="stack-btn px-5 py-2.5 text-sm font-mono uppercase tracking-wider transition-colors">
+        Java / Spring
+      </button>
+      <button type="button" data-stack-btn="ts" aria-pressed="false"
+        class="stack-btn px-5 py-2.5 text-sm font-mono uppercase tracking-wider transition-colors border-l border-border">
+        TypeScript / NestJS
+      </button>
+    </div>
+
+    <figure class="mt-8 surface-card p-4 md:p-6 max-w-[560px] mx-auto">
+      <svg viewBox="0 0 460 440" class="w-full h-auto" role="img"
+        aria-label="The same domain hexagon with adapters that swap between Java and TypeScript stacks">
+        <!-- connectors -->
+        {adapters.map((s) => (
+          <line x1={C.x} y1={C.y} x2={s.x} y2={s.y} stroke="#35353E" stroke-width="1" />
+        ))}
+
+        <!-- core domain (never moves) -->
+        <path d={hex(C.x, C.y, coreR)} fill="rgba(201,168,106,0.06)"
+          stroke="#C9A86A" stroke-width="1.5" />
+        <text x={C.x} y={C.y - 2} text-anchor="middle"
+          style="font-family:'Fraunces',serif;font-style:italic;font-size:19px;fill:#ECEDEE;">
+          {t('ab.stacks.core')}
+        </text>
+        <text x={C.x} y={C.y + 18} text-anchor="middle" class="font-mono"
+          style="font-size:9px;letter-spacing:0.14em;text-transform:uppercase;fill:#5E6068;">
+          unchanged
+        </text>
+
+        <!-- adapters -->
+        {adapters.map((s) => (
+          <g>
+            <path d={hex(s.x, s.y, satR)} fill="#131317" stroke="#35353E" stroke-width="1" />
+            <circle cx={s.x} cy={s.y} r="3" fill="#C9A86A" />
+            <text data-stack-label="java" x={s.x} y={s.y + satR + 20} text-anchor="middle"
+              class="font-mono"
+              style="font-size:12px;letter-spacing:0.04em;fill:#9295A0;">
+              {s.java}
+            </text>
+            <text data-stack-label="ts" x={s.x} y={s.y + satR + 20} text-anchor="middle"
+              class="font-mono"
+              style="font-size:12px;letter-spacing:0.04em;fill:#9295A0;opacity:0;">
+              {s.ts}
+            </text>
+          </g>
+        ))}
+      </svg>
+
+      <figcaption class="mt-2 text-center font-mono text-eyebrow uppercase text-text-dim">
+        {t('ab.stacks.patterns')}
+      </figcaption>
+    </figure>
+
+    <p class="mt-8 max-w-2xl text-text-muted leading-relaxed text-pretty border-l border-accent-line pl-6">
+      {t('ab.stacks.note')}
+    </p>
+  </div>
+</section>
+
+<style>
+  [data-stack-label] {
+    transition: opacity 320ms var(--ease-precise);
+  }
+  .stack-btn[aria-pressed='true'] {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+  .stack-btn[aria-pressed='false'] {
+    color: var(--color-text-muted);
+  }
+  .stack-btn[aria-pressed='false']:hover {
+    color: var(--color-text);
+  }
+</style>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+
+  const root = document.querySelector<HTMLElement>('[data-stacks]');
+  if (root) {
+    const btns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-stack-btn]'));
+    const javaLabels = Array.from(
+      root.querySelectorAll<SVGTextElement>('[data-stack-label="java"]'),
+    );
+    const tsLabels = Array.from(
+      root.querySelectorAll<SVGTextElement>('[data-stack-label="ts"]'),
+    );
+
+    const setStack = (stack: string) => {
+      btns.forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.stackBtn === stack)),
+      );
+      const java = stack === 'java';
+      javaLabels.forEach((l) => (l.style.opacity = java ? '1' : '0'));
+      tsLabels.forEach((l) => (l.style.opacity = java ? '0' : '1'));
+    };
+
+    btns.forEach((b) =>
+      b.addEventListener('click', () => setStack(b.dataset.stackBtn ?? 'java')),
+    );
+  }
+</script>
