@@ -67,6 +67,42 @@ export const ui = {
     'cs.stack': 'Stack',
     'cs.boundedContexts': 'Bounded contexts',
 
+    // ─── Work page
+    'wk.meta.title': 'Work',
+    'wk.meta.desc':
+      'Selected work — domain-driven architecture proven under real production load. Two live engagements across Java/Spring and TypeScript/NestJS.',
+
+    'wk.intro.eyebrow': 'Selected work',
+    'wk.intro.title': 'Proof, not promises.',
+    'wk.intro.lede':
+      'Two live engagements, anonymised. Each is the same thesis under real production load: domain-driven architecture that gets cheaper to extend, not more expensive. Outcomes verifiable on request.',
+
+    'wk.evidence.caption': 'Two engagements. Two stacks. One architecture, proven twice.',
+    'wk.ev.s1.label': 'Live engagements',
+    'wk.ev.s2.label': 'Architectural kernels built',
+    'wk.ev.s3.label': 'Bounded contexts modelled',
+    'wk.ev.s4.label': 'Legacy lines retired',
+
+    'wk.bus.eyebrow': 'The common kernel',
+    'wk.bus.title': 'Both engagements run on the same hand-built kernel.',
+    'wk.bus.body':
+      'Commands change state, queries read it, and domain events let the rest of the system react — over a CQRS message bus. Around the domain, ports and adapters keep it pure. The same kernel is reused by every bounded context in both case studies.',
+    'wk.bus.cqrs': 'CQRS message bus',
+    'wk.bus.hex': 'Ports & adapters',
+    'wk.bus.live': 'live',
+
+    'wk.index.eyebrow': 'Case studies',
+    'wk.index.title': 'Each project is the same idea, tested differently.',
+    'wk.index.filterAll': 'All',
+    'wk.index.filterLabel': 'Filter by industry',
+
+    'wk.cta.eyebrow': 'Working together',
+    'wk.cta.title': 'Your system could be the next proof.',
+    'wk.cta.body':
+      "If you're rebuilding a critical part of your operation and want architecture that compounds instead of decaying, I'd like to hear about it.",
+    'wk.cta.email': 'Start a conversation',
+    'wk.cta.about': 'How I work',
+
     // ─── Approach
     'approach.eyebrow': 'Approach',
     'approach.title':
@@ -375,6 +411,42 @@ export const ui = {
     'cs.back': 'Todos los casos',
     'cs.stack': 'Stack',
     'cs.boundedContexts': 'Bounded contexts',
+
+    // ─── Work page
+    'wk.meta.title': 'Trabajo',
+    'wk.meta.desc':
+      'Trabajo seleccionado — arquitectura orientada al dominio probada bajo carga real de producción. Dos proyectos activos en Java/Spring y TypeScript/NestJS.',
+
+    'wk.intro.eyebrow': 'Trabajo seleccionado',
+    'wk.intro.title': 'Pruebas, no promesas.',
+    'wk.intro.lede':
+      'Dos proyectos activos, anonimizados. Cada uno es la misma tesis bajo carga real de producción: arquitectura orientada al dominio que se vuelve más barata de extender, no más cara. Resultados verificables bajo petición.',
+
+    'wk.evidence.caption': 'Dos proyectos. Dos stacks. Una arquitectura, probada dos veces.',
+    'wk.ev.s1.label': 'Proyectos activos',
+    'wk.ev.s2.label': 'Kernels propios construidos',
+    'wk.ev.s3.label': 'Bounded contexts modelados',
+    'wk.ev.s4.label': 'Líneas de legacy retiradas',
+
+    'wk.bus.eyebrow': 'El kernel común',
+    'wk.bus.title': 'Ambos proyectos corren sobre el mismo kernel hecho a mano.',
+    'wk.bus.body':
+      'Los comandos cambian el estado, las consultas lo leen y los eventos de dominio dejan que el resto del sistema reaccione — sobre un bus de mensajes CQRS. Alrededor del dominio, los puertos y adaptadores lo mantienen puro. El mismo kernel lo reutiliza cada bounded context en ambos casos de estudio.',
+    'wk.bus.cqrs': 'Bus de mensajes CQRS',
+    'wk.bus.hex': 'Puertos y adaptadores',
+    'wk.bus.live': 'en vivo',
+
+    'wk.index.eyebrow': 'Casos de estudio',
+    'wk.index.title': 'Cada proyecto es la misma idea, puesta a prueba de forma distinta.',
+    'wk.index.filterAll': 'Todos',
+    'wk.index.filterLabel': 'Filtrar por industria',
+
+    'wk.cta.eyebrow': 'Trabajar juntos',
+    'wk.cta.title': 'Tu sistema podría ser la próxima prueba.',
+    'wk.cta.body':
+      'Si estás reconstruyendo una parte crítica de tu operación y quieres una arquitectura que se componga en vez de degradarse, me gustaría escucharlo.',
+    'wk.cta.email': 'Iniciar una conversación',
+    'wk.cta.about': 'Cómo trabajo',
 
     // ─── Approach
     'approach.eyebrow': 'Aproximación',

@@ -1,0 +1,148 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import CaseStudyCard from '@components/ui/CaseStudyCard.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const studies = (
+  await getCollection(
+    'case-studies',
+    ({ data }) => !data.draft && data.lang === lang,
+  )
+).sort((a, b) => b.data.year - a.data.year);
+
+const industries = Array.from(new Set(studies.map((s) => s.data.industry)));
+---
+
+<section class="container-x py-section relative" data-work-index>
+  <SectionHeading eyebrow={t('wk.index.eyebrow')} title={t('wk.index.title')} />
+
+  <!-- Filter -->
+  <div
+    class="mt-10 flex flex-wrap gap-2 reveal-init"
+    role="group"
+    aria-label={t('wk.index.filterLabel')}
+  >
+    <button type="button" data-filter="all" aria-pressed="true" class="cs-pill">
+      {t('wk.index.filterAll')}
+    </button>
+    {
+      industries.map((i) => (
+        <button type="button" data-filter={i} aria-pressed="false" class="cs-pill">
+          {i}
+        </button>
+      ))
+    }
+  </div>
+
+  <div
+    class:list={[
+      'mt-8 grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border',
+      studies.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2',
+    ]}
+    data-cs-grid
+  >
+    {
+      studies.map((entry, i) => (
+        <div class="bg-bg" data-cs-item data-industry={entry.data.industry}>
+          <CaseStudyCard entry={entry} index={i} />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .cs-pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: border-color 220ms var(--ease-precise),
+      color 220ms var(--ease-precise);
+  }
+  .cs-pill:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+  .cs-pill[aria-pressed='true'] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  import anime from 'animejs/lib/anime.es.js';
+  import { revealOnScroll, prefersReducedMotion } from '@/lib/motion';
+
+  revealOnScroll('.reveal-init');
+  revealOnScroll('[data-cs-grid] .surface-card', { stagger: 100 });
+
+  const root = document.querySelector<HTMLElement>('[data-work-index]');
+  if (root) {
+    const reduce = prefersReducedMotion();
+    const pills = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-cs-item]'));
+    let current = 'all';
+
+    const apply = (value: string) => {
+      if (value === current) return;
+      current = value;
+      pills.forEach((p) =>
+        p.setAttribute('aria-pressed', String(p.dataset.filter === value)),
+      );
+
+      const appearing: HTMLElement[] = [];
+      items.forEach((it) => {
+        const match = value === 'all' || it.dataset.industry === value;
+        if (match) {
+          if (it.hidden) {
+            it.hidden = false;
+            if (!reduce) {
+              it.style.opacity = '0';
+              appearing.push(it);
+            }
+          }
+        } else if (!it.hidden) {
+          if (reduce) {
+            it.hidden = true;
+          } else {
+            anime({
+              targets: it,
+              opacity: [1, 0],
+              easing: 'easeOutQuad',
+              duration: 200,
+              complete: () => {
+                it.hidden = true;
+                it.style.opacity = '';
+              },
+            });
+          }
+        }
+      });
+
+      if (appearing.length) {
+        anime({
+          targets: appearing,
+          opacity: [0, 1],
+          translateY: [10, 0],
+          easing: 'cubicBezier(.22,1,.36,1)',
+          duration: 450,
+          delay: anime.stagger(70, { start: 160 }),
+        });
+      }
+    };
+
+    pills.forEach((p) =>
+      p.addEventListener('click', () => apply(p.dataset.filter ?? 'all')),
+    );
+  }
+</script>

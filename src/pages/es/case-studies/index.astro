@@ -1,67 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
-import PageLayout from '@layouts/PageLayout.astro';
-import CaseStudyCard from '@components/ui/CaseStudyCard.astro';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import WorkIntro from '@components/work/WorkIntro.astro';
+import WorkEvidence from '@components/work/WorkEvidence.astro';
+import WorkKernel from '@components/work/WorkKernel.astro';
+import WorkIndex from '@components/work/WorkIndex.astro';
+import WorkClose from '@components/work/WorkClose.astro';
 import { getLangFromUrl, useTranslations } from '@/i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const studies = (
-  await getCollection(
-    'case-studies',
-    ({ data }) => !data.draft && data.lang === lang,
-  )
-).sort((a, b) => b.data.year - a.data.year);
-
-const industries = Array.from(new Set(studies.map((s) => s.data.industry)));
 ---
 
-<PageLayout
-  title={t('cs.allTitle')}
-  eyebrow={t('cs.allEyebrow')}
-  lede={t('cs.allLede')}
->
-  <section class="container-x pb-section">
-    <ul class="flex flex-wrap gap-2 mb-10 reveal-init">
-      <li>
-        <span
-          class="inline-flex items-center font-mono uppercase tracking-wider text-xs px-3 py-1.5 border border-accent text-accent"
-        >
-          {t('cs.filter.all')}
-        </span>
-      </li>
-      {
-        industries.map((i) => (
-          <li>
-            <span class="inline-flex items-center font-mono uppercase tracking-wider text-xs px-3 py-1.5 border border-border text-text-muted">
-              {i}
-            </span>
-          </li>
-        ))
-      }
-    </ul>
-
-    <div
-      class:list={[
-        'grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border',
-        studies.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2',
-      ]}
-      data-cs-grid
-    >
-      {
-        studies.map((entry, i) => (
-          <div class="bg-bg">
-            <CaseStudyCard entry={entry} index={i} />
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <script>
-    import { revealOnScroll } from '@/lib/motion';
-    revealOnScroll('.reveal-init');
-    revealOnScroll('[data-cs-grid] .surface-card', { stagger: 100 });
-  </script>
-</PageLayout>
+<BaseLayout title={t('wk.meta.title')} description={t('wk.meta.desc')}>
+  <WorkIntro />
+  <WorkEvidence />
+  <WorkKernel />
+  <WorkIndex />
+  <WorkClose />
+</BaseLayout>

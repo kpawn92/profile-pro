@@ -1,0 +1,74 @@
+---
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import CqrsBus from '@components/visuals/CqrsBus.astro';
+import PortsAdapters from '@components/visuals/PortsAdapters.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const diagrams = [
+  { label: t('wk.bus.cqrs'), id: 'cqrs' },
+  { label: t('wk.bus.hex'), id: 'hex' },
+];
+---
+
+<section class="container-x py-section relative">
+  <SectionHeading eyebrow={t('wk.bus.eyebrow')} title={t('wk.bus.title')} />
+
+  <div class="mt-10 max-w-2xl text-lg text-text-muted leading-relaxed text-pretty reveal-init">
+    <p>{t('wk.bus.body')}</p>
+  </div>
+
+  <div class="mt-12 space-y-px bg-border border border-border">
+    {
+      diagrams.map((d) => (
+        <div class="bg-bg p-6 md:p-9 reveal-init">
+          <div class="flex items-center justify-between mb-5">
+            <span class="font-mono text-eyebrow uppercase text-text-muted">
+              {d.label}
+            </span>
+            <span class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-text-dim">
+              <span class="live-dot" aria-hidden="true" />
+              {t('wk.bus.live')}
+            </span>
+          </div>
+          {d.id === 'cqrs' ? <CqrsBus /> : <PortsAdapters />}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    display: inline-block;
+    animation: live-pulse 2s var(--ease-precise) infinite;
+  }
+  @keyframes live-pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.35);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot {
+      animation: none;
+      opacity: 0.8;
+    }
+  }
+</style>
+
+<script>
+  import { revealOnScroll } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+</script>

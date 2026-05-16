@@ -1,0 +1,47 @@
+---
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stats = [
+  { to: 2, label: t('wk.ev.s1.label') },
+  { to: 2, label: t('wk.ev.s2.label') },
+  { to: 30, label: t('wk.ev.s3.label'), suffix: '+' },
+  { to: 743, label: t('wk.ev.s4.label') },
+];
+---
+
+<section class="container-x pb-section relative">
+  <p class="max-w-xl text-text-muted leading-relaxed text-pretty reveal-init">
+    {t('wk.evidence.caption')}
+  </p>
+
+  <dl
+    class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-px bg-border border border-border reveal-init"
+    data-evidence
+  >
+    {
+      stats.map((s) => (
+        <div class="bg-bg p-6 md:p-7">
+          <dd
+            class="font-display text-3xl md:text-4xl text-accent tabular-nums"
+            data-count-to={String(s.to)}
+            data-count-suffix={s.suffix ?? ''}
+          >
+            0
+          </dd>
+          <dt class="mt-2 text-sm text-text-muted leading-snug text-pretty">
+            {s.label}
+          </dt>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<script>
+  import { revealOnScroll, countUp } from '@/lib/motion';
+  revealOnScroll('.reveal-init');
+  countUp('[data-evidence] [data-count-to]');
+</script>
